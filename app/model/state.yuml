@@ -1,0 +1,5 @@
+// {type:state}
+(start)[Start]->(Login)
+(Login)[right credentials]->(Jepria Tasks)
+(Login)[wrong credentials]->(Login)
+(Jepria Tasks)[Logout]->(end)

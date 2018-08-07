@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "JepRia Feature",
+    "description": "JepRia Feature - Expo standalone",
+    "slug": "feature-expo-standalone-demo",
+    "privacy": "public",
+    "sdkVersion": "28.0.0",
+    "platforms": ["ios", "android"],
+    "version": "1.0.2",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "ios": {
+      "bundleIdentifier": "org.jepria.feature.demo",
+      "supportsTablet": false,
+      "splash": {
+        "backgroundColor": "#175767",
+        "resizeMode": "contain",
+        "image": "./assets/images/splash-logo.png",
+        "tabletImage": "./assets/images/splash-logo.png"
+      },
+      "buildNumber" : "1.0.2"
+    },
+    "android": {
+      "package": "org.jepria.feature.demo",
+      "permissions": [],
+      "versionCode": 5,
+      "splash": {
+        "backgroundColor": "#175767",
+        "resizeMode": "contain",
+        "xxxhdpi": "./assets/images/splash-logo.png"
+      }
+    },    
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#175767"
+    },
+    "updates": {
+      "enabled": true
+    }
+  }
+}
