@@ -4,7 +4,7 @@ import {TouchableHighlight, TouchableOpacity, FlatList, Text, View, Modal} from 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import log from '@cap-cross/cap-core';
 
-class TouchableItem extends React.PureComponent {
+class PickerTouchableItem extends React.PureComponent {
   
   constructor(props) {
     super(props);
@@ -13,19 +13,16 @@ class TouchableItem extends React.PureComponent {
     };
   }
 
-  styles = {
+  defaultStyles = {
     item: {
-      padding: 15,
       borderBottomColor: 'rgba(255,255,255,0.25)', 
-      borderBottomWidth: 1,
-      backgroundColor: 'transparent', 
     },
     itemText: {
-      textAlign: 'center',
       color: 'white', 
-      fontSize: 14
     },
+    iconColor: 'white'
   };
+  customStyles = getStyles('PickerTouchableItem');
   
   onPress = () => {
     this.setState({checked: !this.state.checked});
@@ -35,9 +32,10 @@ class TouchableItem extends React.PureComponent {
   render() {
     const {name} = this.props;
     const {checked} = this.state;
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
       <TouchableOpacity
-        style={this.styles.item}
+        style={{...styles.item, borderBottomWidth: 1, padding: 15, backgroundColor: 'transparent',}}
         underlayColor='f00'
         onPress={() => {
           this.onPress();
@@ -45,18 +43,18 @@ class TouchableItem extends React.PureComponent {
         >
           <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
             <Text 
-            style={{textAlign: 'center', color: 'white', fontSize:14, flex: 1,}}>
+            style={{...styles.itemText, textAlign: 'center', fontSize:14, flex: 1,}}>
               {name}
             </Text>
-            {checked && <Icon name="radio-button-checked" size={20} color='white' style={{paddingRight: 10}}/>}
-            {!checked && <Icon name="radio-button-unchecked" size={20} color='white' style={{paddingRight: 10}} />}
+            {checked && <Icon name="radio-button-checked" size={20} color={styles.iconColor} style={{paddingRight: 10}}/>}
+            {!checked && <Icon name="radio-button-unchecked" size={20} color={styles.iconColor} style={{paddingRight: 10}} />}
           </View>
       </TouchableOpacity>
     );
   }
 }
 
-export default class MultiselectionList extends React.Component {
+export default class Picker extends React.Component {
   
   constructor(props) {
     super(props);
@@ -67,12 +65,9 @@ export default class MultiselectionList extends React.Component {
     }
   }  
 
-  styles = {
+  defaultStyles = {
     card: {
       marginVertical: 7,
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
       borderBottomColor: 'white', 
       borderBottomWidth:1
     },
@@ -84,14 +79,22 @@ export default class MultiselectionList extends React.Component {
     },
     valueContainer: {
       paddingHorizontal: 15, 
-      paddingVertical: 7, 
+      paddingVertical: 7,
     },
     fieldValue: {
       color: 'white', 
       fontSize: 14,
-      height: 20
+      minHeight: 20
     },
+    background: {
+      backgroundColor: 'rgba(52,52,52,0.8)',
+    },
+    list: {
+      backgroundColor: 'rgba(51,63,75,0.9)',
+    },
+    iconColor: 'white'
   };
+  customStyles = getStyles('Picker');
 
   onItemPressed = (item) => {
     const {input:{onChange}} = this.props;
@@ -101,7 +104,7 @@ export default class MultiselectionList extends React.Component {
   }
 
   renderListItem = ({item}) => (
-    <TouchableItem 
+    <PickerTouchableItem 
         key={item[this.props.itemValueKey]}
         name={item[this.props.itemNameKey]} 
         value={item[this.props.itemValueKey]} 
@@ -122,21 +125,22 @@ export default class MultiselectionList extends React.Component {
         }
       };
     }
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
       <View>
         <TouchableOpacity 
-            style={this.styles.card}
+            style={{...styles.card, flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}
             onPress={() => this.setState({...this.state, isChecking: true})} >
           <View style={{flex: 1}}>
             <View>
-              <Text style={this.styles.fieldCaption}>{labelText}</Text>
+              <Text style={styles.fieldCaption}>{labelText}</Text>
             </View>
-            <View style={this.styles.valueContainer}>
-              <Text style={{...this.styles.fieldValue, flexWrap:'wrap'}}>{name}</Text>
+            <View style={styles.valueContainer}>
+              <Text style={{...styles.fieldValue, flexWrap:'wrap'}}>{name}</Text>
             </View>
           </View>
           <View style={{justifyContent:'center', flex: 0}}>
-            <Icon name='expand-more' color='white' size={30} />
+            <Icon name='expand-more' color={styles.iconColor} size={30} />
           </View>
         </TouchableOpacity>
         <Modal
@@ -144,8 +148,10 @@ export default class MultiselectionList extends React.Component {
           transparent={true}
           visible={this.state.isChecking}
           onRequestClose={() => this.setState({...this.state, isChecking: false})}>
-          <TouchableOpacity onPress={() => this.setState({...this.state, isChecking: false})} style={{backgroundColor: 'rgba(52,52,52,0.8)', flex: 1, justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%'}}>
-            <View style={{borderRadius: 15, backgroundColor: 'rgba(51,63,75,0.9)', maxHeight:'70%', width: '90%'}}>
+          <TouchableOpacity 
+          onPress={() => this.setState({...this.state, isChecking: false})} 
+          style={{...styles.background, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{...styles.list, borderRadius: 15, maxHeight:'70%', width: '90%'}}>
               <FlatList 
                 style={{margin: 20}}
                 data={items}
