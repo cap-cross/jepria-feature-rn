@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, StyleSheet, View, TextInput } from 'react-native';
+import getStyles from '../../../res/styles'
 
 export default class TextField extends React.PureComponent {
   static propTypes = {
@@ -9,8 +10,7 @@ export default class TextField extends React.PureComponent {
     meta: PropTypes.object.isRequired,
   };
 
-  
-  styles = StyleSheet.create({
+  defaultStyles = {
     card: {
       marginVertical: 7
     },
@@ -46,33 +46,31 @@ export default class TextField extends React.PureComponent {
       color: 'red', 
       fontSize: 12,
     }
-  });
+  }
+  customStyles = getStyles('TextInput');
 
   render() {
     const { input, meta: {touched, error, warning}, labelText, ...inputProps } = this.props;
-    // TODO multiline, numberOfLines введены только для работы в Expo (проверить)
-    // На Android при этом приходится вертикально скроллить, если содержимое не вмещается в
-    // отведённое число строк. На iPhone всё нормально - отображается всё содержимое.
-    // Это искажает отображение пустых форм - поля располагаются слишком близко - исправить для Expo
-    var notificationStyle = error !== undefined ? this.styles.notificationTextError : (warning !== undefined ? this.styles.notificationTextWarn : {});
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
+    var notificationStyle = error !== undefined ? styles.notificationTextError : (warning !== undefined ? styles.notificationTextWarn : {});
     return (
-      <View style={this.styles.card}>
+      <View style={styles.card}>
         <View>
-          <Text style={this.styles.fieldCaption}>{labelText}</Text>
+          <Text style={styles.fieldCaption}>{labelText}</Text>
         </View>
-        <View style={(touched && error !== undefined)? this.styles.valueContainerError : this.styles.valueContainer}>
+        <View style={(touched && error !== undefined)? styles.valueContainerError : styles.valueContainer}>
           <TextInput
-            style={this.styles.fieldValue}
+            style={styles.fieldValue}
             onChangeText={input.onChange}
             onBlur={input.onBlur}
             onFocus={input.onFocus}
             value={input.value}
-            style={this.styles.fieldValue}
+            style={styles.fieldValue}
             underlineColorAndroid='transparent'
             />
         </View>
-        { touched && error != undefined && <Text style={this.styles.notificationTextError}>{error}</Text> }
-        { touched && warning != undefined && <Text style={this.styles.notificationTextWarn}>{warning}</Text>}
+        { touched && error != undefined && <Text style={styles.notificationTextError}>{error}</Text> }
+        { touched && warning != undefined && <Text style={styles.notificationTextWarn}>{warning}</Text>}
       </View>
     );
   }

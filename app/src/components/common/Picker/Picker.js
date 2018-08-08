@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {TouchableHighlight, TouchableOpacity, FlatList, Text, View, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import log from '@cap-cross/cap-core';
+import getStyles from '../../../../res/styles'
 
 class PickerTouchableItem extends React.PureComponent {
   

@@ -105,6 +105,43 @@ const styles = {
       color: 'white', 
     },
     iconColor: 'white'
+  },
+  TextInput: {    
+    card: {
+      marginVertical: 7
+    },
+    fieldCaption: {
+      margin: 7,
+      color: 'white', 
+      fontSize: 12, 
+      opacity: 0.75
+    },
+    valueContainer: {
+      paddingHorizontal: 15, 
+      paddingBottom: 7, 
+      borderBottomColor: 'white', 
+      borderBottomWidth:1
+    },
+    valueContainerError: {
+      paddingHorizontal: 15, 
+      paddingBottom: 7, 
+      borderBottomColor: 'red', 
+      borderBottomWidth:1
+    },
+    fieldValue: {
+      color: 'white', 
+      fontSize: 14,
+      borderColor: 'transparent'
+    },
+    notificationTextWarn: {
+      color: 'white', 
+      fontSize: 12, 
+      opacity: 0.75,
+    },
+    notificationTextError: {
+      color: 'red', 
+      fontSize: 12,
+    }
   }
 }
 

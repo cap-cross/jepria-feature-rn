@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableHighlight } from 'react-native';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right } from 'native-base';
+import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
 import bindActionCreators from 'redux/lib/bindActionCreators';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
@@ -98,7 +98,7 @@ export default class AddScreen extends React.Component {
       description: values.description,
     })
     .then((task) => {
-      this.props.actions.setActiveTask(task);
+      this.props.setActiveTask(task);
       this.props.findTasks(this.props.filter);
       Toast.show({
         text: "Изменения успешно сохранены!",
