@@ -14,40 +14,39 @@ import WaitBar from '../../common/WaitBar';
 import Background from '../../common/Background';
 import {DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import {required} from '../../../data/validation';
-
-const styles = StyleSheet.create({
-  input: {
-    textAlign: 'center',
-  },
-  button: {
-    margin: 30, 
-    backgroundColor: DARK_AQUA_GREEN_COLOR,
-    borderRadius: 30,
-    height: 60,
-    justifyContent: 'center'
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 30,
-    textAlign: 'center',
-    alignSelf: 'stretch',
-  },
-  text: {
-    color: 'black',
-    fontSize: 22,
-  },
-});
+import getStyles from '../../../../res/styles'
 
 export default class LoginForm extends React.Component {
   static propTypes = {
     onSubmit: func.isRequired,
   };
 
+  defaultStyles = {
+    buttonText: {
+      color: 'white',
+      fontSize: 30,
+      textAlign: 'center',
+      alignSelf: 'stretch',
+    },
+    text: {
+      color: 'black',
+      fontSize: 22,
+    },
+    footer: {
+      backgroundColor: 'rgba(17,49,85,0.85)'
+    },
+    footerText: {
+      color: 'white', 
+    },
+  }
+  customStyles = getStyles('LoginForm');
+
   componentDidMount() {
     loginMediator.waitBar = this.waitBar; // Для последующего доступа из api.authenticate.
   }
 
   render() {
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
       <Background>
         <Container style={{ alignSelf: 'stretch' }}>
@@ -74,7 +73,6 @@ export default class LoginForm extends React.Component {
               />
               <Field
                 name="password"
-                style={{ textAlign: 'center' }}
                 component={SecureTextInput}
                 placeholder="Password"
                 ref={(c) => {

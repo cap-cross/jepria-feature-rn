@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Content, Container, Icon } from 'native-base';
 import {TouchableOpacity, Text, View} from 'react-native';
+import getStyles from '../../../../res/styles'
 
 export default class ViewDetail extends React.Component {
   static propTypes = {
     task: PropTypes.object.isRequired,
   };
 
-  getStyles = () => ({
+  defaultStyles = {
     form: {
       margin: 15, 
       padding: 15, 
@@ -28,17 +29,18 @@ export default class ViewDetail extends React.Component {
       paddingHorizontal: 15, 
       paddingBottom: 7, 
       borderBottomColor: 'white', 
-      borderBottomWidth:1
+      borderBottomWidth:2
     },
     fieldValue: {
       color: 'white', 
       fontSize: 14,
       minHeight: 20,
     },
-  });
+  };
+  customStyles = getStyles('ViewForm');
 
   render() {
-    const styles = this.getStyles(this.props);
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     const task = this.props.task;
 

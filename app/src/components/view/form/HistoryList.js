@@ -5,6 +5,7 @@ import { Toast} from 'native-base';
 import compose from 'recompose/compose';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import getStyles from '../../../../res/styles'
 
 import { findHistory } from '../../../redux/history/historyMiddleware';
 import {EmptyView} from '@cap-cross/cap-react-native';
@@ -12,7 +13,7 @@ import { pure } from 'recompose';
 
 class HistoryListItem extends React.PureComponent {
 
-  getStyles = props => ({
+  defaultStyles = {
     card: {
       backgroundColor: 'rgba(17,49,85,0.55)',
       borderRadius: 15,
@@ -24,10 +25,11 @@ class HistoryListItem extends React.PureComponent {
       color: 'white',
       marginLeft: 8,
     },
-  });
+  };
+  customStyles = getStyles('HistoryListItem');
 
   render() {
-    const styles = this.getStyles(this.props);
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
       <View style={styles.card}>
         <View>

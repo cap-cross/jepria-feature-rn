@@ -10,7 +10,7 @@ import log from '@cap-cross/cap-core';
 
 import withBackButton from '../../common/hoc/withBackButton';
 import FloatingActionButton from '../../common/FloatingActionButton';
-import { TaskList } from '../form/TaskList';
+import TaskList from '../form/TaskList/TaskList';
 import * as TaskActions from '../../../redux/tasks/taskActions';
 import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../common/Background';

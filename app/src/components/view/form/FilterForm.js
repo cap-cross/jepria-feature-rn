@@ -13,6 +13,7 @@ import { getOperators } from '../../../redux/operator/operatorMiddleware';
 import List from '../../common/MuliselectionList/MultiselectionList';
 import { connect } from 'react-redux';
 import Picker from '../../common/Picker/Picker'
+import getStyles from '../../../../res/styles'
 
 class FilterForm extends React.Component {
   componentDidMount() {
@@ -20,16 +21,18 @@ class FilterForm extends React.Component {
     if(this.props.operators.length == 0) this.props.getOperators();
   }
 
-  render() {
-    const styles = StyleSheet.create({
-      form: {
-        margin: 15, 
-        padding: 15, 
-        backgroundColor: 'rgba(17,49,85,0.55)', 
-        borderRadius:30
-      },
-    });
+  defaultStyles = {
+    form: {
+      margin: 15, 
+      padding: 15, 
+      backgroundColor: 'rgba(17,49,85,0.55)', 
+      borderRadius:30
+    },
+  }
+  customStyles = getStyles('Form');
 
+  render() {
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
       <View style={styles.form}>
         <Form>

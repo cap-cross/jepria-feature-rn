@@ -10,39 +10,40 @@ import {
 import TextInput from '../../common/TextInput';
 import TextArea from '../../common/TextArea';
 import log from '@cap-cross/cap-core';
+import getStyles from '../../../../res/styles'
 
 export default class AddForm extends React.Component {
 
+  defaultStyles = {
+    form: {
+      margin: 15, 
+      padding: 15, 
+      backgroundColor: 'rgba(17,49,85,0.55)', 
+      borderRadius:30
+    },
+  }
+  customStyles = getStyles('Form');
+
   render() {
     log.trace('AddForm.render()');
-    const styles = StyleSheet.create({
-      form: {
-        margin: 15, 
-        padding: 15, 
-        backgroundColor: 'rgba(17,49,85,0.55)', 
-        borderRadius:30
-      },
-    });
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
       <View style={styles.form}>
         <Form>
           <Field
-            style={styles.formfields}
             name="name"
             component={TextInput}
             labelText="Название"
             validate = {required}
           />
           <Field
-            style={styles.formfields}
             name="nameEn"
             component={TextInput}
             labelText="Название (англ)"
             validate = {required}
           />
           <Field
-            style={styles.formfields}
             name="description"
             component={TextArea}
             labelText="Описание" 

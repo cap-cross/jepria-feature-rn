@@ -1,3 +1,5 @@
+import {LIGHT_AQUA_GREEN_COLOR} from './style';
+
 const styles = {
   LoginTextInput: {
     container: {
@@ -142,6 +144,102 @@ const styles = {
       color: 'red', 
       fontSize: 12,
     }
+  },
+  TaskItem: {
+    row: {
+      marginVertical: 7, 
+      marginHorizontal: 15, 
+      backgroundColor: 'rgba(17,49,85,0.55)', 
+      borderRadius: 15,
+      padding: 15
+    },
+    icon: {
+      backgroundColor: LIGHT_AQUA_GREEN_COLOR
+    },
+    iconText: {
+      color: 'white'
+    },
+    name: {
+      color: 'white', 
+      fontSize: 16, 
+      fontWeight: 'bold'
+    },
+    author: {
+      color: 'white', 
+      fontSize: 14, 
+      fontWeight: 'bold'
+    },
+    description: {
+      color: 'white', 
+      fontSize: 14
+    }
+  },
+  Form: {
+    form: {
+      margin: 15, 
+      padding: 15, 
+      backgroundColor: 'rgba(17,49,85,0.55)', 
+      borderRadius:30
+    },
+  },
+  HistoryListItem: {
+    card: {
+      backgroundColor: 'rgba(17,49,85,0.55)',
+      borderRadius: 15,
+      padding: 15,
+      marginVertical: 7, 
+      marginHorizontal: 15,
+    },
+    text: {
+      color: 'white',
+      marginLeft: 8,
+    },
+  },
+  LoginForm: {
+    buttonText: {
+      color: 'white',
+      fontSize: 30,
+      textAlign: 'center',
+      alignSelf: 'stretch',
+    },
+    text: {
+      color: 'black',
+      fontSize: 22,
+    },
+    footer: {
+      backgroundColor: 'rgba(17,49,85,0.85)'
+    },
+    footerText: {
+      color: 'white', 
+    },
+  },
+  ViewForm: {
+    form: {
+      margin: 15, 
+      padding: 15, 
+      backgroundColor: 'rgba(17,49,85,0.55)', 
+      borderRadius:30
+    },
+    card: {
+      marginVertical: 7
+    },
+    fieldCaption: {
+      margin: 7,
+      color: 'white', 
+      fontSize: 12, 
+      opacity: 0.75
+    },
+    valueContainer: {
+      paddingHorizontal: 15, 
+      paddingBottom: 7, 
+      borderBottomColor: 'white', 
+      borderBottomWidth:2
+    },
+    fieldValue: {
+      color: 'white', 
+      fontSize: 14,
+      minHeight: 20,
+    },
   }
 }
 

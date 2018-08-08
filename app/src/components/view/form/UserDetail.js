@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Content, Container } from 'native-base';
 import {View,Text} from 'react-native';
+import getStyles from '../../../../res/styles'
 
 export default class UserDetail extends React.Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
   };
 
-  getStyles = () => ({
+  defaultStyles = {
     form: {
       margin: 15, 
       padding: 15, 
@@ -32,12 +33,14 @@ export default class UserDetail extends React.Component {
     },
     fieldValue: {
       color: 'white', 
-      fontSize: 14
+      fontSize: 14,
+      minHeight: 20,
     },
-  });
+  };
+  customStyles = getStyles('ViewForm');
 
   render() {
-    const styles = this.getStyles(this.props);
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     const user = this.props.user;
 

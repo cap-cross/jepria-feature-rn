@@ -13,6 +13,7 @@ import { getOperators } from '../../../redux/operator/operatorMiddleware';
 import { connect } from 'react-redux';
 import log from '@cap-cross/cap-core';
 import Picker from '../../common/Picker/Picker'
+import getStyles from '../../../../res/styles'
 
 class EditForm extends React.Component {
 
@@ -20,68 +21,45 @@ class EditForm extends React.Component {
     if(this.props.statuses.length == 0) this.props.getStatuses();
     if(this.props.operators.length == 0) this.props.getOperators();
   }
-  
-  //handleSubmit = () => this.props.handleSubmit(this.submitTask);
+
+  defaultStyles = {
+    form: {
+      margin: 15, 
+      padding: 15, 
+      backgroundColor: 'rgba(17,49,85,0.55)', 
+      borderRadius:30
+    },
+  }
+  customStyles = getStyles('Form');
 
   render() {
     log.trace('EditForm!.render() BEGIN');
     log.trace(`EditForm!: task = ${JSON.stringify(this.props.initialValues)}`);
-
-    const styles = StyleSheet.create({
-      form: {
-        margin: 15, 
-        padding: 15, 
-        backgroundColor: 'rgba(17,49,85,0.55)', 
-        borderRadius:30
-      },
-      card: {
-        marginVertical: 7
-      },
-      fieldCaption: {
-        margin: 7,
-        color: 'white', 
-        fontSize: 12, 
-        opacity: 0.75
-      },
-      valueContainer: {
-        paddingHorizontal: 15, 
-        paddingBottom: 7, 
-        borderBottomColor: 'white', 
-        borderBottomWidth:2
-      },
-      fieldValue: {
-        color: 'white', 
-        fontSize: 14
-      },
-    });
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     let isJrsAssignResponsibleFeatureRole = this.props.userRoles.length > 0 ? isUserHaveRoles(["JrsAssignResponsibleFeature"], this.props.userRoles) : false;
     
     return (
         <View style={styles.form}>
           <Form>
             <Field 
-              style={styles.formfields}
               name="name"
               component={TextInput}
               labelText="Название"
               validate = {required}
             />
             <Field
-              style={styles.formfields}
               name="nameEn"
               component={TextInput}
               labelText="Название (англ)"
               validate = {required}
             />
             <Field
-              style={styles.formfields}
               name="description"
               component={TextArea}
               labelText="Описание" 
               warn = {expected}
             />
             <Field
-              style={styles.formfields}
               name="statusCode"
               component={Picker}
               labelText="Статус"
@@ -91,7 +69,6 @@ class EditForm extends React.Component {
             />
             { isJrsAssignResponsibleFeatureRole && //проверка наличия роли
               <Field
-                style={styles.formfields}
                 name="responsible"
                 component={Picker}
                 labelText="Ответственный"
