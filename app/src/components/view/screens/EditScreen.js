@@ -18,6 +18,7 @@ import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR, LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
+import getStyles from '../../../../res/styles'
 
 const mapDispatchToProps = dispatch => ({
   updateTask: (values) => {return dispatch(updateTask(values))},
@@ -49,7 +50,7 @@ export default class EditScreen extends React.Component {
     handleSubmit: PropTypes.func.isRequired,
   };
 
-  getStyles = () => ({
+  defaultStyles = {
     content: {
       justifyContent: 'space-between',
       padding: 8,
@@ -86,7 +87,8 @@ export default class EditScreen extends React.Component {
     doneButtonIcon: {
       color: 'white',
     },
-  });
+  };
+  customStyles = getStyles('EditScreen');
 
   handleSubmit = () => this.props.handleSubmit(this.submitTask);
 
@@ -126,7 +128,7 @@ export default class EditScreen extends React.Component {
   render() {
     log.trace(`EditScreen.render(): task = ${JSON.stringify(this.props.initialValues)}`);
 
-    const styles = this.getStyles(this.props);
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
       <Background>

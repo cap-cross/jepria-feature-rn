@@ -15,6 +15,7 @@ import * as TaskActions from '../../../redux/tasks/taskActions';
 import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
+import getStyles from '../../../../res/styles'
 
 const mapStateToProps = state => ({
   items: state.tasks.items,
@@ -38,8 +39,7 @@ export default class ListScreen extends React.Component {
     actions: PropTypes.objectOf(PropTypes.func).isRequired,
   };
 
-  //  getStyles = props => ({
-  getStyles = () => ({
+  defaultStyles = {
     header: {
       backgroundColor: DARK_BLUE_COLOR,
     },
@@ -52,7 +52,8 @@ export default class ListScreen extends React.Component {
       color: '#FFFFFF',
       fontSize: 30,
     },
-  });
+  };
+  customStyles = getStyles('ListScreen');
 
   addTask = () => {
     this.props.navigation.navigate('AddTask');
@@ -64,7 +65,7 @@ export default class ListScreen extends React.Component {
   };
 
   render() {
-    const styles = this.getStyles(this.props);
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     const addTaskButton = ( // For iOS
       <Right>

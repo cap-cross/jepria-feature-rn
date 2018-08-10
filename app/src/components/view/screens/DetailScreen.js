@@ -17,6 +17,7 @@ import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../../components/common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
+import getStyles from '../../../../res/styles'
 
 const mapDispatchToProps = dispatch => ({
   deleteTask: (values) => {return dispatch(deleteTask(values))},
@@ -44,7 +45,7 @@ export default class DetailScreen extends React.Component {
     navigation: PropTypes.object.isRequired,
   };
 
-  getStyles = () => ({
+  defaultStyles = {
     content: {
       justifyContent: 'space-between',
       padding: 8,
@@ -83,7 +84,8 @@ export default class DetailScreen extends React.Component {
     editButtonIcon: {
       color: 'white',
     },
-  });
+  };
+  customStyles = getStyles('DetailScreen');
 
   removeTask = () => {
     this.props.deleteTask({
@@ -120,7 +122,7 @@ export default class DetailScreen extends React.Component {
 
   render() {
     const task = this.props.task;
-    const styles = this.getStyles(this.props);
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
       <Background>

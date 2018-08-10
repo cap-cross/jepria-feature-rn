@@ -19,6 +19,7 @@ import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../../components/common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
+import getStyles from '../../../../res/styles'
 
 const mapDispatchToProps = dispatch => ({
   createTask: (values) => {return dispatch(createTask(values))},
@@ -48,7 +49,7 @@ export default class AddScreen extends React.Component {
     handleSubmit: PropTypes.func.isRequired,
   };
 
-  getStyles = () => ({
+  defaultStyles = {
     content: {
       justifyContent: 'space-between',
       padding: 8,
@@ -84,7 +85,8 @@ export default class AddScreen extends React.Component {
     doneButtonIcon: {
       color: 'white',
     },
-  });
+  };
+  customStyles = getStyles('AddScreen');
 
   goBack = () => this.props.navigation.goBack();
 
@@ -124,7 +126,7 @@ export default class AddScreen extends React.Component {
   };
 
   render() {
-    const styles = this.getStyles(this.props);
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
       <Background>

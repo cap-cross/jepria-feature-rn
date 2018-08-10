@@ -1,4 +1,4 @@
-import {LIGHT_AQUA_GREEN_COLOR} from './style';
+import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR, LIGHT_AQUA_GREEN_COLOR} from './style';
 
 const styles = {
   LoginTextInput: {
@@ -196,6 +196,13 @@ const styles = {
     },
   },
   LoginForm: {
+    button: {
+      margin: 30, 
+      backgroundColor: DARK_AQUA_GREEN_COLOR,
+      borderRadius: 30,
+      height: 60,
+      justifyContent: 'center'
+    },
     buttonText: {
       color: 'white',
       fontSize: 30,
@@ -240,7 +247,174 @@ const styles = {
       fontSize: 14,
       minHeight: 20,
     },
+  },
+  AddScreen: {
+    content: {
+      justifyContent: 'space-between',
+      padding: 8,
+    },
+    header: {
+      backgroundColor: DARK_BLUE_COLOR,
+    },
+    title: {
+      color: '#FFFFFF',
+    },
+    icon: {
+      color: '#FFFFFF',
+      fontSize: 30,
+    },
+    doneButton: {
+      backgroundColor: DARK_AQUA_GREEN_COLOR,
+      height: 56,
+      width: 56,
+      borderRadius: 28,
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      bottom: 30,
+      right: 30,
+      shadowColor: '#000000',
+      shadowOpacity: 0.8,
+      shadowRadius: 2,
+      shadowOffset: {
+        height: 1,
+        width: 0,
+      },
+    },
+    doneButtonIcon: {
+      color: 'white',
+    },
+  },
+  DetailScreen: {
+    content: {
+      justifyContent: 'space-between',
+      padding: 8,
+    },
+    inputGroup: {
+      flex: 0.9,
+    },
+    header: {
+      backgroundColor: DARK_BLUE_COLOR,
+    },
+    title: {
+      color: '#FFFFFF',
+    },
+    icon: {
+      color: '#FFFFFF',
+      fontSize: 30,
+    },
+    editButton: {
+      backgroundColor: DARK_AQUA_GREEN_COLOR,
+      height: 56,
+      width: 56,
+      borderRadius: 28,
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      bottom: 30,
+      right: 30,
+      shadowColor: '#000000',
+      shadowOpacity: 0.8,
+      shadowRadius: 2,
+      shadowOffset: {
+        height: 1,
+        width: 0,
+      },
+    },
+    editButtonIcon: {
+      color: 'white',
+    },
+  },
+  EditScreen: {
+    content: {
+      justifyContent: 'space-between',
+      padding: 8,
+    },
+    header: {
+      backgroundColor: DARK_BLUE_COLOR,
+    },
+    title: {
+      color: '#FFFFFF',
+      width: 200,
+    },
+    icon: {
+      color: '#FFFFFF',
+      fontSize: 30,
+    },
+    doneButton: {
+      backgroundColor: DARK_AQUA_GREEN_COLOR,
+      height: 56,
+      width: 56,
+      borderRadius: 28,
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      bottom: 30,
+      right: 30,
+      shadowColor: '#000000',
+      shadowOpacity: 0.8,
+      shadowRadius: 2,
+      shadowOffset: {
+        height: 1,
+        width: 0,
+      },
+    },
+    doneButtonIcon: {
+      color: 'white',
+    },
+  },
+  FilterScreen: {
+    content: {
+      justifyContent: 'space-between',
+      padding: 8,
+    },
+    header: {
+      backgroundColor: DARK_BLUE_COLOR,
+    },
+    title: {
+      color: '#FFFFFF',
+    },
+    icon: {
+      color: '#FFFFFF',
+      fontSize: 30,
+    },
+    doneButton: {
+      backgroundColor: DARK_AQUA_GREEN_COLOR,
+      height: 56,
+      width: 56,
+      borderRadius: 28,
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'absolute',
+      bottom: 30,
+      right: 30,
+      shadowColor: '#000000',
+      shadowOpacity: 0.8,
+      shadowRadius: 2,
+      shadowOffset: {
+        height: 1,
+        width: 0,
+      },
+    },
+    doneButtonIcon: {
+      color: 'white',
+    },
+  },
+  ListScreen: {
+    header: {
+      backgroundColor: DARK_BLUE_COLOR,
+    },
+    title: {
+      color: '#FFFFFF',
+      width: 150,
+      fontSize: 20,
+    },
+    icon: {
+      color: '#FFFFFF',
+      fontSize: 30,
+    },
   }
+
 }
 
 export default getStyles = (styleName) => {

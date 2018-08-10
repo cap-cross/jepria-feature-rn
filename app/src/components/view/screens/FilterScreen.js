@@ -9,17 +9,14 @@ import pure from 'recompose/pure';
 import log from '@cap-cross/cap-core';
 
 import { reduxForm } from 'redux-form';
-
 import withBackButton from '../../common/hoc/withBackButton';
-
 import { findTasks } from '../../../redux/tasks/taskMiddleware';
-
 import FilterForm from '../form/FilterForm';
-
 import ModalWaitBar from '../../common/WaitBar';
 import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
+import getStyles from '../../../../res/styles'
 
 const mapStateToProps = (state) => {
   return {
@@ -51,7 +48,7 @@ export default class FilterScreen extends React.Component {
     handleSubmit: PropTypes.func.isRequired,
   };
 
-  getStyles = () => ({
+  defaultStyles = {
     content: {
       justifyContent: 'space-between',
       padding: 8,
@@ -87,7 +84,8 @@ export default class FilterScreen extends React.Component {
     doneButtonIcon: {
       color: 'white',
     },
-  });
+  };
+  customStyles = getStyles('FilterScreen');
   
   handleSubmit = () => this.props.handleSubmit(this.submitTask);
 
@@ -108,7 +106,7 @@ export default class FilterScreen extends React.Component {
   };
 
   render() {
-    const styles = this.getStyles(this.props);
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
       <Background>
@@ -125,9 +123,7 @@ export default class FilterScreen extends React.Component {
             <Right />
           </Header>
           <Content contentContainerStyle={styles.content}>
-            <FilterForm
-            />
-
+            <FilterForm/>
             <ModalWaitBar
               ref={(c) => {
                 this.waitBar = c;

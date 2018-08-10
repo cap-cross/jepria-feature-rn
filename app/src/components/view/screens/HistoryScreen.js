@@ -14,6 +14,7 @@ import Util from '@cap-cross/cap-react-native';
 import HistoryList from '../form/HistoryList';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR} from '../../../../res/style';
+import getStyles from '../../../../res/styles'
 
 const enhance = compose(
   withBackButton(),
@@ -26,11 +27,7 @@ export default class HistoryScreen extends React.Component {
     navigation: PropTypes.object.isRequired,
   };
 
-  getStyles = () => ({
-    content: {
-      // justifyContent: 'space-between',
-      // padding: 8,
-    },
+  defaultStyles = {
     header: {
       backgroundColor: DARK_BLUE_COLOR,
     },
@@ -40,13 +37,13 @@ export default class HistoryScreen extends React.Component {
     icon: {
       fontSize: 30,
     }
-  });
+  };
+  customStyles = getStyles('HistoryScreen');
   
   goBack = () => this.props.navigation.goBack();
 
   render() {
-
-    const styles = this.getStyles(this.props);
+    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
       <Background>

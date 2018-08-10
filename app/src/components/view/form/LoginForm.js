@@ -22,6 +22,13 @@ export default class LoginForm extends React.Component {
   };
 
   defaultStyles = {
+    button: {
+      margin: 30, 
+      backgroundColor: DARK_AQUA_GREEN_COLOR,
+      borderRadius: 30,
+      height: 60,
+      justifyContent: 'center'
+    },
     buttonText: {
       color: 'white',
       fontSize: 30,

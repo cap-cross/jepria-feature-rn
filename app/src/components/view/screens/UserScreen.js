@@ -56,29 +56,6 @@ export default class UserScreen extends React.Component {
       color: '#FFFFFF',
       fontSize: 30,
     },
-    editButton: {
-      backgroundColor: 'rgba(231,76,60,1)',
-      borderColor: 'rgba(231,76,60,1)',
-      borderWidth: 1,
-      height: 56,
-      width: 56,
-      borderRadius: 28,
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'absolute',
-      bottom: 30,
-      right: 30,
-      shadowColor: '#000000',
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      shadowOffset: {
-        height: 1,
-        width: 0,
-      },
-    },
-    editButtonIcon: {
-      color: 'white',
-    },
   });
 
   logout = () => {
