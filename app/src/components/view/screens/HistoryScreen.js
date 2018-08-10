@@ -38,7 +38,7 @@ export default class HistoryScreen extends React.Component {
       fontSize: 30,
     }
   };
-  customStyles = getStyles('HistoryScreen');
+  customStyles = getStyles('Screen');
   
   goBack = () => this.props.navigation.goBack();
 

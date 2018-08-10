@@ -66,7 +66,7 @@ export default class EditScreen extends React.Component {
       color: '#FFFFFF',
       fontSize: 30,
     },
-    doneButton: {
+    button: {
       backgroundColor: DARK_AQUA_GREEN_COLOR,
       height: 56,
       width: 56,
@@ -84,11 +84,11 @@ export default class EditScreen extends React.Component {
         width: 0,
       },
     },
-    doneButtonIcon: {
+    buttonIcon: {
       color: 'white',
     },
   };
-  customStyles = getStyles('EditScreen');
+  customStyles = getStyles('FormScreen');
 
   handleSubmit = () => this.props.handleSubmit(this.submitTask);
 
@@ -151,11 +151,11 @@ export default class EditScreen extends React.Component {
           {Util.platformOS() === 'android' && (
             <View>
               <TouchableHighlight
-                style={styles.doneButton}
+                style={styles.button}
                 underlayColor="red"
                 onPress={this.handleSubmit()}
               >
-                <Icon name="md-checkmark" style={styles.doneButtonIcon} />
+                <Icon name="md-checkmark" style={styles.buttonIcon} />
               </TouchableHighlight>
             </View>
           )}

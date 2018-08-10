@@ -1,5 +1,63 @@
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR, LIGHT_AQUA_GREEN_COLOR} from './style';
 
+const ScreenStyle = {
+  header: {
+    backgroundColor: DARK_BLUE_COLOR,
+  },
+  title: {
+    color: '#FFFFFF',
+    width: 200
+  },
+  icon: {
+    color: '#FFFFFF',
+    fontSize: 30,
+  },
+  button: {
+    backgroundColor: DARK_AQUA_GREEN_COLOR,
+    height: 56,
+    width: 56,
+    borderRadius: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 30,
+    right: 30,
+    shadowColor: '#000000',
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0,
+    },
+  },
+  buttonIcon: {
+    color: 'white',
+  },
+}
+
+const fieldStyle = {
+  card: {
+    marginVertical: 7
+  },
+  fieldCaption: {
+    margin: 7,
+    color: 'white', 
+    fontSize: 12, 
+    opacity: 0.75
+  },
+  fieldValue: {
+    color: 'white', 
+    fontSize: 14,
+    borderColor: 'transparent'
+  },
+  valueContainer: {
+    paddingHorizontal: 15, 
+    paddingBottom: 7, 
+    borderBottomColor: 'white', 
+    borderBottomWidth:1
+  },
+}
+
 const styles = {
   LoginTextInput: {
     container: {
@@ -24,8 +82,7 @@ const styles = {
     },
     placeholderTextColor: 'rgba(255,255,255,0.55)'
   },
-  
-  MultiSelectionListTouchableItem: {
+  PickerItem: {
     item: {
       borderBottomColor: 'rgba(255,255,255,0.25)', 
     },
@@ -34,27 +91,17 @@ const styles = {
     },
     iconColor: 'white'
   },
-
-  MultiSelectionList: {
+  Picker: {
+    ...fieldStyle,
     card: {
       marginVertical: 7,
       borderBottomColor: 'white', 
       borderBottomWidth:1
     },
-    fieldCaption: {
-      margin: 7,
-      color: 'white', 
-      fontSize: 12, 
-      opacity: 0.75
-    },
     valueContainer: {
+      minHeight: 30,
       paddingHorizontal: 15, 
       paddingVertical: 7,
-    },
-    fieldValue: {
-      color: 'white', 
-      fontSize: 14,
-      minHeight: 20
     },
     background: {
       backgroundColor: 'rgba(52,52,52,0.8)',
@@ -70,70 +117,13 @@ const styles = {
     },
     iconColor: 'white'
   },
-  Picker: {
-    card: {
-      marginVertical: 7,
-      borderBottomColor: 'white', 
-      borderBottomWidth:1
-    },
-    fieldCaption: {
-      margin: 7,
-      color: 'white', 
-      fontSize: 12, 
-      opacity: 0.75
-    },
-    valueContainer: {
-      paddingHorizontal: 15, 
-      paddingVertical: 7,
-    },
-    fieldValue: {
-      color: 'white', 
-      fontSize: 14,
-      minHeight: 20
-    },
-    background: {
-      backgroundColor: 'rgba(52,52,52,0.8)',
-    },
-    list: {
-      backgroundColor: 'rgba(51,63,75,0.9)',
-    },
-    iconColor: 'white'
-  },
-  PickerTouchableItem: {
-    item: {
-      borderBottomColor: 'rgba(255,255,255,0.25)', 
-    },
-    itemText: {
-      color: 'white', 
-    },
-    iconColor: 'white'
-  },
   TextInput: {    
-    card: {
-      marginVertical: 7
-    },
-    fieldCaption: {
-      margin: 7,
-      color: 'white', 
-      fontSize: 12, 
-      opacity: 0.75
-    },
-    valueContainer: {
-      paddingHorizontal: 15, 
-      paddingBottom: 7, 
-      borderBottomColor: 'white', 
-      borderBottomWidth:1
-    },
+    ...fieldStyle,
     valueContainerError: {
       paddingHorizontal: 15, 
       paddingBottom: 7, 
       borderBottomColor: 'red', 
       borderBottomWidth:1
-    },
-    fieldValue: {
-      color: 'white', 
-      fontSize: 14,
-      borderColor: 'transparent'
     },
     notificationTextWarn: {
       color: 'white', 
@@ -221,199 +211,29 @@ const styles = {
     },
   },
   ViewForm: {
+    ...fieldStyle,
     form: {
       margin: 15, 
       padding: 15, 
       backgroundColor: 'rgba(17,49,85,0.55)', 
       borderRadius:30
     },
-    card: {
-      marginVertical: 7
-    },
-    fieldCaption: {
-      margin: 7,
-      color: 'white', 
-      fontSize: 12, 
-      opacity: 0.75
-    },
     valueContainer: {
+      minHeight: 30,
       paddingHorizontal: 15, 
-      paddingBottom: 7, 
+      paddingVertical: 7,
       borderBottomColor: 'white', 
-      borderBottomWidth:2
-    },
-    fieldValue: {
-      color: 'white', 
-      fontSize: 14,
-      minHeight: 20,
+      borderBottomWidth:1
     },
   },
-  AddScreen: {
+  Screen: ScreenStyle,
+  FormScreen: {
+    ...ScreenStyle,
     content: {
       justifyContent: 'space-between',
       padding: 8,
     },
-    header: {
-      backgroundColor: DARK_BLUE_COLOR,
-    },
-    title: {
-      color: '#FFFFFF',
-    },
-    icon: {
-      color: '#FFFFFF',
-      fontSize: 30,
-    },
-    doneButton: {
-      backgroundColor: DARK_AQUA_GREEN_COLOR,
-      height: 56,
-      width: 56,
-      borderRadius: 28,
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'absolute',
-      bottom: 30,
-      right: 30,
-      shadowColor: '#000000',
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      shadowOffset: {
-        height: 1,
-        width: 0,
-      },
-    },
-    doneButtonIcon: {
-      color: 'white',
-    },
   },
-  DetailScreen: {
-    content: {
-      justifyContent: 'space-between',
-      padding: 8,
-    },
-    inputGroup: {
-      flex: 0.9,
-    },
-    header: {
-      backgroundColor: DARK_BLUE_COLOR,
-    },
-    title: {
-      color: '#FFFFFF',
-    },
-    icon: {
-      color: '#FFFFFF',
-      fontSize: 30,
-    },
-    editButton: {
-      backgroundColor: DARK_AQUA_GREEN_COLOR,
-      height: 56,
-      width: 56,
-      borderRadius: 28,
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'absolute',
-      bottom: 30,
-      right: 30,
-      shadowColor: '#000000',
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      shadowOffset: {
-        height: 1,
-        width: 0,
-      },
-    },
-    editButtonIcon: {
-      color: 'white',
-    },
-  },
-  EditScreen: {
-    content: {
-      justifyContent: 'space-between',
-      padding: 8,
-    },
-    header: {
-      backgroundColor: DARK_BLUE_COLOR,
-    },
-    title: {
-      color: '#FFFFFF',
-      width: 200,
-    },
-    icon: {
-      color: '#FFFFFF',
-      fontSize: 30,
-    },
-    doneButton: {
-      backgroundColor: DARK_AQUA_GREEN_COLOR,
-      height: 56,
-      width: 56,
-      borderRadius: 28,
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'absolute',
-      bottom: 30,
-      right: 30,
-      shadowColor: '#000000',
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      shadowOffset: {
-        height: 1,
-        width: 0,
-      },
-    },
-    doneButtonIcon: {
-      color: 'white',
-    },
-  },
-  FilterScreen: {
-    content: {
-      justifyContent: 'space-between',
-      padding: 8,
-    },
-    header: {
-      backgroundColor: DARK_BLUE_COLOR,
-    },
-    title: {
-      color: '#FFFFFF',
-    },
-    icon: {
-      color: '#FFFFFF',
-      fontSize: 30,
-    },
-    doneButton: {
-      backgroundColor: DARK_AQUA_GREEN_COLOR,
-      height: 56,
-      width: 56,
-      borderRadius: 28,
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'absolute',
-      bottom: 30,
-      right: 30,
-      shadowColor: '#000000',
-      shadowOpacity: 0.8,
-      shadowRadius: 2,
-      shadowOffset: {
-        height: 1,
-        width: 0,
-      },
-    },
-    doneButtonIcon: {
-      color: 'white',
-    },
-  },
-  ListScreen: {
-    header: {
-      backgroundColor: DARK_BLUE_COLOR,
-    },
-    title: {
-      color: '#FFFFFF',
-      width: 150,
-      fontSize: 20,
-    },
-    icon: {
-      color: '#FFFFFF',
-      fontSize: 30,
-    },
-  }
 
 }
 

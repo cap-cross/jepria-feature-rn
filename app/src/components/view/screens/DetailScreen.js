@@ -63,7 +63,7 @@ export default class DetailScreen extends React.Component {
       color: '#FFFFFF',
       fontSize: 30,
     },
-    editButton: {
+    button: {
       backgroundColor: DARK_AQUA_GREEN_COLOR,
       height: 56,
       width: 56,
@@ -81,11 +81,11 @@ export default class DetailScreen extends React.Component {
         width: 0,
       },
     },
-    editButtonIcon: {
+    buttonIcon: {
       color: 'white',
     },
   };
-  customStyles = getStyles('DetailScreen');
+  customStyles = getStyles('FormScreen');
 
   removeTask = () => {
     this.props.deleteTask({
@@ -156,11 +156,11 @@ export default class DetailScreen extends React.Component {
           {Util.platformOS() === 'android' && (
             <View>
               <TouchableHighlight
-                style={styles.editButton}
+                style={styles.button}
                 underlayColor={DARK_AQUA_GREEN_COLOR}
                 onPress={() => { this.goToUpdateTask(); }}
               >
-                <Icon name="md-create" style={styles.editButtonIcon} />
+                <Icon name="md-create" style={styles.buttonIcon} />
               </TouchableHighlight>
             </View>
           )}

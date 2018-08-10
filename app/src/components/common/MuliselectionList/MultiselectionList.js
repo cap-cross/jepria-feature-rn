@@ -24,7 +24,7 @@ class MultiSelectionListTouchableItem extends React.PureComponent {
     iconColor: 'white'
   };
 
-  customStyles = getStyles('MultiSelectionListTouchableItem');
+  customStyles = getStyles('PickerItem');
   
   onPress = () => {
     this.props.onChange({name: this.props.name, value: this.props.value, checked: !this.state.checked});
@@ -102,7 +102,7 @@ export default class MultiSelectionList extends React.Component {
     },
     iconColor: 'white'
   };
-  customStyles = getStyles('MultiSelectionList');
+  customStyles = getStyles('Picker');
 
   onClose = () => {
     this.setState({

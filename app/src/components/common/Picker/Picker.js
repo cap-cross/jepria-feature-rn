@@ -23,7 +23,7 @@ class PickerTouchableItem extends React.PureComponent {
     },
     iconColor: 'white'
   };
-  customStyles = getStyles('PickerTouchableItem');
+  customStyles = getStyles('PickerItem');
   
   onPress = () => {
     this.setState({checked: !this.state.checked});

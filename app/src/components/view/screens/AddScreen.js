@@ -64,7 +64,7 @@ export default class AddScreen extends React.Component {
       color: '#FFFFFF',
       fontSize: 30,
     },
-    doneButton: {
+    button: {
       backgroundColor: DARK_AQUA_GREEN_COLOR,
       height: 56,
       width: 56,
@@ -82,11 +82,11 @@ export default class AddScreen extends React.Component {
         width: 0,
       },
     },
-    doneButtonIcon: {
+    buttonIcon: {
       color: 'white',
     },
   };
-  customStyles = getStyles('AddScreen');
+  customStyles = getStyles('FormScreen');
 
   goBack = () => this.props.navigation.goBack();
 
@@ -148,11 +148,11 @@ export default class AddScreen extends React.Component {
           {Util.platformOS() === 'android' && (
             <View>
               <TouchableHighlight
-                style={styles.doneButton}
+                style={styles.button}
                 underlayColor="red"
                 onPress={this.handleSubmit()}
               >
-                <Icon name="md-checkmark" style={styles.doneButtonIcon} />
+                <Icon name="md-checkmark" style={styles.buttonIcon} />
               </TouchableHighlight>
             </View>
           )}
