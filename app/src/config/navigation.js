@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
+import { createStackNavigator, createDrawerNavigator, createSwitchNavigator } from 'react-navigation';
 import {
   reduxifyNavigator,
   createReactNavigationReduxMiddleware,
@@ -56,7 +56,7 @@ const draw = (props) => (
   </View>
 )
 
-const RootNavigator = createDrawerNavigator(
+const DrawerNavigator = createDrawerNavigator(
 {
   "Профиль": {screen: UserScreen},
   "Задачи": {screen: TaskNavigator}
@@ -70,6 +70,26 @@ const RootNavigator = createDrawerNavigator(
     inactiveTintColor: DARK_BLUE_COLOR,
   }
 });
+
+const AuthStack = createStackNavigator(
+  {
+    Auth: {screen: LoginScreen},
+  },
+  {
+    initialRouteName: 'Auth',
+    headerMode: 'none' 
+  });
+
+const RootNavigator = createSwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    App: DrawerNavigator,
+    Auth: AuthStack,
+  },
+  {
+    initialRouteName: 'AuthLoading',
+  }
+);
 
 const AppWithNavigationState = reduxifyNavigator(RootNavigator, 'root');
 

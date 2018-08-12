@@ -2,7 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
-import { Container, Content, Form, Footer, View, Header } from 'native-base';
+import { Content, Form, View } from 'native-base';
 import { Field } from 'redux-form';
 
 import TextInput from '../../common/login/TextInput';
@@ -10,12 +10,27 @@ import SecureTextInput from '../../common/login/SecureTextInput';
 import loginMediator from '../../../loginMediator';
 import log from '@cap-cross/cap-core';
 
-import WaitBar from '../../common/WaitBar';
-import Background from '../../common/Background';
 import {DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import {required} from '../../../data/validation';
 import getStyles from '../../../../res/styles'
 
+const mapDispatchToProps = dispatch => ({
+  login: () => {return dispatch(login())}
+});
+
+
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.user.isAuthentificating,
+  }
+}
+
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  pure,
+);
+
+@enhance
 export default class LoginForm extends React.Component {
   static propTypes = {
     onSubmit: func.isRequired,
@@ -55,8 +70,6 @@ export default class LoginForm extends React.Component {
   render() {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
-      <Background>
-        <Container style={{ alignSelf: 'stretch' }}>
           <Content contentContainerStyle={{ justifyContent: 'center', flex: 1,}}>
             <View style={{paddingBottom: 15}}>
               <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
@@ -97,18 +110,7 @@ export default class LoginForm extends React.Component {
                 <Text style={styles.buttonText}>ВОЙТИ</Text>
               </TouchableOpacity>
             </Form>
-
-            <WaitBar
-              ref={(c) => {
-                this.waitBar = c;
-              }}
-            />
           </Content>
-          <Footer style={{backgroundColor: 'rgba(17,49,85,0.85)', justifyContent: 'center', height: 30}}>
-              <Text style={{color: 'white', textAlign: 'center', fontSize: 12}}>Inspired by JepRia.org</Text>
-          </Footer>
-        </Container>
-      </Background>
     );
   }
 }

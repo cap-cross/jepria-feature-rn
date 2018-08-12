@@ -10,38 +10,19 @@ import log from '@cap-cross/cap-core';
 
 import UserDetail from '../form/UserDetail';
 import * as UserActions from '../../../redux/user/userActions';
-import { logout } from '../../../redux/user/userMiddleware';
-import { duration } from 'moment';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
+import LoginForm from '../form/LoginForm';
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(UserActions, dispatch),
-  logout: () => {return dispatch(logout())}
-});
-
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  }
-}
-
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  pure,
-);
-
-@enhance
-export default class UserScreen extends React.Component {
+export default class LoginScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   };
 
   getStyles = () => ({
     content: {
-      justifyContent: 'space-between',
-      padding: 8,
+      // justifyContent: 'space-between',
+      // padding: 8,
     },
     inputGroup: {
       flex: 0.9,
@@ -76,41 +57,20 @@ export default class UserScreen extends React.Component {
   };
 
   render() {
-     const { user } = this.props;
-    // Получить из state, а в state - по запросу с backend 
 
     const styles = this.getStyles();
 
     return (
       <Background>
         <Container>
-          <Header style={styles.header}>
-            <Left>
-              <Button onPress={() => {this.props.navigation.openDrawer()}} transparent>
-                <Icon name="menu" style={styles.icon} />
-              </Button>
-            </Left>
-            <Body>
-{/*          <Right>
-              <Button
-                onPress={() => {
-                  this.logout();
-                }}
-                transparent
-              >
-                <Icon name="exit" style={styles.icon} />
-              </Button>
-            </Right>  */}          
-            <Title style={styles.title}>Профиль</Title>
-            </Body>
-
-          </Header>
           <Content contentContainerStyle={styles.content}>
-            <UserDetail
+            <LoginForm
               navigation={this.props.navigation}
-              user={user}
             />
           </Content>
+          <Footer style={{backgroundColor: 'rgba(17,49,85,0.85)', justifyContent: 'center', height: 30}}>
+              <Text style={{color: 'white', textAlign: 'center', fontSize: 12}}>Inspired by JepRia.org</Text>
+          </Footer>
         </Container>
       </Background>
     );
