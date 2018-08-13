@@ -1,6 +1,7 @@
 import * as actions from './userActions.js';
 import {FEATURE_CONTEXT_URL} from '../../api/apiConfig';
 import { jepFetch } from '../../api/loginApiImpl';
+import { processLogin } from '../../api/LoginAPI';
 import log from '@cap-cross/cap-core';
 
 const USER_DATA_API_URL = `${FEATURE_CONTEXT_URL}/userdata`;
@@ -16,12 +17,28 @@ export const getUserData = () => {
           dispatch(actions.fetchUserSuccess(response.body));
         })
         .catch((error) => {
-          log.trace(
-            `getUserData().then.fetch(${USER_DATA_API_URL}).catch: fetch error = ${error}`);
-            dispatch(actions.fetchUserFailure(true, error.message));
+          dispatch(actions.fetchUserFailure(true, error.message));
         });
     };
   }
+
+  export const login = (username, password) => {
+      return (dispatch) => {
+        log.trace(`getUserData(): BEGIN`);
+        dispatch(actions.loginUser(true));
+        log.trace("fetching getUserData():" + USER_DATA_API_URL);
+        return processLogin(username, password)
+          .then((response) => {
+            dispatch(actions.loginUserSuccess(response.body));
+            getUserData();
+            return response;
+          })
+          .catch((error) => {
+            dispatch(actions.loginUserFailure(true, error.message));
+            throw error;
+          });
+      };
+    }
 
   export const logout = () => {
     log.trace("LOGOUT");

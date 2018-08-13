@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
-import bindActionCreators from 'redux/lib/bindActionCreators';
-import connect from 'react-redux/lib/connect/connect';
-import compose from 'recompose/compose';
-import pure from 'recompose/pure';
-import { reduxForm } from 'redux-form';
+import { Container, Content, Header, Body, Title, Button, Left, Right, Toast, Footer } from 'native-base';
+import { Text } from 'react-native';
 import log from '@cap-cross/cap-core';
 
 import UserDetail from '../form/UserDetail';
@@ -14,6 +10,31 @@ import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import LoginForm from '../form/LoginForm';
 
+import connect from 'react-redux/lib/connect/connect';
+import compose from 'recompose/compose';
+import pure from 'recompose/pure';
+import { reduxForm } from 'redux-form';
+
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.user.isAuthentificating,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (username, password) => {return dispatch(login(username, password))},
+    getUserData: () => dispatch(getUserData()),
+  };
+}
+
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({ form: 'AuthForm' }),
+  pure
+);
+
+@enhance
 export default class LoginScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -37,27 +58,37 @@ export default class LoginScreen extends React.Component {
       color: '#FFFFFF',
       fontSize: 30,
     },
-  });
-
-  logout = () => {
-    this.props.logout()
-      .then((response) => {
-        log.trace('UserScreen.logout(): logout Done!' + JSON.stringify(response));
-        this.props.navigation.navigate('Home');
-      })
-      .catch((err) => {
-        log.trace(err.message);
-        Toast.show({
-          text: err.message,
-          type: 'danger',
-          buttonText: 'OK',
-          duration: 5000
-        });
-      });
-  };
+  });  
+  
+  
+  handleSubmit = () => {
+    this.props.handleSubmit(this.submitLogin);
+  }
+  
+  submitLogin = (values) => {
+     log.trace(`EditScreen.submitTask(): values = ${JSON.stringify(values)}`);
+     // this.props.login(
+     //   values.username,
+     //   values.password)
+     //   .then((response) => {
+     //     this.props.navigation.navigate('App');
+     //   })
+     //   .catch((err) => {
+     //     Toast.show({
+     //       text: err.message,
+     //       type: 'danger',
+     //       buttonText: 'OK',
+     //       duration: 5000
+     //     });
+     //   });
+   };
+ 
 
   render() {
-
+    log.trace("PROPS  " + JSON.stringify(this.props));
+    log.trace(this.props.login === undefined);
+    log.trace(this.props.handleSubmit === undefined);
+    log.trace(this.submitLogin === undefined);
     const styles = this.getStyles();
 
     return (
@@ -66,6 +97,7 @@ export default class LoginScreen extends React.Component {
           <Content contentContainerStyle={styles.content}>
             <LoginForm
               navigation={this.props.navigation}
+              onSubmit={this.handleSubmit}
             />
           </Content>
           <Footer style={{backgroundColor: 'rgba(17,49,85,0.85)', justifyContent: 'center', height: 30}}>

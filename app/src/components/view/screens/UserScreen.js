@@ -9,17 +9,14 @@ import { reduxForm } from 'redux-form';
 import log from '@cap-cross/cap-core';
 
 import UserDetail from '../form/UserDetail';
-import * as UserActions from '../../../redux/user/userActions';
 import { logout } from '../../../redux/user/userMiddleware';
 import { duration } from 'moment';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(UserActions, dispatch),
   logout: () => {return dispatch(logout())}
 });
-
 
 const mapStateToProps = (state) => {
   return {
@@ -90,20 +87,10 @@ export default class UserScreen extends React.Component {
                 <Icon name="menu" style={styles.icon} />
               </Button>
             </Left>
-            <Body>
-{/*          <Right>
-              <Button
-                onPress={() => {
-                  this.logout();
-                }}
-                transparent
-              >
-                <Icon name="exit" style={styles.icon} />
-              </Button>
-            </Right>  */}          
+            <Body>   
             <Title style={styles.title}>Профиль</Title>
             </Body>
-
+            <Right/>     
           </Header>
           <Content contentContainerStyle={styles.content}>
             <UserDetail

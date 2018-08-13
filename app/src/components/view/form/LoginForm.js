@@ -1,5 +1,5 @@
 import React from 'react';
-import { func } from 'prop-types';
+import { func, PropTypes } from 'prop-types';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 
 import { Content, Form, View } from 'native-base';
@@ -8,32 +8,20 @@ import { Field } from 'redux-form';
 import TextInput from '../../common/login/TextInput';
 import SecureTextInput from '../../common/login/SecureTextInput';
 import loginMediator from '../../../loginMediator';
+import connect from 'react-redux/lib/connect/connect';
+import compose from 'recompose/compose';
+import pure from 'recompose/pure';
+import { reduxForm } from 'redux-form';
 import log from '@cap-cross/cap-core';
 
 import {DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import {required} from '../../../data/validation';
 import getStyles from '../../../../res/styles'
+import { login } from '../../../redux/user/userMiddleware';
 
-const mapDispatchToProps = dispatch => ({
-  login: () => {return dispatch(login())}
-});
-
-
-const mapStateToProps = (state) => {
-  return {
-    isLoading: state.user.isAuthentificating,
-  }
-}
-
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  pure,
-);
-
-@enhance
 export default class LoginForm extends React.Component {
   static propTypes = {
-    onSubmit: func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
   };
 
   defaultStyles = {
@@ -63,10 +51,6 @@ export default class LoginForm extends React.Component {
   }
   customStyles = getStyles('LoginForm');
 
-  componentDidMount() {
-    loginMediator.waitBar = this.waitBar; // Для последующего доступа из api.authenticate.
-  }
-
   render() {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
@@ -86,24 +70,17 @@ export default class LoginForm extends React.Component {
                 component={TextInput}
                 // component="input"  type="text"
                 placeholder="Username"
-                ref={(c) => {
-                  this.username = c;
-                }}
                 validate = {required}
               />
               <Field
                 name="password"
                 component={SecureTextInput}
                 placeholder="Password"
-                ref={(c) => {
-                  this.password = c;
-                }}
                 validate = {required}
               />
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  log.trace('LoginForm...onPress()');
                   this.props.onSubmit();
                 }}
               >

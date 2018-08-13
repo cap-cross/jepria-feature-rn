@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({ form: 'loginForm' }),
+  reduxForm({ form: 'loginForm2' }),
   pure
 );
 

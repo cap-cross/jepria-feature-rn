@@ -4,6 +4,8 @@ const initialState = {
   userName: "",
   operatorId: "",
   userRoles: [],
+  isAuthentificating: false,
+  isLoading: false
 };
 
 export default function user(state = initialState, action) {
@@ -24,6 +26,26 @@ export default function user(state = initialState, action) {
       }
       case UserActions.FETCH_USER_SUCCESS: {
         return payload.user;
+      }
+      case UserActions.LOGIN_USER_BEGIN: {
+        return {
+          ...initialState,
+          isAuthentificating: payload.isAuthentificating
+        };
+      }
+      case UserActions.LOGIN_USER_FAILURE: {
+        return {
+            ...initialState,
+            isFailed: payload.isFailed,
+            errorMessage: payload.errorMessage
+        }
+      }
+      case UserActions.LOGIN_USER_SUCCESS: {
+        return {
+          ...state,
+          isFailed: false,
+          isAuthentificating: false
+        };
       }
       case UserActions.USER_LOGOUT: {
         return initialState;

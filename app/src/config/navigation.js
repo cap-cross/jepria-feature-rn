@@ -16,6 +16,8 @@ import FilterScreen from '../components/view/screens/FilterScreen';
 import HistoryScreen from '../components/view/screens/HistoryScreen';
 import UserScreen from '../components/view/screens/UserScreen';
 import Drawer from '../components/view/screens/DrawerScreen';
+import LoginScreen from '../components/view/screens/LoginScreen';
+import AuthLoadingScreen from '../components/view/screens/AuthLoadingScreen';
 import {DARK_BLUE_COLOR} from '../../res/style';
 
 const mapStateToProps = state => ({
@@ -50,12 +52,6 @@ const TaskNavigator = createStackNavigator(
    headerMode: 'none' 
 });
 
-const draw = (props) => (
-  <View style={{flex: 1, backgroundColor: 'red'}}>
-   <Text style={{color: 'white'}}> TEEEST</Text>
-  </View>
-)
-
 const DrawerNavigator = createDrawerNavigator(
 {
   "Профиль": {screen: UserScreen},
@@ -73,10 +69,10 @@ const DrawerNavigator = createDrawerNavigator(
 
 const AuthStack = createStackNavigator(
   {
-    Auth: {screen: LoginScreen},
+    LoginScreen: {screen: LoginScreen},
   },
   {
-    initialRouteName: 'Auth',
+    initialRouteName: 'LoginScreen',
     headerMode: 'none' 
   });
 
