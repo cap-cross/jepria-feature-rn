@@ -76,7 +76,6 @@ export default class AuthForm extends React.Component {
   handleSubmit = () => this.props.dispatch(this.props.handleSubmit(this.submitLogin));
 
   submitLogin = (values) => {
-    log.trace(`EditScreen.submitTask(): values = ${JSON.stringify(values)}`);
     this.props.login(
       values.username,
       values.password)
@@ -96,8 +95,8 @@ export default class AuthForm extends React.Component {
   render() {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
-          <Content contentContainerStyle={{ justifyContent: 'center', flex: 1,}}>
-            <View style={{paddingBottom: 15}}>
+        <View style={{flex:0}}>
+            <View style={{paddingTop: '10%', paddingBottom: 30}}>
               <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
                 <Text style={{textAlign: 'center', color: 'white', paddingBottom: 15, fontSize:80}}>J</Text>
                 <Text style={{textAlign: 'center', color: 'white', paddingTop: 15, fontSize:80}}>R</Text>
@@ -129,7 +128,7 @@ export default class AuthForm extends React.Component {
                 <Text style={styles.buttonText}>ВОЙТИ</Text>
               </TouchableOpacity>
             </Form>
-          </Content>
+        </View>
     );
   }
 }

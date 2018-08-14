@@ -3,6 +3,8 @@ import {SecureStore} from 'expo';
 import log from '@cap-cross/cap-core';
 import fetchJSON from './fetchJSON'; // from 'jep-fetch'
 import configureJepFetch from './configureJepFetch';
+import * as Errors from './errors';
+
 const LOGIN_API_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/LoginServlet?`;
 
 const SSO_CONTEXT_PART = 'SsoUi'; // Может быть также SsoUi_XX
@@ -29,7 +31,7 @@ export const processLogin = (username, password) => {
       saveCredentials(username, password);
       return response;
     } else {
-      if(response.status === 401) throw new Error("Неверные данные");
+      if(response.status === 401) throw new Errors.APIError("Неверные данные", Errors.AUTHENTIFICATION_ERROR);
       else throw new Error("Network connection problem");
     }
   })
@@ -39,7 +41,7 @@ export const processLogin = (username, password) => {
   })
 };
 
-export const getCredentials = () => {
+const getCredentials = () => {
   return new Promise(async (resolve, reject) => {
     log.trace("Resolving credentials...")
     let username, password;
@@ -47,7 +49,7 @@ export const getCredentials = () => {
     password = await SecureStore.getItemAsync("password");
     if (username === null || password === null) {
       log.trace("Failed to resolve credential...")
-      reject(new Error("No credentials found"));
+      reject(new Errors.APIError("No credentials found", Errors.NO_CREDENTIALS_ERROR));
     } else {
       log.trace("Credentials resolved...")
       resolve({username, password});
@@ -65,7 +67,7 @@ const saveCredentials = async (username, password) => {
   }
 }
 
-const authentificate = () => {
+export const authentificate = () => {
   log.trace("Authentificating...")
   return getCredentials()
   .then((credentials) => {

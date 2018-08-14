@@ -11,9 +11,8 @@ import log from '@cap-cross/cap-core';
 
 import Background from '../../common/Background';
 import {LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';
-import { login } from '../../../redux/user/userMiddleware';
-import { getCredentials } from '../../../api/LoginAPI';
-
+import { authentificate } from '../../../api/LoginAPI';
+import * as Errors from '../../../api/errors';
 
 const mapDispatchToProps = dispatch => ({
   login: (username, password) => {return dispatch(login(username, password))}
@@ -31,28 +30,23 @@ export default class AuthLoadingScreen extends React.Component {
   }
 
   componentDidMount() {
-    getCredentials()
-      .then((credentials) => {
-        log.trace("Credentials found in storage, processing auto-authentification")
-        this.props.login(credentials.username, credentials.password)
-          .then((response) => {
-            this.props.navigation.navigate("App");
-          })
-          .catch((error) => {
-            log.trace("Error during auto-authentification process redirect to authentification");
-            Toast.show({
-              text: error.message,
-              type: 'danger',
-              buttonText: 'OK',
-              duration: 5000
-            });
-            this.props.navigation.navigate("Auth");
-          });
+    authentificate()
+      .then((response) => {
+        this.props.navigation.navigate("App");
       })
       .catch((error) => {
-        log.trace("No credentials found in storage, redirecting to authentification")
+        log.trace("Error during auto-authentification process redirect to authentification");
+        if (error.errorCode === Errors.AUTHENTIFICATION_ERROR) {
+          Toast.show({
+            text: error.message,
+            type: 'danger',
+            buttonText: 'OK',
+            duration: 5000
+          });
+        }
         this.props.navigation.navigate("Auth");
-      });
+      }
+    );
   }
 
   render() {

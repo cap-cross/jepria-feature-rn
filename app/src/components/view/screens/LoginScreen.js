@@ -1,21 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Container, Content, Footer } from 'native-base';
-import { Text } from 'react-native';
-import log from '@cap-cross/cap-core';
+import { Text, } from 'react-native';
 
-import UserDetail from '../form/UserDetail';
-import * as UserActions from '../../../redux/user/userActions';
 import Background from '../../common/Background';
-import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
-//import LoginForm from '../form/LoginForm';
-
-import connect from 'react-redux/lib/connect/connect';
-import compose from 'recompose/compose';
-import pure from 'recompose/pure';
-import { reduxForm } from 'redux-form';
+import {DARK_BLUE_COLOR} from '../../../../res/style';
 import AuthForm from '../form/AuthForm';
-
 
 export default class LoginScreen extends React.Component {
   static propTypes = {

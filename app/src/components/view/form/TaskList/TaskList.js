@@ -10,8 +10,6 @@ import { connect } from 'react-redux';
 import {EmptyView} from '@cap-cross/cap-react-native';
 import ModalWaitBar from '../../../common/WaitBar';
 import TaskItem from './TaskItem';
-import LoginForm from '../LoginForm';
-import loginMediator from '../../../../loginMediator';
 import log from '@cap-cross/cap-core';
 
 import { findTasks } from '../../../../redux/tasks/taskMiddleware';
@@ -39,17 +37,11 @@ const mapDispatchToProps = (dispatch) => {
 
 const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({ form: 'loginForm2' }),
   pure
 );
 
-let wasFetched = false; // Признак необходимости первоначального fetch
-
 @enhance
 export default class TaskList extends React.Component {
-  static propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-  };
 
   // Для Login-диалога (Modal)
   state = {
@@ -57,10 +49,6 @@ export default class TaskList extends React.Component {
   };
 
   componentDidMount() {
-    // Для последующего доступа из api.authenticate. TODO Переместить в более подходящее место
-    //    loginMediator.dialogForm = this.modalLoginDialog;
-    loginMediator.dialogForm = this;
-    wasFetched = false; // TODO разобраться с времянкой!
     if (this.props.user.operatorId === '') this.props.getUserData();
     this.props.findTasks(this.props.filter);
   }
@@ -71,15 +59,6 @@ export default class TaskList extends React.Component {
     }
   }
 
-  onModalLoginClose = () => {
-    // TODO Почему не вызывается ?
-    //alert('Modal has been closed.'); // eslint-disable-line no-alert
-  };
-
-  setLoginPending(visible) {
-    this.setState({ isLoginPending: visible });
-  }
-
   // eslint-disable-next-line
   getStyles = props => ({
     // content: {
@@ -87,17 +66,6 @@ export default class TaskList extends React.Component {
     //     padding: 8
     // }
   });
-
-  loginOpen() {
-    this.setLoginPending(true);
-  }
-
-  loginClose() {
-    this.setLoginPending(false);
-    this.props.findTasks(this.props.filter);
-  }
-
-  handleSubmit = () => this.props.handleSubmit(loginMediator.onLoginSubmit);
 
   renderTaskItem = ({ item }) => (
     <TaskItem
@@ -158,36 +126,10 @@ export default class TaskList extends React.Component {
       );
     }
 
-    // TODO Постараться убрать отсюда(из файла) всё, что связано с Login
-
-    const modalLoginView = (
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={this.state.isLoginPending}
-        onRequestClose = {() => {
-          this.onModalLoginClose();
-        }}
-        onShow = {() => {
-        }}
-        ref={(c) => {
-          this.modalLoginDialog = c;
-        }}
-      >
-        <LoginForm onSubmit={this.handleSubmit()} />
-      </Modal>
-    );
-
     // TODO Постараться убрать отсюда всё, что связано с Login
     const result = (
       <View style={{flex: 1}}>
         {contentView}
-        {modalLoginView}
-        <ModalWaitBar
-          ref={(c) => {
-            this.waitBar = c;
-          }}
-        />
       </View>
     );
 
