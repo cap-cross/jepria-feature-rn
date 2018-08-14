@@ -2,7 +2,7 @@
 // import "isomorphic-fetch" // Только для web!
 
 import merge from 'lodash/merge';
-import * as security from './loginApiImpl';
+import * as security from './LoginAPI';
 import log from '@cap-cross/cap-core';
 
 const checkStatus = ({ response, body }) => {

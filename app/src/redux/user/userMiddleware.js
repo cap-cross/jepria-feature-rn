@@ -1,7 +1,6 @@
 import * as actions from './userActions.js';
 import {FEATURE_CONTEXT_URL} from '../../api/apiConfig';
-import { jepFetch } from '../../api/loginApiImpl';
-import { processLogin } from '../../api/LoginAPI';
+import { processLogin, jepFetch } from '../../api/LoginAPI';
 import log from '@cap-cross/cap-core';
 
 const USER_DATA_API_URL = `${FEATURE_CONTEXT_URL}/userdata`;

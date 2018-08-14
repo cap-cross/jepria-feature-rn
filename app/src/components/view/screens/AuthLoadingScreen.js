@@ -31,7 +31,7 @@ export default class AuthLoadingScreen extends React.Component {
   }
 
   componentDidMount() {
-/*     getCredentials()
+    getCredentials()
       .then((credentials) => {
         log.trace("Credentials found in storage, processing auto-authentification")
         this.props.login(credentials.username, credentials.password)
@@ -52,8 +52,7 @@ export default class AuthLoadingScreen extends React.Component {
       .catch((error) => {
         log.trace("No credentials found in storage, redirecting to authentification")
         this.props.navigation.navigate("Auth");
-      }); */
-      this.props.navigation.navigate("Auth");
+      });
   }
 
   render() {

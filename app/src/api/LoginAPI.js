@@ -5,8 +5,11 @@ import fetchJSON from './fetchJSON'; // from 'jep-fetch'
 import configureJepFetch from './configureJepFetch';
 const LOGIN_API_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/LoginServlet?`;
 
+const SSO_CONTEXT_PART = 'SsoUi'; // Может быть также SsoUi_XX
 
 const shouldAuthenticate = error => isAuthorizationError(error);
+
+const isAuthorizationError = error => error.message.indexOf(SSO_CONTEXT_PART) > -1;
 
 export const isSsoLoginRequest = (response) => {
   log.trace(`loginApiImpl.isSsoLoginRequest(): response.status = ${response.status}`);
@@ -19,9 +22,11 @@ export const isSsoLoginRequest = (response) => {
 
 export const processLogin = (username, password) => {
   log.trace("Processing authentification...");
-  fetch(LOGIN_API_URL + 'username=' + username + '&password=' + password)
+  return fetch(LOGIN_API_URL + 'username=' + username + '&password=' + password)
   .then((response) => {
     if (response.ok) {
+      log.trace("Authentification completed...");
+      saveCredentials(username, password);
       return response;
     } else {
       if(response.status === 401) throw new Error("Неверные данные");
@@ -29,6 +34,7 @@ export const processLogin = (username, password) => {
     }
   })
   .catch((error) => {
+    log.trace("Authentification failed: " + error.message);
     throw error;
   })
 };
@@ -49,11 +55,21 @@ export const getCredentials = () => {
   });
 }
 
+const saveCredentials = async (username, password) => {
+  try {
+    log.trace("Saving credentials...");
+    await SecureStore.setItemAsync("username", username);
+    await SecureStore.setItemAsync("password", password);
+  } catch (error) {
+    log.trace("Error occured while saving credentials: " + error.message);
+  }
+}
+
 const authentificate = () => {
   log.trace("Authentificating...")
   return getCredentials()
   .then((credentials) => {
-    login(credentials.username, credentials.password)
+    processLogin(credentials.username, credentials.password)
     .then((response) => {
       log.trace("Authentification completed, returning to previous request");
       return response;

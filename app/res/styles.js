@@ -67,7 +67,8 @@ const styles = {
       height: 60, 
       marginHorizontal: 30, 
       paddingHorizontal: '10%', 
-      paddingVertical: 5
+      paddingVertical: 5,
+      elevation: 2
     },
     error: {
       borderColor: 'red', 
@@ -191,7 +192,8 @@ const styles = {
       backgroundColor: DARK_AQUA_GREEN_COLOR,
       borderRadius: 30,
       height: 60,
-      justifyContent: 'center'
+      justifyContent: 'center',
+      elevation: 2
     },
     buttonText: {
       color: 'white',

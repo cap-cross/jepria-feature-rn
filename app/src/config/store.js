@@ -31,7 +31,7 @@ export default function configureStore(onComplete = () => {}) {
         // storeMiddleware, // Сохранение state в AsyncStorage
         logger,
       ),
-      devTools(),
+      //devTools(),
     ),
   );
 

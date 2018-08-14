@@ -1,6 +1,6 @@
 // FeatureAPI.js
 import * as apiConfig from './apiConfig';
-import { jepFetch } from './loginApiImpl';
+import { jepFetch } from './LoginAPI';
 import log from '@cap-cross/cap-core';
 
 const buildFindUrl = (filter) => {
