@@ -9,22 +9,17 @@ const LOGIN_API_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/LoginServlet?`;
 
 const SSO_CONTEXT_PART = 'SsoUi'; // Может быть также SsoUi_XX
 
-const shouldAuthenticate = error => isAuthorizationError(error);
-
-const isAuthorizationError = error => error.message.indexOf(SSO_CONTEXT_PART) > -1;
-
-export const isSsoLoginRequest = (response) => {
-  log.trace(`loginApiImpl.isSsoLoginRequest(): response.status = ${response.status}`);
-  log.trace(`loginApiImpl.isSsoLoginRequest(): response.url = ${response.url}`);
-
-  const result = response.status === 200 && response.url.indexOf(SSO_CONTEXT_PART) > -1;
-  log.trace(`loginApiImpl.isSsoLoginRequest() = ${result}`);
-  return result;
-};
+const shouldAuthenticate = error => {
+  return error.code === Errors.AUTHENTIFICATION_ERROR || error.code === Errors.ACCESS_DENIED;
+}
 
 export const processLogin = (username, password) => {
   log.trace("Processing authentification...");
-  return fetch(LOGIN_API_URL + 'username=' + username + '&password=' + password)
+  return fetch(LOGIN_API_URL + 'username=' + username + '&password=' + password,
+  {
+    method: 'POST',
+    credentials: 'include'
+  })
   .then((response) => {
     if (response.ok) {
       log.trace("Authentification completed...");
@@ -70,10 +65,10 @@ const saveCredentials = async (username, password) => {
 export const authentificate = () => {
   log.trace("Authentificating...")
   return getCredentials()
-  .then((credentials) => {
-    processLogin(credentials.username, credentials.password)
+  .then(async (credentials) => {
+    await processLogin(credentials.username, credentials.password)
     .then((response) => {
-      log.trace("Authentification completed, returning to previous request");
+      log.trace("Authentification completed");
       return response;
     })
     .catch((error) => {

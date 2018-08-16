@@ -94,12 +94,8 @@ const features = {
         description: task.description,
       }),
     })
-      .then(({ response, body }) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok.');
-        }
-
-        return body;
+      .then((response) => {
+        return response;
       })
       .catch((error) => {
         throw error;
@@ -122,12 +118,8 @@ const features = {
         statusCode: task.statusCode,
       }),
     })
-      .then(({ response, body }) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok.');
-        }
-
-        return body;
+      .then((response) => {
+        return response;
       })
       .catch((error) => {
         throw error;
@@ -139,11 +131,7 @@ const features = {
     return jepFetch(`${removeTaskUrl}/${task.id}`, {
       method: 'DELETE',
     })
-      .then(({ response, body }) => {
-        if (!response.ok) {
-          log.trace(`FeatureAPI.fetch.then: response.status = ${response.status}`);
-          throw new Error('Network response was not ok.');
-        }
+      .then((response) => {
       })
       .catch((error) => {
         throw error;

@@ -7,12 +7,9 @@ export const findTasks = (filter) => {
     dispatch(actions.fetchTasks(filter, true));
     return tasks
       .find(filter)
-      .then(({ response, body }) => {
-        if (!response.ok) {
-          dispatch(actions.fetchTasksFailure(filter, true, 'Network response was not ok.'));
-        }
-        dispatch(actions.fetchTasksSuccess(filter, body));
-        return body;
+      .then((response) => {
+        dispatch(actions.fetchTasksSuccess(filter, response));
+        return response;
       })
       .catch((error) => {
         dispatch(actions.fetchTasksFailure(filter, true, error.message));

@@ -54,7 +54,7 @@ export function loginUser(isAuthentificating) {
     }
 }
 
-export function loginUserSuccess(user) {
+export function loginUserSuccess() {
     log.trace("LOGIN featureUser SUCCESS");
 
     return {

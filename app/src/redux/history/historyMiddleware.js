@@ -7,7 +7,7 @@ export const findHistory = (task) => {
         try {
           taskHistory.findTaskHistory(task.id)
                 .then((response) => {
-                    dispatch(actions.fetchHistorySuccess(response.body));
+                    dispatch(actions.fetchHistorySuccess(response));
                 });
         } catch (error) {
             dispatch(actions.fetchHistoryFailure(true, error.message));

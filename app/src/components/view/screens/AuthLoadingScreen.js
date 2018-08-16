@@ -32,6 +32,7 @@ export default class AuthLoadingScreen extends React.Component {
   componentDidMount() {
     authentificate()
       .then((response) => {
+        log.trace("Authentification successfull... Redirecting to App");
         this.props.navigation.navigate("App");
       })
       .catch((error) => {

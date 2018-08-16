@@ -47,7 +47,7 @@ class HistoryListItem extends React.PureComponent {
 class HistoryList extends React.Component {
 
   componentDidMount() {
-    this.findHistory();
+    this.props.findHistory(this.props.task);
   }
 
   renderListItem = ({item}) => (

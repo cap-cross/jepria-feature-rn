@@ -7,7 +7,7 @@ export const getOperators = () => {
         try {
             operators.getOperators()
                 .then((response) => {
-                    dispatch(actions.fetchOperatorsSuccess(response.body));
+                    dispatch(actions.fetchOperatorsSuccess(response));
                 });
         } catch (error) {
             dispatch(actions.fetchOperatorsFailure(true, error.message));

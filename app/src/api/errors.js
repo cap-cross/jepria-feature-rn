@@ -1,5 +1,6 @@
 export const AUTHENTIFICATION_ERROR = 'AUTHENTIFICATION_ERROR';
 export const NO_CREDENTIALS_ERROR = 'NO_CREDENTIALS_ERROR';
+export const ACCESS_DENIED = 'ACCESS_DENIED';
 export const SERVER_ERROR = 'SERVER_ERROR';
 
 export class APIError extends Error{

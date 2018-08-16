@@ -7,7 +7,7 @@ export const getStatuses = () => {
         try {
             statuses.getStatuses()
                 .then((response) => {
-                    dispatch(actions.fetchStatusesSuccess(response.body));
+                    dispatch(actions.fetchStatusesSuccess(response));
                 });
         } catch (error) {
             dispatch(actions.fetchStatusesFailure(true, error.message));
