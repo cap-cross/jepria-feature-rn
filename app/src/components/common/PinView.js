@@ -79,9 +79,9 @@ export default class PinView extends React.PureComponent {
     },
     button: {
       margin: 5,
-      width: 80,
-      height: 80,
-      borderRadius: 40,
+      width: 75,
+      height: 75,
+      borderRadius: 75/2,
       backgroundColor: DARK_BLUE_COLOR,
     },
     buttonContent: {
@@ -96,10 +96,7 @@ export default class PinView extends React.PureComponent {
     let length = this.state.pin.length;
     return (
       <View style={{alignItems: 'center'}}>
-        <View>
-          <Text style={styles.header}>Введите PIN</Text>
-        </View>
-        <View style={{flex: 0, flexDirection: 'row', marginVertical: 15}}>
+        <View style={{flex: 0, flexDirection: 'row', marginBottom: 30}}>
           <View style={length > 0 ? styles.filledPinItem : styles.emptyPinItem}/>
           <View style={length > 1 ? styles.filledPinItem : styles.emptyPinItem}/>
           <View style={length > 2 ? styles.filledPinItem : styles.emptyPinItem}/>
