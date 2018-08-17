@@ -18,6 +18,7 @@ import UserScreen from '../components/view/screens/UserScreen';
 import Drawer from '../components/view/screens/DrawerScreen';
 import LoginScreen from '../components/view/screens/LoginScreen';
 import AuthLoadingScreen from '../components/view/screens/AuthLoadingScreen';
+import VerificationScreen from '../components/view/screens/VerificationScreen';
 import {DARK_BLUE_COLOR} from '../../res/style';
 
 const mapStateToProps = state => ({
@@ -67,20 +68,12 @@ const DrawerNavigator = createDrawerNavigator(
   }
 });
 
-const AuthStack = createStackNavigator(
-  {
-    Login: {screen: LoginScreen},
-  },
-  {
-    initialRouteName: 'Login',
-    headerMode: 'none' 
-  });
-
 const RootNavigator = createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
     App: DrawerNavigator,
-    Auth: AuthStack,
+    Auth: LoginScreen,
+    Verify: VerificationScreen
   },
   {
     initialRouteName: 'AuthLoading',

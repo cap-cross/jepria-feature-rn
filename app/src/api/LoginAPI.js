@@ -36,18 +36,20 @@ export const processLogin = (username, password) => {
   })
 };
 
-const getCredentials = () => {
+export const getCredentials = () => {
   return new Promise(async (resolve, reject) => {
     log.trace("Resolving credentials...")
     let username, password;
     username = await SecureStore.getItemAsync("username");
     password = await SecureStore.getItemAsync("password");
+    pin = await SecureStore.getItemAsync("pin");
+    hasFingerPrint = await SecureStore.getItemAsync("hasFingerPrint");
     if (username === null || password === null) {
       log.trace("Failed to resolve credential...")
       reject(new Errors.APIError("No credentials found", Errors.NO_CREDENTIALS_ERROR));
     } else {
       log.trace("Credentials resolved...")
-      resolve({username, password});
+      resolve({username, password, pin, hasFingerPrint});
     }
   });
 }

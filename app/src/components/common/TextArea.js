@@ -53,7 +53,7 @@ export default class TextAreaField extends React.PureComponent {
   render() {
     const { input, meta: {touched, error, warning}, labelText, ...inputProps } = this.props;
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
-    var notificationStyle = error !== undefined ? styles.notificationTextError : (warning !== undefined ? styles.notificationTextWarn : {});
+    
     return (
       <View style={styles.card}>
         <View>

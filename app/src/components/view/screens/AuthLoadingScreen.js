@@ -11,7 +11,7 @@ import log from '@cap-cross/cap-core';
 
 import Background from '../../common/Background';
 import {LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';
-import { authentificate } from '../../../api/LoginAPI';
+import { getCredentials } from '../../../api/LoginAPI';
 import * as Errors from '../../../api/errors';
 
 const mapDispatchToProps = dispatch => ({
@@ -30,21 +30,14 @@ export default class AuthLoadingScreen extends React.Component {
   }
 
   componentDidMount() {
-    authentificate()
-      .then((response) => {
-        log.trace("Authentification successfull... Redirecting to App");
-        this.props.navigation.navigate("App");
+
+    getCredentials()
+      .then((credentials) => {
+        log.trace("Credentials found, redirecting to verification...");
+        this.props.navigation.navigate("Verify", credentials);
       })
       .catch((error) => {
-        log.trace("Error during auto-authentification process redirect to authentification");
-        if (error.errorCode === Errors.AUTHENTIFICATION_ERROR) {
-          Toast.show({
-            text: error.message,
-            type: 'danger',
-            buttonText: 'OK',
-            duration: 5000
-          });
-        }
+        log.trace("No credentials found, redirecting to authentification...");
         this.props.navigation.navigate("Auth");
       }
     );

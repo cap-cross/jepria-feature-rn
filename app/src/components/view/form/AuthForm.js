@@ -80,7 +80,13 @@ export default class AuthForm extends React.Component {
       values.username,
       values.password)
       .then((response) => {
-        this.props.navigation.navigate('App');
+        this.props.navigation.navigate('Verify',
+        {
+          username: values.username,
+          password: values.password,
+          pin: null,
+          hasFingerPrint: false
+        });
       })
       .catch((err) => {
         Toast.show({

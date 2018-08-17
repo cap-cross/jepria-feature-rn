@@ -1,8 +1,6 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, ImageBackground } from 'react-native'
-import {DARK_BLUE_COLOR, LIGHT_BLUE_COLOR} from '../../../../res/style';
+import { View, Text, ImageBackground } from 'react-native'
 const bgimage = require('../../../../../assets/images/background.jpg');
-import Background from '../../../components/common/Background';
 import { DrawerItems } from 'react-navigation';
 
 export default function DrawerScreen (props){
