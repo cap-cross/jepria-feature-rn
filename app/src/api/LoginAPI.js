@@ -10,7 +10,7 @@ const LOGIN_API_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/LoginServlet?`;
 const SSO_CONTEXT_PART = 'SsoUi'; // Может быть также SsoUi_XX
 
 const shouldAuthenticate = error => {
-  return error.code === Errors.AUTHENTIFICATION_ERROR || error.code === Errors.ACCESS_DENIED;
+  return error.errorCode === Errors.AUTHENTIFICATION_ERROR || error.errorCode === Errors.ACCESS_DENIED;
 }
 
 export const processLogin = (username, password) => {
