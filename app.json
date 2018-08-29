@@ -22,7 +22,9 @@
     },
     "android": {
       "package": "org.jepria.feature.demo",
-      "permissions": [],
+      "permissions": [
+        "USE_FINGERPRINT"
+      ],
       "versionCode": 5,
       "splash": {
         "backgroundColor": "#175767",

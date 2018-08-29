@@ -10,6 +10,7 @@ import Background from '../../common/Background';
 import PinView from '../../common/PinView';
 import { login } from '../../../redux/user/userMiddleware';
 import { SecureStore, Fingerprint } from 'expo';
+import { LoadingPanel } from '../../common/LoadingPanel';
 
 const mapStateToProps = (state) => {
   return {
@@ -36,33 +37,47 @@ export default class VerificationScreen extends React.Component {
   };
   constructor(props) {
     super(props);
+
     this.state= {
       mode: this.props.navigation.getParam("pin") === null || this.props.navigation.getParam("pin") === undefined ? 'new' : 'verify',
-      fingerPrint:'skip'
-      // fingerPrint: !this.checkDeviceForHardware() && !this.checkForFingerprints() && !this.props.navigation.getParam("hasFingerPrint") === 'refused' ? 
-      //   (this.props.navigation.getParam("hasFingerPrint") === "true" ? "verify" : "create") : "skip"
+      targetPin: this.props.navigation.getParam("pin"),
+      compatible: false,
+      fingerprints: false,
     };
   }
-
+  
   checkDeviceForHardware = async () => {
-    return await Expo.Fingerprint.hasHardwareAsync();
+    let compatible = await Fingerprint.hasHardwareAsync();
+    this.setState({...this.state, compatible})
   }
   
   checkForFingerprints = async () => {
-    return await Expo.Fingerprint.isEnrolledAsync();
+    let fingerprints = await Fingerprint.isEnrolledAsync();
+    this.setState({...this.state, fingerprints})
   }
   
   scanFingerprint = async () => {
     log.trace("Waiting for PIN or FingerPrint");
-    let result = await Expo.Fingerprint.authenticateAsync('Scan your finger.');
-    if (result) {
+    let result = await Fingerprint.authenticateAsync();
+    log.trace("RESULT: " + JSON.stringify(result));
+    if (result.success) {
       log.trace("FingerPrint accepted, redirecting to App");
-      SecureStore.setItemAsync("hasFingerPrint", 'true');
-      this.props.navigation.navigate('App');
+      this.setState({...this.state, result: true});
+      return;
+    } else {
+      Toast.show({
+        text: "Ошибка при проверке отпечатка, попробуйте ещё раз или введите PIN",
+        type: 'danger',
+        buttonText: 'OK',
+        duration: 5000
+      });
+      this.setState({...this.state, result: false});
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    await this.checkDeviceForHardware();
+    await this.checkForFingerprints();
     if (this.state.mode === 'new') {
       Alert.alert(
         'PIN',
@@ -73,55 +88,33 @@ export default class VerificationScreen extends React.Component {
         { cancelable: false }
       );
     }
-    if (this.state.fingerPrint === "verify") {
-      this.scanFingerprint();
-    }
   }
 
   componentDidUpdate = () => {
-    if (this.state.fingerPrint === "verify") {
+    if (this.state.result == true) {
+      this.onSuccessVerify();
+    } else if (this.state.compatible && this.state.fingerprints && this.state.mode !== 'new') {
       this.scanFingerprint();
     }
   }
 
-  createFingerPrint = () => {
-    if (this.state.mode === 'new') {
+  onSuccessNew = async (pin) => {
+    log.trace("Saving pin...");
+    try {
+      await SecureStore.setItemAsync("pin", pin);      
       Alert.alert(
-        'Отпечаток пальца',
-        'Хотите разрешить вход с помощью отпечатка пальца?',
+        'PIN',
+        'PIN успешно задан. Введите код еще раз для потдверждения входа.',
         [
-          {text: 'Нет', onPress: () => {
-            SecureStore.setItemAsync("hasFingerPrint", 'refused');
-            this.props.navigation.navigate('App');
-          }},
-          {text: 'Да', onPress: () => {
-            this.setState({...this.state, fingerPrint: "verify"});
+          {text: 'OK', onPress: () => {
           }},
         ],
         { cancelable: false }
       );
+      this.setState({...this.state, mode: 'verify', compatible: false, fingerprints: false, targetPin: pin});
+    } catch (error) {
+      log.error(error.message);
     }
-  }
-
-  onSuccessNew = (pin) => {
-    log.trace("Verification successfull... " + this.props.navigation.getParam("username") + " " + this.props.navigation.getParam("password"))
-    this.props.login(this.props.navigation.getParam("username"), this.props.navigation.getParam("password"))
-    .then((response) => {
-      log.trace("Saving pin...");
-      SecureStore.setItemAsync("pin", pin);
-      log.trace("Authentification completed, redirecting to App...");
-      this.props.navigation.navigate('App');
-    })
-    .catch((error => {
-      log.trace("Authentification failed, redirecting to Auth...");
-      this.props.navigation.navigate('Auth');
-      Toast.show({
-        text: error.message,
-        type: 'danger',
-        buttonText: 'OK',
-        duration: 5000
-      });
-    }));
   }
 
   onSuccessVerify = () => {
@@ -154,11 +147,11 @@ export default class VerificationScreen extends React.Component {
 
   render() {
     let onSuccess = this.state.mode === 'new' ? this.onSuccessNew : this.onSuccessVerify;
-    let pin = this.props.navigation.getParam("pin");
-    let headerText = this.state.fingerPrint !== "skip" && this.state.fingerPrint !== "create" ? (
+    let pin = this.state.targetPin;
+    let headerText = this.state.compatible && this.state.fingerprints && this.state.mode !== 'new' ? (
       <View style={{width: '100%', backgroundColor: 'rgba(17,49,85,0.8)', flexDirection: 'row', padding: 15, alignContent: 'center', alignItems: 'center'}}>
-        <Icon type='Ionicons' name='md-finger-print' style={{color: 'white', fontSize: 20, marginHorizontal: 5}}/>
-        <Text style={{color: 'white', fontSize: 18}}>
+        <Icon type='Ionicons' name='md-finger-print' style={{color: 'white', fontSize: 18, marginHorizontal: 5}}/>
+        <Text style={{color: 'white', fontSize: 16}}>
           Приложите палец к сканеру отпечатков
         </Text>
       </View>
@@ -180,6 +173,7 @@ export default class VerificationScreen extends React.Component {
             onFailure={this.onFailureVerify} 
             targetPin={pin == null ? "" : pin}/>
         </View>
+        <LoadingPanel show={this.props.isAuthentificating} text="Входим в приложение..."/>
       </Background>
     );
   }

@@ -38,7 +38,7 @@ export default class PinView extends React.PureComponent {
         }
       } else {
         this.setState({
-          pin: newPin
+          pin: ''
         });
         this.props.onSuccess(newPin);
         return;
