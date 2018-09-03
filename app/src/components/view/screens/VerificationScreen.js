@@ -48,11 +48,13 @@ export default class VerificationScreen extends React.Component {
   
   checkDeviceForHardware = async () => {
     let compatible = await Fingerprint.hasHardwareAsync();
+   // return compatible;
     this.setState({...this.state, compatible})
   }
   
   checkForFingerprints = async () => {
     let fingerprints = await Fingerprint.isEnrolledAsync();
+    //return fingerprints;
     this.setState({...this.state, fingerprints})
   }
   
@@ -65,19 +67,22 @@ export default class VerificationScreen extends React.Component {
       this.setState({...this.state, result: true});
       return;
     } else {
-      Toast.show({
-        text: "Ошибка при проверке отпечатка, попробуйте ещё раз или введите PIN",
-        type: 'danger',
-        buttonText: 'OK',
-        duration: 5000
-      });
-      this.setState({...this.state, result: false});
+      if (result.error !== "user_cancel" && result.error !== "app_cancel" ) {
+        log.trace("RESULT ERROR: " + JSON.stringify(result.error));
+        Toast.show({
+          text: "Ошибка при проверке отпечатка, попробуйте ещё раз или введите PIN",
+          type: 'danger',
+          buttonText: 'OK',
+          duration: 5000
+        });
+        this.setState({...this.state, result: false});
+      }
     }
   }
 
   componentDidMount = async () => {
-    await this.checkDeviceForHardware();
-    await this.checkForFingerprints();
+    this.checkDeviceForHardware();
+    this.checkForFingerprints();
     if (this.state.mode === 'new') {
       Alert.alert(
         'PIN',
@@ -87,10 +92,13 @@ export default class VerificationScreen extends React.Component {
         ],
         { cancelable: false }
       );
+    } else if (this.state.compatible && this.state.fingerprints && this.state.mode !== 'new') {
+      this.scanFingerprint();
     }
   }
 
   componentDidUpdate = () => {
+    log.trace("STATE: " + JSON.stringify(this.state));
     if (this.state.result == true) {
       this.onSuccessVerify();
     } else if (this.state.compatible && this.state.fingerprints && this.state.mode !== 'new') {

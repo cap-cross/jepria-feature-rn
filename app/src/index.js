@@ -14,8 +14,6 @@ import { Root } from 'native-base';
 import log from '@cap-cross/cap-core';
 import {Util} from '@cap-cross/cap-react-native';
 
-// @withStatusBar('#1b2428')
-// //export default class FeatureApp extends React.Component<MyProps, MyState> {
 export default class FeatureApp extends React.Component {
   constructor() {
     super();
@@ -31,13 +29,28 @@ export default class FeatureApp extends React.Component {
   }
 
   async componentWillMount() {
+    console.log("ASDASDASDASDASD");
+    this.loadFonts();
+    this.loadImages();
+    this.setState({ isReady: true });
+  }
+
+  loadFonts = async () => {
     await Expo.Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       Ionicons: require('@expo/vector-icons/fonts/Ionicons.ttf'),
     });
+  }
 
-    this.setState({ isReady: true });
+  loadImages = async () => {
+    const images = [
+      require('../../assets/images/background.jpg')
+    ];
+
+    await images.map((image) => {
+      return Expo.Asset.fromModule(image).downloadAsync();
+    });
   }
 
   render() {

@@ -143,9 +143,6 @@ export default class PinView extends React.PureComponent {
             <TouchableOpacity style={{...styles.button, justifyContent: 'center'}} onPress={() => this.onButtonClick('0')}>
               <Text style={{...styles.buttonContent, textAlign: 'center'}}>0</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{...styles.button, justifyContent: 'center'}} onPress={() => alert('Not Supported now')}>
-              <Icon type='Ionicons' name='md-finger-print' style={{...styles.buttonContent,  textAlign: 'center'}}/>
-            </TouchableOpacity>
           </View>
         </View>
       </View>
