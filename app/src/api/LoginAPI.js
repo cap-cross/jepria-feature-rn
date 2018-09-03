@@ -9,7 +9,7 @@ const LOGIN_API_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/LoginServlet?`;
 
 const SSO_CONTEXT_PART = 'SsoUi'; // Может быть также SsoUi_XX
 
-const shouldAuthenticate = error => {
+const shouldAuthentificate = error => {
   return error.errorCode === Errors.AUTHENTIFICATION_ERROR || error.errorCode === Errors.ACCESS_DENIED;
 }
 
@@ -85,7 +85,7 @@ export const authentificate = () => {
 }
 
 export const jepFetch = configureJepFetch({
-  shouldAuthenticate,
+  shouldAuthentificate,
   authentificate,
   fetch: fetchJSON,
 });

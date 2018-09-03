@@ -29,9 +29,8 @@ export default class FeatureApp extends React.Component {
   }
 
   async componentWillMount() {
-    console.log("ASDASDASDASDASD");
-    this.loadFonts();
-    this.loadImages();
+    await this.loadFonts();
+    await this.loadImages();
     this.setState({ isReady: true });
   }
 

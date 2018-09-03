@@ -92,8 +92,6 @@ export default class VerificationScreen extends React.Component {
         ],
         { cancelable: false }
       );
-    } else if (this.state.compatible && this.state.fingerprints && this.state.mode !== 'new') {
-      this.scanFingerprint();
     }
   }
 

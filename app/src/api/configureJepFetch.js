@@ -1,42 +1,32 @@
 function configureJepFetch(loginApi = {}) {
-  const { authenticate, shouldAuthenticate, fetch } = loginApi;
+  const { authentificate, shouldAuthentificate, fetch } = loginApi;
 
-  let authenticationPromise = null;
+  let authentificationPromise = null;
 
   const extractContext = url =>
     url.substr(0, url.indexOf('/', url.indexOf('/', url.indexOf('//') + 2) + 1));
 
   return (input, init) => {
     return fetch(input, init).catch((error) => {
-      if (shouldAuthenticate(error)) {
-        // log.trace("REAUTHENTIFICATION");
-        // return new Promise((resolve, reject) => {
-        //   authenticate()
-        //     .then(() => {
-        //       log.trace("REAUTHENTIFICATION COMPLETED");
-        //       resolve(fetch(input, init));
-        //     })
-        //     .catch((authenticationError) => {
-        //       reject(authenticationError);
-        //     });
-        //   });
-        if (authenticationPromise === null) {
-          authenticationPromise = new Promise((resolve, reject) => {
-            authenticate()
+      console.log(shouldAuthentificate(error));
+      if (shouldAuthentificate(error)) {
+        if (authentificationPromise === null) {
+          authentificationPromise = new Promise((resolve, reject) => {
+            authentificate()
               .then(() => {
-                authenticationPromise = null;
+                authentificationPromise = null;
                 resolve();
               })
-              .catch((authenticationError) => {
-                authenticationPromise = null;
-                reject(authenticationError);
+              .catch((authentificationError) => {
+                authentificationPromise = null;
+                reject(authentificationError);
               });
           });
         }
 
-        return authenticationPromise
+        return authentificationPromise
           .then(() => fetch(input, init)).catch(() => {
-          // If authentication fails, continue with original error
+          // If authentification fails, continue with original error
           throw error;
         });
       }
