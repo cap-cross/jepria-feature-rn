@@ -23,9 +23,9 @@ export const getUserData = () => {
 
   export const login = (username, password) => {
       return (dispatch) => {
-        log.trace(`getUserData(): BEGIN`);
+        log.trace(`login(): BEGIN`);
         dispatch(actions.loginUser(true));
-        log.trace("fetching getUserData():" + USER_DATA_API_URL);
+        log.trace("Processing login():" + USER_DATA_API_URL);
         return processLogin(username, password)
           .then((response) => {
             dispatch(actions.loginUserSuccess());

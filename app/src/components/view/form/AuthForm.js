@@ -18,6 +18,7 @@ import {DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import {required} from '../../../data/validation';
 import getStyles from '../../../../res/styles'
 import { login } from '../../../redux/user/userMiddleware';
+import { LoadingPanel } from '../../common/LoadingPanel';
 
 
 const mapStateToProps = (state) => {
@@ -115,7 +116,6 @@ export default class AuthForm extends React.Component {
               <Field
                 name="username"
                 component={TextInput}
-                // component="input"  type="text"
                 placeholder="Username"
                 validate = {required}
               />
@@ -134,6 +134,7 @@ export default class AuthForm extends React.Component {
                 <Text style={styles.buttonText}>ВОЙТИ</Text>
               </TouchableOpacity>
             </Form>
+          <LoadingPanel show={this.props.isAuthentificating} text="Входим в приложение..."/>
         </View>
     );
   }

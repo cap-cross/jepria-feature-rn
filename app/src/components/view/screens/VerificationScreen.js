@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Alert, Text } from 'react-native';
+import { View, Alert, Text, Platform } from 'react-native';
 import { Toast, Icon } from 'native-base';
 import log from '@cap-cross/cap-core';
 import connect from 'react-redux/lib/connect/connect';
@@ -32,9 +32,11 @@ const enhance = compose(
 
 @enhance
 export default class VerificationScreen extends React.Component {
+
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   };
+
   constructor(props) {
     super(props);
 
@@ -46,18 +48,12 @@ export default class VerificationScreen extends React.Component {
     };
   }
   
-  checkDeviceForHardware = async () => {
+  checkDeviceForFingerprintSupport = async () => {
     let compatible = await Fingerprint.hasHardwareAsync();
-   // return compatible;
-    this.setState({...this.state, compatible})
-  }
-  
-  checkForFingerprints = async () => {
     let fingerprints = await Fingerprint.isEnrolledAsync();
-    //return fingerprints;
-    this.setState({...this.state, fingerprints})
+    this.setState({...this.state, compatible, fingerprints})
   }
-  
+
   scanFingerprint = async () => {
     log.trace("Waiting for PIN or FingerPrint");
     let result = await Fingerprint.authenticateAsync();
@@ -80,9 +76,8 @@ export default class VerificationScreen extends React.Component {
     }
   }
 
-  componentDidMount = async () => {
-    this.checkDeviceForHardware();
-    this.checkForFingerprints();
+  componentDidMount = () => {
+    this.checkDeviceForFingerprintSupport();
     if (this.state.mode === 'new') {
       Alert.alert(
         'PIN',
@@ -127,11 +122,11 @@ export default class VerificationScreen extends React.Component {
     log.trace("Verification successfull...")
     this.props.login(this.props.navigation.getParam("username"), this.props.navigation.getParam("password"))
     .then((response) => {
-      log.trace("Authentification completed, redirecting to App...");
+      log.trace("Verification completed, redirecting to App...");
       this.props.navigation.navigate('App');
     })
     .catch((error => {
-      log.trace("Authentification failed, redirecting to Auth...");
+      log.trace("Verification failed, redirecting to Auth...");
       this.props.navigation.navigate('Auth');
       Toast.show({
         text: error.message,
@@ -154,7 +149,7 @@ export default class VerificationScreen extends React.Component {
   render() {
     let onSuccess = this.state.mode === 'new' ? this.onSuccessNew : this.onSuccessVerify;
     let pin = this.state.targetPin;
-    let headerText = this.state.compatible && this.state.fingerprints && this.state.mode !== 'new' ? (
+    let headerText = Platform.OS !== 'ios' && this.state.compatible && this.state.fingerprints && this.state.mode !== 'new' ? (
       <View style={{width: '100%', backgroundColor: 'rgba(17,49,85,0.8)', flexDirection: 'row', padding: 15, alignContent: 'center', alignItems: 'center'}}>
         <Icon type='Ionicons' name='md-finger-print' style={{color: 'white', fontSize: 18, marginHorizontal: 5}}/>
         <Text style={{color: 'white', fontSize: 16}}>
@@ -177,7 +172,8 @@ export default class VerificationScreen extends React.Component {
             mode={this.state.mode} 
             onSuccess={onSuccess} 
             onFailure={this.onFailureVerify} 
-            targetPin={pin == null ? "" : pin}/>
+            targetPin={pin == null ? "" : pin}
+            onFingerPrint={this.scanFingerprint}/>
         </View>
         <LoadingPanel show={this.props.isAuthentificating} text="Входим в приложение..."/>
       </Background>

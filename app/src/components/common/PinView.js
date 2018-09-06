@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Platform } from 'react-native';
 import getStyles from '../../../res/styles'
 import { Icon } from 'native-base';
 import log from '@cap-cross/cap-core';
@@ -54,6 +54,10 @@ export default class PinView extends React.PureComponent {
     this.setState({
       pin: pin.slice(0, pin.length - 1)
     });
+  }
+
+  onFingerPrint = () => {
+    this.props.onFingerPrint();
   }
 
   defaultStyles = {
@@ -143,6 +147,11 @@ export default class PinView extends React.PureComponent {
             <TouchableOpacity style={{...styles.button, justifyContent: 'center'}} onPress={() => this.onButtonClick('0')}>
               <Text style={{...styles.buttonContent, textAlign: 'center'}}>0</Text>
             </TouchableOpacity>
+            {Platform.OS === 'ios' &&
+            <TouchableOpacity style={{...styles.button, justifyContent: 'center'}} onPress={() => this.onFingerPrint()}>
+              <Icon type='Ionicons' name='md-finger-print' style={{...styles.buttonContent,  textAlign: 'center'}}/>
+            </TouchableOpacity>
+            }
           </View>
         </View>
       </View>
