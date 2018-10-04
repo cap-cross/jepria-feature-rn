@@ -1,9 +1,9 @@
-const FEATURE_SERVICE_HOST = 'jepria.org';
-const FEATURE_SERVICE_PORT = '80';
+// const FEATURE_SERVICE_HOST = 'jepria.org';
+// const FEATURE_SERVICE_PORT = '80';
 // const FEATURE_SERVICE_HOST = 'test.jepria.org';
 // const FEATURE_SERVICE_PORT = '80';
-// const FEATURE_SERVICE_HOST = '10.0.3.2';
-// const FEATURE_SERVICE_PORT = '8080';
+const FEATURE_SERVICE_HOST = '10.0.3.2';
+const FEATURE_SERVICE_PORT = '8080';
 
 // const featureServiceContext = 'feature-json-jepria-backend-nagornyys';
 export const FEATURE_SERVICE_CONTEXT = 'feature-json-jepria-backend';
