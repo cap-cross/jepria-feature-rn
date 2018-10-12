@@ -1,6 +1,6 @@
 import * as actions from './userActions.js';
 import {FEATURE_CONTEXT_URL} from '../../api/apiConfig';
-import { processLogin, jepFetch } from '../../api/LoginAPI';
+import {processLogin, authenticate, jepFetch } from '../../api/LoginAPI';
 import log from '@cap-cross/cap-core';
 
 const USER_DATA_API_URL = `${FEATURE_CONTEXT_URL}/userdata`;
@@ -34,6 +34,23 @@ export const getUserData = () => {
           })
           .catch((error) => {
             dispatch(actions.loginUserFailure(true, error.message));
+            throw error;
+          });
+      };
+    }
+
+  export const authenticateUser = () => {
+      return (dispatch) => {
+        log.trace(`authenticate(): BEGIN`);
+        dispatch(actions.authenticateUser(true));
+        log.trace("Processing authentication()");
+        return authenticate()
+          .then((response) => {
+            dispatch(actions.authenticateUserSuccess());
+            return response;
+          })
+          .catch((error) => {
+            dispatch(actions.authenticateUserFailure(true, error.message));
             throw error;
           });
       };

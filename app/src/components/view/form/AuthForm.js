@@ -23,7 +23,7 @@ import { LoadingPanel } from '../../common/LoadingPanel';
 
 const mapStateToProps = (state) => {
   return {
-    isAuthentificating: state.user.isAuthentificating,
+    isAuthenticating: state.user.isAuthenticating,
   };
 }
 
@@ -134,7 +134,7 @@ export default class AuthForm extends React.Component {
                 <Text style={styles.buttonText}>ВОЙТИ</Text>
               </TouchableOpacity>
             </Form>
-          <LoadingPanel show={this.props.isAuthentificating} text="Входим в приложение..."/>
+          <LoadingPanel show={this.props.isAuthenticating} text="Входим в приложение..."/>
         </View>
     );
   }

@@ -37,7 +37,7 @@ export default class AuthLoadingScreen extends React.Component {
         this.props.navigation.navigate("Verify", credentials);
       })
       .catch((error) => {
-        log.trace("No credentials found, redirecting to authentification...");
+        log.trace("No credentials found, redirecting to authentication...");
         this.props.navigation.navigate("Auth");
       }
     );

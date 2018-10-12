@@ -2,27 +2,8 @@
 // import "isomorphic-fetch" // Только для web!
 
 import merge from 'lodash/merge';
-import * as security from './LoginAPI';
 import log from '@cap-cross/cap-core';
 import * as Errors from './errors';
-
-const checkStatus = ({ response, body }) => {
-  log.trace('fetchJSON.checkStatus()');
-  if (security.isSsoLoginRequest(response)) {
-    // TODO Надо как-нибудь выпрямить (передать url более естественным образом)
-    const error = new Error(response.url);
-    log.trace(`fetchJSON.checkStatus() error = ${error}`);
-    throw error;
-  } else if (response.ok) {
-    log.trace('fetchJSON.checkStatus() success');
-    return { response, body };
-  } else {
-    const error = new Error(body);
-    error.response = response;
-    error.body = body;
-    throw error;
-  }
-};
 
 const parseJSON = (response) => {
   log.trace('fetchJSON.parseJSON()');
@@ -44,7 +25,7 @@ const parseJSON = (response) => {
 
 const validateResponse = (response) => {
   log.trace("fetchJSON: validating response...");
-  if (response.status === 403) {
+  if (response.status === 401) {
     log.trace("fetchJSON: access to resource denied, need authorization...");
     throw new Errors.APIError("Доступ к ресурсу запрещен требуется авторизация...", Errors.ACCESS_DENIED);
   } else if (!response.ok) {
@@ -71,7 +52,6 @@ const fetchJSON = (input, init) => {
 
   return fetch(input, initJson)
     .then(validateResponse)
-    //.then(checkStatus);
 };
 
 export default fetchJSON;
