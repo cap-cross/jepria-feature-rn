@@ -1,14 +1,16 @@
+/* Production */
 // const FEATURE_SERVICE_HOST = 'jepria.org';
 // const FEATURE_SERVICE_PORT = '80';
+/* Test */
 // const FEATURE_SERVICE_HOST = 'test.jepria.org';
 // const FEATURE_SERVICE_PORT = '80';
+/* Development (localhost from emulator) */
 const FEATURE_SERVICE_HOST = '10.0.3.2';
 const FEATURE_SERVICE_PORT = '8080';
 
 // const featureServiceContext = 'feature-json-jepria-backend-nagornyys';
 export const FEATURE_SERVICE_CONTEXT = 'feature-json-jepria-backend';
 const API_VERSION = 'v1';
-// export const FEATURE_SERVICE_CONTEXT = 'feature-json-jepria-backend';
 export const FEATURE_API = 'features';
 
 export const BASE_URL = `http://${FEATURE_SERVICE_HOST}:${FEATURE_SERVICE_PORT}`;
