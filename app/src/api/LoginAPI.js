@@ -5,8 +5,8 @@ import fetchJSON from './fetchJSON';
 import configureJepFetch from './configureJepFetch';
 import * as Errors from './errors';
 
-const AUTH_URL = `${BASE_URL}/AuthService/auth?`
-const REFRESH_URL = `${BASE_URL}/AuthService/refresh`
+const AUTH_URL = `${BASE_URL}/auth/jwt/login?`
+const REFRESH_URL = `${BASE_URL}/auth/jwt/refresh`
 
 const shouldAuthenticate = error => {
   return error.errorCode === Errors.AUTHENTICATION_ERROR || error.errorCode === Errors.ACCESS_DENIED;
