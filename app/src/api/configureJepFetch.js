@@ -6,7 +6,7 @@ function configureJepFetch(loginApi) {
   const {secureFetch, authenticate, shouldAuthenticate} = loginApi;
 
   return async (input, init) => {
-    return await secureFetch(input, init)
+    return secureFetch(input, init)
       .catch((error) => {
         if (shouldAuthenticate(error)) {
           log.trace("JepFetch: Access Token has expired, refreshing tokens...");

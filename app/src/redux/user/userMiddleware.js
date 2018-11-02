@@ -13,6 +13,7 @@ export const getUserData = () => {
       log.trace("fetching getUserData():" + USER_DATA_API_URL);
       jepFetch(USER_DATA_API_URL)
         .then((response) => {
+          log.trace("fetching getUserData(): response = " + JSON.stringify(response));
           dispatch(actions.fetchUserSuccess(response));
         })
         .catch((error) => {

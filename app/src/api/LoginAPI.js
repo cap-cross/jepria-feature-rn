@@ -109,6 +109,7 @@ const refreshTokens = (refreshToken) => {
 };
 
 const getFetch = async function (tokenPromise) {
+  log.trace("getFetch() BEGIN");
   let tokens = await tokenPromise;
   log.trace("getFetch(): tokens = " + JSON.stringify(tokens));
   log.trace("getFetch(): accessToken = " + tokens.accessToken);
@@ -142,7 +143,7 @@ export const authenticate = () => {
     //     throw error;
     //   });
     try {
-      newSecureFetch = await getFetch(refreshTokens(tokens.refreshToken));
+      newSecureFetch = getFetch(refreshTokens(tokens.refreshToken));
       log.trace("LoginAPI.authenticate(): newSecureFetch = " + newSecureFetch);
       return newSecureFetch;
   } catch(e) {
@@ -156,12 +157,13 @@ export const authenticate = () => {
   });
 }
 
-// const secureFetch = () => {
-//   return getFetch(getTokens());
-// }
+const secureFetch = () => {
+  return getFetch(getTokens());
+}
 
 export const jepFetch = configureJepFetch({
-  secureFetch: getFetch(getTokens()),
+//  secureFetch: getFetch(getTokens()),
+  secureFetch,
   shouldAuthenticate,
   authenticate
 });

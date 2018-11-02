@@ -78,6 +78,7 @@ const buildFindUrl = (filter) => {
 
 const features = {
   find(filter) {
+    log.trace(`FeatureAPI.find(): jepFetch = ${jepFetch}`);
     return jepFetch(buildFindUrl(filter));
   },
 
