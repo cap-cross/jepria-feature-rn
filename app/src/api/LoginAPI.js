@@ -113,7 +113,7 @@ const getFetch = async function (tokenPromise) {
   let tokens = await tokenPromise;
   log.trace("getFetch(): tokens = " + JSON.stringify(tokens));
   log.trace("getFetch(): accessToken = " + tokens.accessToken);
-  return function (input, init) {
+  let result = function (input, init) {
     log.trace('getFetch() accessToken = ' + accessToken);
     const initAccessToken = merge(
       {
@@ -124,7 +124,10 @@ const getFetch = async function (tokenPromise) {
       init,
     );
     return fetchJSON(input, initAccessToken);
-  }
+  };
+
+  log.trace('getFetch() result = ' + result);
+  return result;
 }
  
 export const authenticate = () => {
@@ -157,9 +160,11 @@ export const authenticate = () => {
   });
 }
 
-const secureFetch = () => {
-  return getFetch(getTokens());
-}
+// const secureFetch = () => {
+//   return getFetch(getTokens());
+// }
+const secureFetch = getFetch(getTokens());
+log.trace('secureFetch = ' + JSON.stringify(secureFetch));
 
 export const jepFetch = configureJepFetch({
 //  secureFetch: getFetch(getTokens()),
