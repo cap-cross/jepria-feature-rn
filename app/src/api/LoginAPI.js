@@ -38,11 +38,12 @@ export const processLogin = (username, password) => {
 };
 
 export const getCredentials = () => {
+  log.trace("LoginAPI.getCredentials()");
   return new Promise(async (resolve, reject) => {
-    log.trace("LoginAPI: Resolving credentials...");
-    let tokens;
+    log.trace("LoginAPI.getCredentials(): Resolving credentials...");
     try {
-      tokens = await getTokens(); 
+      let tokens = await getTokens(); 
+      log.trace("LoginAPI.getCredentials(): tokens = " + JSON.stringify(tokens));
       pin = await SecureStore.getItemAsync("pin");
       hasFingerPrint = await SecureStore.getItemAsync("hasFingerPrint");
       log.trace("LoginAPI: Credentials resolved...")
@@ -107,29 +108,60 @@ const refreshTokens = (refreshToken) => {
   })
 };
 
+const getFetch = async function (tokenPromise) {
+  let tokens = await tokenPromise;
+  log.trace("getFetch(): tokens = " + JSON.stringify(tokens));
+  log.trace("getFetch(): accessToken = " + tokens.accessToken);
+  return function (input, init) {
+    log.trace('getFetch() accessToken = ' + accessToken);
+    const initAccessToken = merge(
+      {
+        headers: {
+          'Authorization': 'Bearer ' + accessToken,
+        },
+      },
+      init,
+    );
+    return fetchJSON(input, initAccessToken);
+  }
+}
+ 
 export const authenticate = () => {
-  log.trace("LoginAPI: Authenticating...")
+  log.trace("LoginAPI.authenticate(): Authenticating...")
   return getTokens()
-  .then((tokens) => {
-    return refreshTokens(tokens.refreshToken)
-      .then((refreshedTokens) => {
-        log.trace("LoginAPI: Authentication completed New tokens = " + JSON.stringify(refreshedTokens));
-        return refreshedTokens;
-      })
-      .catch((error) => {
-        log.trace("LoginAPI: Authentication failed, redirect to Auth process");
-        throw error;
-      });
+  .then(async (tokens) => {
+    // return refreshTokens(tokens.refreshToken)
+    //   .then((newTokens) => {
+    //     log.trace("LoginAPI: Authentication completed New tokens = " + JSON.stringify(newTokens));
+    //     newSecureFetch = getFetch(newTokens.accessToken);
+    //     log.trace("LoginAPI: newSecureFetch = " + newSecureFetch);
+    //     return newSecureFetch;
+    //   })
+    //   .catch((error) => {
+    //     log.trace("LoginAPI: Authentication failed, redirect to Auth process");
+    //     throw error;
+    //   });
+    try {
+      newSecureFetch = await getFetch(refreshTokens(tokens.refreshToken));
+      log.trace("LoginAPI.authenticate(): newSecureFetch = " + newSecureFetch);
+      return newSecureFetch;
+  } catch(e) {
+      log.trace("LoginAPI.authenticate(): Authentication failed, redirect to Auth process");
+      throw error;
+    }
   })
   .catch((error) => {
-    log.trace("LoginAPI: Authentication failed, redirect to Auth process");
+    log.trace("LoginAPI.authenticate(): Authentication failed, redirect to Auth process");
     throw error;
   });
 }
 
+// const secureFetch = () => {
+//   return getFetch(getTokens());
+// }
+
 export const jepFetch = configureJepFetch({
-  getTokens,
+  secureFetch: getFetch(getTokens()),
   shouldAuthenticate,
-  authenticate,
-  fetch: fetchJSON,
+  authenticate
 });
