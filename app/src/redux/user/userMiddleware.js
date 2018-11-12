@@ -8,12 +8,9 @@ const LOGOUT_URL = `${FEATURE_CONTEXT_URL}/logout`;
 
 export const getUserData = () => {
     return (dispatch) => {
-      log.trace(`getUserData(): BEGIN`);
       dispatch(actions.fetchUser(true));
-      log.trace("fetching getUserData():" + USER_DATA_API_URL);
       jepFetch(USER_DATA_API_URL)
         .then((response) => {
-          log.trace("fetching getUserData(): response = " + JSON.stringify(response));
           dispatch(actions.fetchUserSuccess(response));
         })
         .catch((error) => {
@@ -42,7 +39,6 @@ export const getUserData = () => {
 
   export const authenticateUser = () => {
       return (dispatch) => {
-        log.trace(`authenticate(): BEGIN`);
         dispatch(actions.authenticateUser(true));
         log.trace("Processing authentication()");
         return authenticate()

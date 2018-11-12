@@ -2,11 +2,10 @@
 import log from '@cap-cross/cap-core';
 
 function configureJepFetch(loginApi) {
-  const {secureFetch, authenticate, shouldAuthenticate} = loginApi;
+  const {secureFetchPromise, authenticate, shouldAuthenticate} = loginApi;
 
   return async (input, init) => {
-    // return secureFetch(input, init)
-    const fetch = await secureFetch;
+    const fetch = await secureFetchPromise;
     return fetch(input, init)
       .catch((error) => {
         if (shouldAuthenticate(error)) {

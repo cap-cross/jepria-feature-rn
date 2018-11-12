@@ -48,8 +48,6 @@ const fetchJSON = (input, init) => {
     init,
   );
 
-  log.trace(`fetchJSON() initJson = ${JSON.stringify(initJson)}`);
-
   return fetch(input, initJson)
     .then(validateResponse)
 };

@@ -14,7 +14,7 @@ const shouldAuthenticate = error => {
 }
 
 export const processLogin = (username, password) => {
-  log.trace("LoginAPI: Processing authentication...");
+  log.info("LoginAPI: Processing authentication...");
   return fetch(AUTH_URL + 'username=' + username + '&password=' + password,
   {
     method: 'POST',
@@ -22,7 +22,7 @@ export const processLogin = (username, password) => {
   })
   .then((response) => {
     if (response.ok) {
-      log.trace("LoginAPI: Authentication completed...");
+      log.info("LoginAPI: Authentication completed...");
       response.json().then(function(tokens) {
         saveTokens(tokens.accessToken, tokens.refreshToken);
         return response;
@@ -33,39 +33,37 @@ export const processLogin = (username, password) => {
     }
   })
   .catch((error) => {
-    log.trace("LoginAPI: Authentication failed: " + error.message);
+    log.error("LoginAPI: Authentication failed: " + error.message);
     throw error;
   })
 };
 
 export const getCredentials = () => {
-  log.trace("LoginAPI.getCredentials()");
   return new Promise(async (resolve, reject) => {
-    log.trace("LoginAPI.getCredentials(): Resolving credentials...");
+    log.info("LoginAPI.getCredentials(): Resolving credentials...");
     try {
       let tokens = await getTokens(); 
-      log.trace("LoginAPI.getCredentials(): tokens = " + JSON.stringify(tokens));
       pin = await SecureStore.getItemAsync("pin");
       hasFingerPrint = await SecureStore.getItemAsync("hasFingerPrint");
-      log.trace("LoginAPI: Credentials resolved...")
+      log.info("LoginAPI: Credentials resolved...")
       resolve({...tokens, pin, hasFingerPrint});
     } catch (error) {
-      log.trace("LoginAPI: Failed to resolve credentials...")
+      log.error("LoginAPI: Failed to resolve credentials...")
       reject(error);
     }
   });
 }
 
 const getTokens = async () => {
-  log.trace("LoginAPI: Resolving tokens...");
+  log.info("LoginAPI: Resolving tokens...");
   let accessToken, refreshToken;
   accessToken = await SecureStore.getItemAsync("accessToken");
   refreshToken = await SecureStore.getItemAsync("refreshToken");
   if (accessToken === null || refreshToken === null) {
-    log.trace("LoginAPI: Failed to resolve tokens...")
+    log.error("LoginAPI: Failed to resolve tokens...")
     throw new Errors.APIError("No tokens found", Errors.NO_CREDENTIALS_ERROR);
   } else {
-    log.trace("LoginAPI: Tokens resolved...")
+    log.info("LoginAPI: Tokens resolved...")
     return({accessToken, refreshToken});
   }
 }
@@ -76,12 +74,12 @@ const saveTokens = async (accessToken, refreshToken) => {
     await SecureStore.setItemAsync("accessToken", accessToken);
     await SecureStore.setItemAsync("refreshToken", refreshToken);
   } catch (error) {
-    log.trace("LoginAPI: Error occured while saving tokens: " + error.message);
+    log.error("LoginAPI: Error occured while saving tokens: " + error.message);
   }
 }
 
 const refreshTokens = (refreshToken) => {
-  log.trace("LoginAPI: Refreshing tokens...");
+  log.info("LoginAPI: Refreshing tokens...");
   return fetch(REFRESH_URL,
   {
     method: 'POST',
@@ -99,24 +97,20 @@ const refreshTokens = (refreshToken) => {
     }
   })
   .then((tokens) => {
-    log.trace("LoginAPI: Saving new tokens... " + JSON.stringify(tokens));
+    log.trace("LoginAPI: Saving new tokens... ");
     saveTokens(tokens.accessToken, tokens.refreshToken);
     return tokens;
   })
   .catch((error) => {
-    log.trace("LoginAPI: Refreshing tokens failed: " + error.message);
+    log.error("LoginAPI: Refreshing tokens failed: " + error.message);
     throw error;
   })
 };
 
 const getFetch = async function (tokenPromise) {
-  log.trace("getFetch() BEGIN");
   let tokens = await tokenPromise;
-  log.trace("getFetch(): tokens = " + JSON.stringify(tokens));
   let accessToken = tokens.accessToken
-  log.trace("getFetch(): accessToken = " + accessToken);
   let result = function (input, init) {
-    log.trace('getFetch() accessToken = ' + accessToken);
     const initAccessToken = merge(
       {
         headers: {
@@ -127,50 +121,31 @@ const getFetch = async function (tokenPromise) {
     );
     return fetchJSON(input, initAccessToken);
   };
-
-  log.trace('getFetch() result = ' + result);
   return result;
 }
  
 export const authenticate = () => {
-  log.trace("LoginAPI.authenticate(): Authenticating...")
+  log.info("LoginAPI.authenticate(): Authenticating...")
   return getTokens()
   .then(async (tokens) => {
-    // return refreshTokens(tokens.refreshToken)
-    //   .then((newTokens) => {
-    //     log.trace("LoginAPI: Authentication completed New tokens = " + JSON.stringify(newTokens));
-    //     newSecureFetch = getFetch(newTokens.accessToken);
-    //     log.trace("LoginAPI: newSecureFetch = " + newSecureFetch);
-    //     return newSecureFetch;
-    //   })
-    //   .catch((error) => {
-    //     log.trace("LoginAPI: Authentication failed, redirect to Auth process");
-    //     throw error;
-    //   });
     try {
       newSecureFetch = getFetch(refreshTokens(tokens.refreshToken));
-      log.trace("LoginAPI.authenticate(): newSecureFetch = " + newSecureFetch);
       return newSecureFetch;
   } catch(e) {
-      log.trace("LoginAPI.authenticate(): Authentication failed, redirect to Auth process");
+      log.error("LoginAPI.authenticate(): Authentication failed, redirect to Auth process");
       throw error;
     }
   })
   .catch((error) => {
-    log.trace("LoginAPI.authenticate(): Authentication failed, redirect to Auth process");
+    log.error("LoginAPI.authenticate(): Authentication failed, redirect to Auth process");
     throw error;
   });
 }
 
-// const secureFetch = () => {
-//   return getFetch(getTokens());
-// }
-const secureFetch = getFetch(getTokens());
-log.trace('secureFetch = ' + JSON.stringify(secureFetch));
+const secureFetchPromise = getFetch(getTokens());
 
 export const jepFetch = configureJepFetch({
-//  secureFetch: getFetch(getTokens()),
-  secureFetch,
+  secureFetchPromise,
   shouldAuthenticate,
   authenticate
 });
