@@ -6,7 +6,6 @@ import log from '@cap-cross/cap-core';
 import * as Errors from './errors';
 
 const parseJSON = (response) => {
-  log.trace('fetchJSON.parseJSON()');
   const isJsonResponse =
     response.headers.get('content-type') &&
     response.headers
@@ -15,7 +14,6 @@ const parseJSON = (response) => {
       .indexOf('application/json') >= 0;
   if (isJsonResponse) {
     return response.json().then(data => {
-      //log.trace('fetchJSON.parseJSON(): ' + JSON.stringify(data));
       return data
     });
   } else {
