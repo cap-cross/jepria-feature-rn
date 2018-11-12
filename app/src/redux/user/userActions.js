@@ -23,7 +23,7 @@ export function fetchUser(isLoading) {
 }
 
 export function fetchUserSuccess(user) {
-    log.trace("FETCH fetchUser SUCCESS " + user.operatorId + '/' + user.userName);
+    log.trace("FETCH featureUser SUCCESS " + user.operatorId + '/' + user.userName);
 
     return {
         type: FETCH_USER_SUCCESS,
@@ -35,7 +35,7 @@ export function fetchUserSuccess(user) {
 
 
 export function fetchUserFailure(isFailed, errorMessage) {
-    log.trace("FETCH fetchUser FAILURE " + isFailed + " " + errorMessage);
+    log.trace("FETCH featureUser FAILURE " + isFailed + " " + errorMessage);
 
     return {
         type: FETCH_USER_FAILURE,
@@ -67,7 +67,7 @@ export function loginUserSuccess() {
 
 
 export function loginUserFailure(isFailed, errorMessage) {
-    log.trace("LOGIN loginUser FAILURE " + isFailed + " " + errorMessage);
+    log.trace("LOGIN featureUser FAILURE " + isFailed + " " + errorMessage);
 
     return {
         type: LOGIN_USER_FAILURE,
@@ -99,7 +99,7 @@ export function authenticateUserSuccess() {
 
 
 export function authenticateUserFailure(isFailed, errorMessage) {
-    log.trace("AUTH authenticateUser FAILURE " + isFailed + " " + errorMessage);
+    log.trace("AUTH featureUser FAILURE " + isFailed + " " + errorMessage);
 
     return {
         type: AUTH_USER_FAILURE,
