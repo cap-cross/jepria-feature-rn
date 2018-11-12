@@ -108,8 +108,8 @@ const refreshTokens = (refreshToken) => {
 };
 
 const getFetch = async function (tokenPromise) {
-  let tokens = await tokenPromise;
-  let result = function (input, init) {
+  const tokens = await tokenPromise;
+  const result = function (input, init) {
     const initAccessToken = merge(
       {
         headers: {
