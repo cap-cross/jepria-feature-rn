@@ -1,3 +1,4 @@
+import merge from 'lodash/merge';
 import {BASE_URL, FEATURE_SERVICE_CONTEXT} from './apiConfig';
 import {SecureStore} from 'expo';
 import log from '@cap-cross/cap-core';
@@ -112,7 +113,8 @@ const getFetch = async function (tokenPromise) {
   log.trace("getFetch() BEGIN");
   let tokens = await tokenPromise;
   log.trace("getFetch(): tokens = " + JSON.stringify(tokens));
-  log.trace("getFetch(): accessToken = " + tokens.accessToken);
+  let accessToken = tokens.accessToken
+  log.trace("getFetch(): accessToken = " + accessToken);
   let result = function (input, init) {
     log.trace('getFetch() accessToken = ' + accessToken);
     const initAccessToken = merge(
