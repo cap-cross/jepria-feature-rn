@@ -128,8 +128,7 @@ export const authenticate = () => {
   return getTokens()
   .then(async (tokens) => {
     try {
-      newSecureFetch = getFetch(refreshTokens(tokens.refreshToken));
-      return newSecureFetch;
+      return getFetch(refreshTokens(tokens.refreshToken));
   } catch(e) {
       log.error("LoginAPI.authenticate(): Authentication failed, redirect to Auth process");
       throw error;
@@ -141,10 +140,8 @@ export const authenticate = () => {
   });
 }
 
-const secureFetchPromise = getFetch(getTokens());
-
 export const jepFetch = configureJepFetch({
-  secureFetchPromise,
+  secureFetchPromise: getFetch(getTokens()),
   shouldAuthenticate,
   authenticate
 });
