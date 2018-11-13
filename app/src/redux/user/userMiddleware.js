@@ -1,6 +1,8 @@
 import * as actions from './userActions.js';
 import {FEATURE_CONTEXT_URL} from '../../api/apiConfig';
-import {processLogin, jwtAuthenticate, secureFetch } from '../../api/JWTLoginAPI';
+import {processLogin, jwtAuthenticate} from '../../api/JWTLoginAPI';
+import {secureFetch } from '../../DI/diFactory';
+
 import log from '@cap-cross/cap-core';
 
 const USER_DATA_API_URL = `${FEATURE_CONTEXT_URL}/userdata`;

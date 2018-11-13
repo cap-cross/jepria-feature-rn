@@ -3,7 +3,6 @@ import {BASE_URL, FEATURE_SERVICE_CONTEXT} from './apiConfig';
 import {SecureStore} from 'expo';
 import log from '@cap-cross/cap-core';
 import fetchJSON from './fetchJSON';
-import configureSecureFetch from './configureSecureFetch';
 import * as Errors from './errors';
 
 const AUTH_URL = `${BASE_URL}/auth/jwt/login?`
@@ -140,10 +139,8 @@ export const jwtAuthenticate = () => {
   });
 }
 
-const jwtLoginAPI = {
+export const jwtLoginAPI = {
   credentialedFetchPromise: jwtGetFetch(getTokens()),
   shouldAuthenticate: jwtShouldAuthenticate,
   authenticate: jwtAuthenticate
 };
-
-export const secureFetch = configureSecureFetch(jwtLoginAPI);

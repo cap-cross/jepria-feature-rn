@@ -9,7 +9,7 @@ function configureSecureFetch(loginApi) {
     return credentialedFetch(input, init)
       .catch((error) => {
         if (shouldAuthenticate(error)) {
-          log.trace("secureFetch: Access Token has expired, refreshing tokens...");
+          log.info("secureFetch: Access Token has expired, refreshing tokens...");
           return authenticate()
             .then((newSecureFetch) => {
               return newSecureFetch(input, init);

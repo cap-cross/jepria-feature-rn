@@ -1,6 +1,6 @@
 // FeatureAPI.js
 import * as apiConfig from './apiConfig';
-import { secureFetch } from './JWTLoginAPI';
+import { secureFetch } from '../DI/diFactory';
 import log from '@cap-cross/cap-core';
 
 const buildFindUrl = (filter) => {
