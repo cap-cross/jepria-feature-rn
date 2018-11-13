@@ -1,18 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Toast } from 'native-base';
 import { View, ActivityIndicator } from 'react-native';
-import bindActionCreators from 'redux/lib/bindActionCreators';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import { reduxForm } from 'redux-form';
 import log from '@cap-cross/cap-core';
-
-import Background from '../../common/Background';
 import {LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';
-import { getCredentials } from '../../../api/LoginAPI';
-import * as Errors from '../../../api/errors';
+import { getCredentials } from '../../../api/JWTLoginAPI';
 
 const mapDispatchToProps = dispatch => ({
   login: (username, password) => {return dispatch(login(username, password))}

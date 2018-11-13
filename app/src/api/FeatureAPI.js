@@ -1,6 +1,6 @@
 // FeatureAPI.js
 import * as apiConfig from './apiConfig';
-import { jepFetch } from './LoginAPI';
+import { secureFetch } from './JWTLoginAPI';
 import log from '@cap-cross/cap-core';
 
 const buildFindUrl = (filter) => {
@@ -78,11 +78,11 @@ const buildFindUrl = (filter) => {
 
 const features = {
   find(filter) {
-    return jepFetch(buildFindUrl(filter));
+    return secureFetch(buildFindUrl(filter));
   },
 
   addTask(task) {
-    return jepFetch(apiConfig.FEATURE_API_ADD_URL, {
+    return secureFetch(apiConfig.FEATURE_API_ADD_URL, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -104,7 +104,7 @@ const features = {
 
   updateTask(task) {
     const updateTaskUrl = apiConfig.FEATURE_API_UPDATE_URL;
-    return jepFetch(updateTaskUrl, {
+    return secureFetch(updateTaskUrl, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
@@ -128,7 +128,7 @@ const features = {
 
   removeTask(task) {
     const removeTaskUrl = apiConfig.FEATURE_API_DELETE_URL;
-    return jepFetch(`${removeTaskUrl}/${task.id}`, {
+    return secureFetch(`${removeTaskUrl}/${task.id}`, {
       method: 'DELETE',
     })
       .then((response) => {
@@ -142,19 +142,19 @@ const features = {
 // TODO Реализовать загрузку статусов
   const statuses = {  
     getStatuses() {
-      return jepFetch(apiConfig.FEATURE_STATUSES_URL);
+      return secureFetch(apiConfig.FEATURE_STATUSES_URL);
     }
   };
 
   const operators = {  
     getOperators() {
-      return jepFetch(apiConfig.FEATURE_OPERATORS_URL);
+      return secureFetch(apiConfig.FEATURE_OPERATORS_URL);
     },
   };
 
   const featureProcess = {
     findTaskHistory(id) {
-      return jepFetch(apiConfig.FEATURE_API_FIND_URL + '/' + id + '/featureprocess');
+      return secureFetch(apiConfig.FEATURE_API_FIND_URL + '/' + id + '/featureprocess');
     }
   }
 

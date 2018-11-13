@@ -1,6 +1,6 @@
 import * as actions from './userActions.js';
 import {FEATURE_CONTEXT_URL} from '../../api/apiConfig';
-import {processLogin, authenticate, jepFetch } from '../../api/LoginAPI';
+import {processLogin, jwtAuthenticate, secureFetch } from '../../api/JWTLoginAPI';
 import log from '@cap-cross/cap-core';
 
 const USER_DATA_API_URL = `${FEATURE_CONTEXT_URL}/userdata`;
@@ -9,7 +9,7 @@ const LOGOUT_URL = `${FEATURE_CONTEXT_URL}/logout`;
 export const getUserData = () => {
     return (dispatch) => {
       dispatch(actions.fetchUser(true));
-      jepFetch(USER_DATA_API_URL)
+      secureFetch(USER_DATA_API_URL)
         .then((response) => {
           dispatch(actions.fetchUserSuccess(response));
         })
@@ -41,7 +41,7 @@ export const getUserData = () => {
       return (dispatch) => {
         dispatch(actions.authenticateUser(true));
         log.trace("Processing authentication()");
-        return authenticate()
+        return jwtAuthenticate()
           .then((response) => {
             dispatch(actions.authenticateUserSuccess());
             return response;
