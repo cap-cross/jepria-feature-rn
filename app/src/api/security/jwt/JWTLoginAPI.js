@@ -1,9 +1,9 @@
 import merge from 'lodash/merge';
-import {BASE_URL, FEATURE_SERVICE_CONTEXT} from './apiConfig';
+import {BASE_URL} from '../../apiConfig';
 import {SecureStore} from 'expo';
 import log from '@cap-cross/cap-core';
-import fetchJSON from './fetchJSON';
-import * as Errors from './errors';
+import fetchJSON from '../../fetchJSON';
+import * as Errors from '../../errors';
 
 const AUTH_URL = `${BASE_URL}/auth/jwt/login?`
 const REFRESH_URL = `${BASE_URL}/auth/jwt/refresh`
