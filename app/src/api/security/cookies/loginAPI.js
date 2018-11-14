@@ -35,17 +35,17 @@ const processLogin = (username, password) => {
 
 const getCredentials = () => {
   return new Promise(async (resolve, reject) => {
-    log.info("Resolving credentials...")
+    log.info("loginAPI(Cookies): Resolving credentials...")
     let username, password;
     username = await SecureStore.getItemAsync("username");
     password = await SecureStore.getItemAsync("password");
     pin = await SecureStore.getItemAsync("pin");
     hasFingerPrint = await SecureStore.getItemAsync("hasFingerPrint");
     if (username === null || password === null) {
-      log.error("Failed to resolve credential...")
+      log.error("loginAPI(Cookies): Failed to resolve credential...")
       reject(new Errors.APIError("No credentials found", Errors.NO_CREDENTIALS_ERROR));
     } else {
-      log.info("Credentials resolved...")
+      log.info("loginAPI(Cookies): Credentials resolved...")
       resolve({username, password, pin, hasFingerPrint});
     }
   });
@@ -53,11 +53,11 @@ const getCredentials = () => {
 
 const saveCredentials = async (username, password) => {
   try {
-    log.info("Saving credentials...");
+    log.info("loginAPI(Cookies): Saving credentials...");
     await SecureStore.setItemAsync("username", username);
     await SecureStore.setItemAsync("password", password);
   } catch (error) {
-    log.error("Error occured while saving credentials: " + error.message);
+    log.error("loginAPI(Cookies): Error occured while saving credentials: " + error.message);
   }
 }
 
@@ -66,21 +66,21 @@ const getCredentialedFetch = async function () {
 }
 
 const authenticate = () => {
-  log.info("Authenticating...")
+  log.info("loginAPI(Cookies): Authenticating...")
   return getCredentials()
   .then(async (credentials) => {
     await processLogin(credentials.username, credentials.password)
     .then((response) => {
-      log.info("Authentication completed");
+      log.info("loginAPI(Cookies): Authentication completed");
       return response;
     })
     .catch((error) => {
-      log.error("Authentication failed, redirect to Auth process");
+      log.error("loginAPI(Cookies): Authentication failed, redirect to Auth process");
       throw error;
     });
   })
   .catch((error) => {
-    log.error("Authentication failed, redirect to Auth process");
+    log.error("loginAPI(Cookies): Authentication failed, redirect to Auth process");
     throw error;
   });
 }
