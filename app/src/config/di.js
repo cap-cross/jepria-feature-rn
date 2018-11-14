@@ -1,1 +1,1 @@
-export {loginAPI} from '../api/security/jwt/JWTLoginAPI';
+export {loginAPI} from '../api/security/jwt/loginAPI';
