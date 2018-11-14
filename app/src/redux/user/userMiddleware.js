@@ -1,7 +1,7 @@
 import log from '@cap-cross/cap-core';
 import * as actions from './userActions.js';
 import { FEATURE_CONTEXT_URL } from '../../api/apiConfig';
-import { loginAPI } from '../../DI/diConfig';
+import { loginAPI } from '../../config/diConfig';
 import { secureFetch } from '../../api/configureSecureFetch';
 
 const USER_DATA_API_URL = `${FEATURE_CONTEXT_URL}/userdata`;

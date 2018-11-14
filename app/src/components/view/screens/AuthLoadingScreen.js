@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import log from '@cap-cross/cap-core';
 import {LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';
-import { loginAPI } from '../../../DI/diConfig';
+import { loginAPI } from '../../../config/diConfig';
 
 const mapDispatchToProps = dispatch => ({
   login: (username, password) => {return dispatch(login(username, password))}

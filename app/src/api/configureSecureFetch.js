@@ -1,6 +1,6 @@
 
 import log from '@cap-cross/cap-core';
-import {loginAPI} from '../DI/diConfig';
+import {loginAPI} from '../config/diConfig';
 
 function configureSecureFetch(loginApi) {
   const {credentialedFetchPromise, authenticate, shouldAuthenticate} = loginApi;
