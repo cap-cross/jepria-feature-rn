@@ -12,7 +12,7 @@ const jwtShouldAuthenticate = error => {
   return error.errorCode === Errors.AUTHENTICATION_ERROR || error.errorCode === Errors.ACCESS_DENIED;
 }
 
-export const processLogin = (username, password) => {
+const jwtProcessLogin = (username, password) => {
   log.info("JWTLoginAPI: Processing authentication...");
   return fetch(AUTH_URL + 'username=' + username + '&password=' + password,
   {
@@ -122,7 +122,7 @@ const jwtGetFetch = async function (tokenPromise) {
   return result;
 }
  
-export const jwtAuthenticate = () => {
+const jwtAuthenticate = () => {
   log.info("JWTLoginAPI.authenticate(): Authenticating...")
   return getTokens()
   .then(async (tokens) => {
@@ -139,8 +139,9 @@ export const jwtAuthenticate = () => {
   });
 }
 
-export const jwtLoginAPI = {
+export const loginAPI = {
   credentialedFetchPromise: jwtGetFetch(getTokens()),
   shouldAuthenticate: jwtShouldAuthenticate,
-  authenticate: jwtAuthenticate
+  authenticate: jwtAuthenticate,
+  processLogin: jwtProcessLogin
 };

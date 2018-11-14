@@ -1,5 +1,6 @@
 
 import configureSecureFetch from '../api/configureSecureFetch';
-import {jwtLoginAPI} from '../api/JWTLoginAPI';
+import {loginAPI} from '../api/JWTLoginAPI';
 
-export const secureFetch = configureSecureFetch(jwtLoginAPI);
+export {loginAPI} from '../api/JWTLoginAPI';
+export const secureFetch = configureSecureFetch(loginAPI);
