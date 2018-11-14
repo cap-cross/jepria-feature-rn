@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import log from '@cap-cross/cap-core';
 import {LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';
-import { getCredentials } from '../../../api/JWTLoginAPI';
+import { loginAPI } from '../../../DI/diConfig';
 
 const mapDispatchToProps = dispatch => ({
   login: (username, password) => {return dispatch(login(username, password))}
@@ -24,7 +24,7 @@ export default class AuthLoadingScreen extends React.Component {
 
   componentDidMount() {
 
-    getCredentials()
+    loginAPI.getCredentials()
       .then((credentials) => {
         log.trace("Credentials found, redirecting to verification...");
         this.props.navigation.navigate("Verify", credentials);

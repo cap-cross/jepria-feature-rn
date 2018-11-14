@@ -8,11 +8,11 @@ import * as Errors from './errors';
 const AUTH_URL = `${BASE_URL}/auth/jwt/login?`
 const REFRESH_URL = `${BASE_URL}/auth/jwt/refresh`
 
-const jwtShouldAuthenticate = error => {
+const shouldAuthenticate = error => {
   return error.errorCode === Errors.AUTHENTICATION_ERROR || error.errorCode === Errors.ACCESS_DENIED;
 }
 
-const jwtProcessLogin = (username, password) => {
+const processLogin = (username, password) => {
   log.info("JWTLoginAPI: Processing authentication...");
   return fetch(AUTH_URL + 'username=' + username + '&password=' + password,
   {
@@ -37,7 +37,7 @@ const jwtProcessLogin = (username, password) => {
   })
 };
 
-export const getCredentials = () => {
+const getCredentials = () => {
   return new Promise(async (resolve, reject) => {
     log.info("JWTLoginAPI.getCredentials(): Resolving credentials...");
     try {
@@ -106,7 +106,7 @@ const refreshTokens = (refreshToken) => {
   })
 };
 
-const jwtGetFetch = async function (tokenPromise) {
+const getCredentialedFetch = async function (tokenPromise) {
   const tokens = await tokenPromise;
   const result = function (input, init) {
     const initAccessToken = merge(
@@ -122,12 +122,12 @@ const jwtGetFetch = async function (tokenPromise) {
   return result;
 }
  
-const jwtAuthenticate = () => {
+const authenticate = () => {
   log.info("JWTLoginAPI.authenticate(): Authenticating...")
   return getTokens()
   .then(async (tokens) => {
     try {
-      return jwtGetFetch(refreshTokens(tokens.refreshToken));
+      return getCredentialedFetch(refreshTokens(tokens.refreshToken));
   } catch(e) {
       log.error("JWTLoginAPI.authenticate(): Authentication failed, redirect to Auth process");
       throw error;
@@ -140,8 +140,9 @@ const jwtAuthenticate = () => {
 }
 
 export const loginAPI = {
-  credentialedFetchPromise: jwtGetFetch(getTokens()),
-  shouldAuthenticate: jwtShouldAuthenticate,
-  authenticate: jwtAuthenticate,
-  processLogin: jwtProcessLogin
+  credentialedFetchPromise: getCredentialedFetch(getTokens()),
+  shouldAuthenticate,
+  authenticate,
+  getCredentials,
+  processLogin
 };
