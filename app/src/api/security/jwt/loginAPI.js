@@ -13,7 +13,7 @@ const shouldAuthenticate = error => {
 }
 
 const processLogin = (username, password) => {
-  log.info("JWTLoginAPI: Processing authentication...");
+  log.info("loginAPI: Processing authentication...");
   return fetch(AUTH_URL + 'username=' + username + '&password=' + password,
   {
     method: 'POST',
@@ -21,7 +21,7 @@ const processLogin = (username, password) => {
   })
   .then((response) => {
     if (response.ok) {
-      log.info("JWTLoginAPI: Authentication completed...");
+      log.info("loginAPI: Authentication completed...");
       response.json().then(function(tokens) {
         saveTokens(tokens.accessToken, tokens.refreshToken);
         return response;
@@ -32,53 +32,53 @@ const processLogin = (username, password) => {
     }
   })
   .catch((error) => {
-    log.error("JWTLoginAPI: Authentication failed: " + error.message);
+    log.error("loginAPI: Authentication failed: " + error.message);
     throw error;
   })
 };
 
 const getCredentials = () => {
   return new Promise(async (resolve, reject) => {
-    log.info("JWTLoginAPI.getCredentials(): Resolving credentials...");
+    log.info("loginAPI.getCredentials(): Resolving credentials...");
     try {
       let tokens = await getTokens(); 
       pin = await SecureStore.getItemAsync("pin");
       hasFingerPrint = await SecureStore.getItemAsync("hasFingerPrint");
-      log.info("JWTLoginAPI: Credentials resolved...")
+      log.info("loginAPI: Credentials resolved...")
       resolve({...tokens, pin, hasFingerPrint});
     } catch (error) {
-      log.error("JWTLoginAPI: Failed to resolve credentials...")
+      log.error("loginAPI: Failed to resolve credentials...")
       reject(error);
     }
   });
 }
 
 const getTokens = async () => {
-  log.info("JWTLoginAPI: Resolving tokens...");
+  log.info("loginAPI: Resolving tokens...");
   let accessToken, refreshToken;
   accessToken = await SecureStore.getItemAsync("accessToken");
   refreshToken = await SecureStore.getItemAsync("refreshToken");
   if (accessToken === null || refreshToken === null) {
-    log.error("JWTLoginAPI: Failed to resolve tokens...")
+    log.error("loginAPI: Failed to resolve tokens...")
     throw new Errors.APIError("No tokens found", Errors.NO_CREDENTIALS_ERROR);
   } else {
-    log.info("JWTLoginAPI: Tokens resolved...")
+    log.info("loginAPI: Tokens resolved...")
     return({accessToken, refreshToken});
   }
 }
 
 const saveTokens = async (accessToken, refreshToken) => {
   try {
-    log.trace("JWTLoginAPI: Saving tokens...");
+    log.trace("loginAPI: Saving tokens...");
     await SecureStore.setItemAsync("accessToken", accessToken);
     await SecureStore.setItemAsync("refreshToken", refreshToken);
   } catch (error) {
-    log.error("JWTLoginAPI: Error occured while saving tokens: " + error.message);
+    log.error("loginAPI: Error occured while saving tokens: " + error.message);
   }
 }
 
 const refreshTokens = (refreshToken) => {
-  log.info("JWTLoginAPI: Refreshing tokens...");
+  log.info("loginAPI: Refreshing tokens...");
   return fetch(REFRESH_URL,
   {
     method: 'POST',
@@ -96,12 +96,12 @@ const refreshTokens = (refreshToken) => {
     }
   })
   .then((tokens) => {
-    log.trace("JWTLoginAPI: Saving new tokens... ");
+    log.trace("loginAPI: Saving new tokens... ");
     saveTokens(tokens.accessToken, tokens.refreshToken);
     return tokens;
   })
   .catch((error) => {
-    log.error("JWTLoginAPI: Refreshing tokens failed: " + error.message);
+    log.error("loginAPI: Refreshing tokens failed: " + error.message);
     throw error;
   })
 };
@@ -123,18 +123,18 @@ const getCredentialedFetch = async function (tokenPromise) {
 }
  
 const authenticate = () => {
-  log.info("JWTLoginAPI.authenticate(): Authenticating...")
+  log.info("Authenticating...")
   return getTokens()
   .then(async (tokens) => {
     try {
       return getCredentialedFetch(refreshTokens(tokens.refreshToken));
   } catch(e) {
-      log.error("JWTLoginAPI.authenticate(): Authentication failed, redirect to Auth process");
+      log.error("Authentication failed, redirect to Auth process");
       throw error;
     }
   })
   .catch((error) => {
-    log.error("JWTLoginAPI.authenticate(): Authentication failed, redirect to Auth process");
+    log.error("Authentication failed, redirect to Auth process");
     throw error;
   });
 }

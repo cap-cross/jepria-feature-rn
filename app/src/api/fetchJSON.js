@@ -1,6 +1,3 @@
-/* global fetch */
-// import "isomorphic-fetch" // Только для web!
-
 import merge from 'lodash/merge';
 import log from '@cap-cross/cap-core';
 import * as Errors from './errors';
