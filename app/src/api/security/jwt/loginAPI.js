@@ -53,6 +53,39 @@ const getCredentials = () => {
   });
 }
 
+const getCredentialedFetch = async function (tokenPromise) {
+  const tokens = await tokenPromise;
+  const result = function (input, init) {
+    const initAccessToken = merge(
+      {
+        headers: {
+          'Authorization': 'Bearer ' + tokens.accessToken,
+        },
+      },
+      init,
+    );
+    return fetchJSON(input, initAccessToken);
+  };
+  return result;
+}
+ 
+const authenticate = () => {
+  log.info("loginAPI(JWT): Authenticating...")
+  return getTokens()
+  .then(async (tokens) => {
+    try {
+      return getCredentialedFetch(refreshTokens(tokens.refreshToken));
+  } catch(e) {
+      log.error("loginAPI(JWT): Authentication failed, redirect to Auth process");
+      throw error;
+    }
+  })
+  .catch((error) => {
+    log.error("loginAPI(JWT): Authentication failed, redirect to Auth process");
+    throw error;
+  });
+}
+
 const getTokens = async () => {
   log.info("loginAPI(JWT): Resolving tokens...");
   let accessToken, refreshToken;
@@ -105,39 +138,6 @@ const refreshTokens = (refreshToken) => {
     throw error;
   })
 };
-
-const getCredentialedFetch = async function (tokenPromise) {
-  const tokens = await tokenPromise;
-  const result = function (input, init) {
-    const initAccessToken = merge(
-      {
-        headers: {
-          'Authorization': 'Bearer ' + tokens.accessToken,
-        },
-      },
-      init,
-    );
-    return fetchJSON(input, initAccessToken);
-  };
-  return result;
-}
- 
-const authenticate = () => {
-  log.info("loginAPI(JWT): Authenticating...")
-  return getTokens()
-  .then(async (tokens) => {
-    try {
-      return getCredentialedFetch(refreshTokens(tokens.refreshToken));
-  } catch(e) {
-      log.error("loginAPI(JWT): Authentication failed, redirect to Auth process");
-      throw error;
-    }
-  })
-  .catch((error) => {
-    log.error("loginAPI(JWT): Authentication failed, redirect to Auth process");
-    throw error;
-  });
-}
 
 export const loginAPI = {
   credentialedFetchPromise: getCredentialedFetch(getTokens()),
