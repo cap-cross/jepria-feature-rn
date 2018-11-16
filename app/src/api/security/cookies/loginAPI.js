@@ -28,7 +28,7 @@ const processLogin = (username, password) => {
     }
   })
   .catch((error) => {
-    log.error("loginAPI(Cookies): Authentication failed: " + error.message);
+    log.info("loginAPI(Cookies): Authentication failed: " + error.message);
     throw error;
   })
 };
@@ -42,7 +42,7 @@ const getCredentials = () => {
     pin = await SecureStore.getItemAsync("pin");
     hasFingerPrint = await SecureStore.getItemAsync("hasFingerPrint");
     if (username === null || password === null) {
-      log.error("loginAPI(Cookies): Failed to resolve credential...")
+      log.info("loginAPI(Cookies): Failed to resolve credential...")
       reject(new Errors.APIError("No credentials found", Errors.NO_CREDENTIALS_ERROR));
     } else {
       log.info("loginAPI(Cookies): Credentials resolved...")
@@ -57,7 +57,7 @@ const saveCredentials = async (username, password) => {
     await SecureStore.setItemAsync("username", username);
     await SecureStore.setItemAsync("password", password);
   } catch (error) {
-    log.error("loginAPI(Cookies): Error occured while saving credentials: " + error.message);
+    log.info("loginAPI(Cookies): Error occured while saving credentials: " + error.message);
   }
 }
 
@@ -75,12 +75,12 @@ const authenticate = () => {
       return response;
     })
     .catch((error) => {
-      log.error("loginAPI(Cookies): Authentication failed, redirect to Auth process");
+      log.info("loginAPI(Cookies): Authentication failed, redirect to Auth process");
       throw error;
     });
   })
   .catch((error) => {
-    log.error("loginAPI(Cookies): Authentication failed, redirect to Auth process");
+    log.info("loginAPI(Cookies): Authentication failed, redirect to Auth process");
     throw error;
   });
 }

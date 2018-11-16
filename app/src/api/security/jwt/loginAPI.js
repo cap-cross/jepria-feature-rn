@@ -32,7 +32,7 @@ const processLogin = (username, password) => {
     }
   })
   .catch((error) => {
-    log.error("loginAPI(JWT): Authentication failed: " + error.message);
+    log.info("loginAPI(JWT): Authentication failed: " + error.message);
     throw error;
   })
 };
@@ -47,7 +47,7 @@ const getCredentials = () => {
       log.info("loginAPI(JWT): Credentials resolved...")
       resolve({...tokens, pin, hasFingerPrint});
     } catch (error) {
-      log.error("loginAPI(JWT): Failed to resolve credentials...")
+      log.trace("loginAPI(JWT): Failed to resolve credentials...");
       reject(error);
     }
   });
@@ -76,12 +76,12 @@ const authenticate = () => {
     try {
       return getCredentialedFetch(refreshTokens(tokens.refreshToken));
   } catch(e) {
-      log.error("loginAPI(JWT): Authentication failed, redirect to Auth process");
+      log.info("loginAPI(JWT): Authentication failed, redirect to Auth process");
       throw error;
     }
   })
   .catch((error) => {
-    log.error("loginAPI(JWT): Authentication failed, redirect to Auth process");
+    log.info("loginAPI(JWT): Authentication failed, redirect to Auth process");
     throw error;
   });
 }
@@ -92,7 +92,7 @@ const getTokens = async () => {
   accessToken = await SecureStore.getItemAsync("accessToken");
   refreshToken = await SecureStore.getItemAsync("refreshToken");
   if (accessToken === null || refreshToken === null) {
-    log.error("loginAPI(JWT): Failed to resolve tokens...")
+    log.trace("loginAPI(JWT): Failed to resolve tokens...")
     throw new Errors.APIError("No tokens found", Errors.NO_CREDENTIALS_ERROR);
   } else {
     log.info("loginAPI(JWT): Tokens resolved...")
@@ -106,7 +106,7 @@ const saveTokens = async (accessToken, refreshToken) => {
     await SecureStore.setItemAsync("accessToken", accessToken);
     await SecureStore.setItemAsync("refreshToken", refreshToken);
   } catch (error) {
-    log.error("loginAPI(JWT): Error occured while saving tokens: " + error.message);
+    log.info("loginAPI(JWT): Error occured while saving tokens: " + error.message);
   }
 }
 
@@ -134,7 +134,7 @@ const refreshTokens = (refreshToken) => {
     return tokens;
   })
   .catch((error) => {
-    log.error("loginAPI(JWT): Refreshing tokens failed: " + error.message);
+    log.info("loginAPI(JWT): Refreshing tokens failed: " + error.message);
     throw error;
   })
 };
