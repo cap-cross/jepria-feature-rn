@@ -1,20 +1,17 @@
 import {BASE_URL, FEATURE_SERVICE_CONTEXT} from './apiConfig';
-import {SecureStore} from 'expo';
-import log from '@cap-cross/cap-core';
+import * as SecureStore from 'expo-secure-store';
 import fetchJSON from './fetchJSON'; // from 'jep-fetch'
 import configureJepFetch from './configureJepFetch';
 import * as Errors from './errors';
 
 const LOGIN_API_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/LoginServlet?`;
 
-const SSO_CONTEXT_PART = 'SsoUi'; // Может быть также SsoUi_XX
-
 const shouldAuthentificate = error => {
   return error.errorCode === Errors.AUTHENTIFICATION_ERROR || error.errorCode === Errors.ACCESS_DENIED;
 }
 
 export const processLogin = (username, password) => {
-  log.trace("Processing authentification...");
+  console.log("Processing authentification...");
   return fetch(LOGIN_API_URL + 'username=' + username + '&password=' + password,
   {
     method: 'POST',
@@ -22,7 +19,7 @@ export const processLogin = (username, password) => {
   })
   .then((response) => {
     if (response.ok) {
-      log.trace("Authentification completed...");
+      console.log("Authentification completed...");
       saveCredentials(username, password);
       return response;
     } else {
@@ -31,24 +28,24 @@ export const processLogin = (username, password) => {
     }
   })
   .catch((error) => {
-    log.trace("Authentification failed: " + error.message);
+    console.log("Authentification failed: " + error.message);
     throw error;
   })
 };
 
 export const getCredentials = () => {
   return new Promise(async (resolve, reject) => {
-    log.trace("Resolving credentials...")
+    console.log("Resolving credentials...")
     let username, password;
     username = await SecureStore.getItemAsync("username");
     password = await SecureStore.getItemAsync("password");
     pin = await SecureStore.getItemAsync("pin");
     hasFingerPrint = await SecureStore.getItemAsync("hasFingerPrint");
     if (username === null || password === null) {
-      log.trace("Failed to resolve credential...")
+      console.log("Failed to resolve credential...")
       reject(new Errors.APIError("No credentials found", Errors.NO_CREDENTIALS_ERROR));
     } else {
-      log.trace("Credentials resolved...")
+      console.log("Credentials resolved...")
       resolve({username, password, pin, hasFingerPrint});
     }
   });
@@ -56,30 +53,30 @@ export const getCredentials = () => {
 
 const saveCredentials = async (username, password) => {
   try {
-    log.trace("Saving credentials...");
+    console.log("Saving credentials...");
     await SecureStore.setItemAsync("username", username);
     await SecureStore.setItemAsync("password", password);
   } catch (error) {
-    log.trace("Error occured while saving credentials: " + error.message);
+    console.log("Error occured while saving credentials: " + error.message);
   }
 }
 
 export const authentificate = () => {
-  log.trace("Authentificating...")
+  console.log("Authentificating...")
   return getCredentials()
   .then(async (credentials) => {
     await processLogin(credentials.username, credentials.password)
     .then((response) => {
-      log.trace("Authentification completed");
+      console.log("Authentification completed");
       return response;
     })
     .catch((error) => {
-      log.trace("Authentification failed, redirect to Auth process");
+      console.log("Authentification failed, redirect to Auth process");
       throw error;
     });
   })
   .catch((error) => {
-    log.trace("Authentification failed, redirect to Auth process");
+    console.log("Authentification failed, redirect to Auth process");
     throw error;
   });
 }

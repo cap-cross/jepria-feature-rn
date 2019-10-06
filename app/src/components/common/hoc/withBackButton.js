@@ -1,9 +1,8 @@
 import React from 'react';
+import {Alert} from 'react-native';
 import PropTypes from 'prop-types';
 import { BackHandler } from 'react-native';
 import connect from 'react-redux/lib/connect/connect';
-import {Util} from '@cap-cross/cap-react-native';
-import log from '@cap-cross/cap-core';
 
 export default function withBackButton() {
   return (ReactComponent) => {
@@ -26,23 +25,21 @@ export default function withBackButton() {
 
       componentDidMount() {
         /*  eslint no-unused-expressions: ["error", { "allowShortCircuit": true }]  */
-        Util.platformOS() === 'android' &&
-          BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
       }
 
       componentWillUnmount() {
-        Util.platformOS() === 'android' &&
-          BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
       }
 
       handleBackPress = () => {
-        log.trace('withBackButton.handleBackPress');
-        if (this.props.index) {
+        if (this.props.index > 0) {
+          console.log(this.props.nav);
           this.props.navigation.goBack(null);
           return true;
+        } else {
+          return false;
         }
-        log.trace('withBackButton.handleBackPress 3');
-        return false;
       };
 
       render() {

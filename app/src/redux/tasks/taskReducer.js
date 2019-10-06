@@ -1,5 +1,4 @@
 import * as TaskActions from './taskActions';
-import log from '@cap-cross/cap-core';
 
 const initialState = {
   filter: {},
@@ -16,7 +15,7 @@ export default function reducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case TaskActions.FETCH_TASKS_BEGIN: {
-      log.trace('Task reducer: FETCH_TASKS_BEGIN');
+      console.log('Task reducer: FETCH_TASKS_BEGIN');
       return {
         ...state,
         items: [],
@@ -25,7 +24,7 @@ export default function reducer(state = initialState, action) {
       };
     }
     case TaskActions.FETCH_TASKS_FAILURE: {
-      log.trace('Task reducer: FETCH_TASKS_FAILURE');
+      console.log('Task reducer: FETCH_TASKS_FAILURE');
       return {
         ...state,
         items: [],
@@ -35,7 +34,7 @@ export default function reducer(state = initialState, action) {
       }
     }
     case TaskActions.FETCH_TASKS_SUCCESS: {
-      log.trace('Task reducer: FETCH_TASKS_SUCCESS');
+      console.log('Task reducer: FETCH_TASKS_SUCCESS');
       return {
         ...state,
         filter: payload.filter,
@@ -45,14 +44,14 @@ export default function reducer(state = initialState, action) {
       };
     }
     case TaskActions.UPDATE_TASK_BEGIN: {
-      log.trace('Task reducer: UPDATE_TASK_BEGIN');
+      console.log('Task reducer: UPDATE_TASK_BEGIN');
       return {
         ...state,
         isUpdating: payload.isUpdating
       };
     }
     case TaskActions.UPDATE_TASK_FAILURE: {
-      log.trace('Task reducer: UPDATE_TASK_FAILURE');
+      console.log('Task reducer: UPDATE_TASK_FAILURE');
         return {
           ...state,
           isUpdating: false,
@@ -61,7 +60,7 @@ export default function reducer(state = initialState, action) {
         }
     }
     case TaskActions.UPDATE_TASK_SUCCESS: {
-      log.trace('Task reducer: UPDATE_TASK_SUCCESS');
+      console.log('Task reducer: UPDATE_TASK_SUCCESS');
       return {
         ...state,
         activeItem: payload.task,
@@ -70,14 +69,14 @@ export default function reducer(state = initialState, action) {
       };
     }
     case TaskActions.CREATE_TASK_BEGIN: {
-      log.trace('Task reducer: CREATE_TASK_BEGIN');
+      console.log('Task reducer: CREATE_TASK_BEGIN');
       return {
         ...state,
         isCreating: payload.isCreating
       };
     }
     case TaskActions.CREATE_TASK_FAILURE: {
-      log.trace('Task reducer: CREATE_TASK_FAILURE');
+      console.log('Task reducer: CREATE_TASK_FAILURE');
       return {
         ...state,
         isCreating: false,
@@ -86,7 +85,7 @@ export default function reducer(state = initialState, action) {
       }
     }
     case TaskActions.CREATE_TASK_SUCCESS: {
-      log.trace('Task reducer: CREATE_TASK_SUCCESS');
+      console.log('Task reducer: CREATE_TASK_SUCCESS');
       return {
         ...state,
         activeItem: payload.task,
@@ -95,14 +94,14 @@ export default function reducer(state = initialState, action) {
       };
     }
     case TaskActions.DELETE_TASK_BEGIN: {
-      log.trace('Task reducer: DELETE_TASK_BEGIN');
+      console.log('Task reducer: DELETE_TASK_BEGIN');
       return {
         ...state,
         isDeleting: payload.isDeleting
       };
     }
     case TaskActions.DELETE_TASK_FAILURE: {
-      log.trace('Task reducer: DELETE_TASK_FAILURE');
+      console.log('Task reducer: DELETE_TASK_FAILURE');
       return {
         ...state,
         isDeleting: false,
@@ -111,7 +110,7 @@ export default function reducer(state = initialState, action) {
       }
     }
     case TaskActions.DELETE_TASK_SUCCESS: {
-      log.trace('Task reducer: CREATE_TASK_SUCCESS');
+      console.log('Task reducer: CREATE_TASK_SUCCESS');
       return {
         ...state,
         activeItem: {},

@@ -1,18 +1,16 @@
 import React from 'react';
-import { func, PropTypes } from 'prop-types';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import {  PropTypes } from 'prop-types';
+import { TouchableOpacity, Text } from 'react-native';
 
-import { Content, Form, View, Toast } from 'native-base';
+import {  Form, View, Toast } from 'native-base';
 import { Field } from 'redux-form';
 
 import TextInput from '../../common/login/TextInput';
 import SecureTextInput from '../../common/login/SecureTextInput';
-import loginMediator from '../../../loginMediator';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import { reduxForm } from 'redux-form';
-import log from '@cap-cross/cap-core';
 
 import {DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import {required} from '../../../data/validation';
@@ -127,9 +125,7 @@ export default class AuthForm extends React.Component {
               />
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => {
-                  this.handleSubmit();
-                }}
+                onPress={this.handleSubmit}
               >
                 <Text style={styles.buttonText}>ВОЙТИ</Text>
               </TouchableOpacity>

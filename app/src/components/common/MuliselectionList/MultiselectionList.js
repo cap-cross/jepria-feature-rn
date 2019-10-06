@@ -1,8 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {TouchableHighlight, TouchableOpacity, FlatList, Text, View, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import log from '@cap-cross/cap-core';
 import getStyles from '../../../../res/styles'
 
 class MultiSelectionListTouchableItem extends React.PureComponent {
@@ -39,9 +37,7 @@ class MultiSelectionListTouchableItem extends React.PureComponent {
         <TouchableOpacity
         style={{...styles.item, borderBottomWidth: 1, padding: 15, backgroundColor: 'transparent',}}
         underlayColor='f00'
-        onPress={() => {
-          this.onPress();
-        }}
+        onPress={this.onPress}
         >
           <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
             <Text 
@@ -180,9 +176,9 @@ export default class MultiSelectionList extends React.Component {
           animationType="fade"
           transparent={true}
           visible={this.state.isChecking}
-          onRequestClose={() => this.onClose()}>
+          onRequestClose={this.onClose}>
           <TouchableOpacity 
-          onPress={() => this.onClose()} 
+          onPress={this.onClose} 
           style={{...styles.background, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View style={{...styles.list, borderRadius: 15, maxHeight:'70%', width: '90%'}}>
               <FlatList 

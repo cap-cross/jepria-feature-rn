@@ -1,16 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, KeyboardAvoidingView } from 'react-native';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
-import bindActionCreators from 'redux/lib/bindActionCreators';
-import connect from 'react-redux/lib/connect/connect';
+import { Container, Content, Header, Body, Title, Button, Left, Icon, Right } from 'native-base';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 
-import { reduxForm } from 'redux-form';
-
 import withBackButton from '../../common/hoc/withBackButton';
-import Util from '@cap-cross/cap-react-native';
 import HistoryList from '../form/HistoryList';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR} from '../../../../res/style';
@@ -47,7 +41,7 @@ export default class HistoryScreen extends React.Component {
 
     return (
       <Background>
-        <Container>
+        <Container style={{backgroundColor:'transparent'}}>
           <Header style={styles.header}>
             <Left>
               <Button onPress={this.goBack} transparent>

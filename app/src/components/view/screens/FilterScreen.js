@@ -2,18 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableHighlight } from 'react-native';
 import { Container, Content, Header, Body, Title, Button, Left, Icon, Right } from 'native-base';
-import bindActionCreators from 'redux/lib/bindActionCreators';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import log from '@cap-cross/cap-core';
 
 import { reduxForm } from 'redux-form';
 import withBackButton from '../../common/hoc/withBackButton';
 import { findTasks } from '../../../redux/tasks/taskMiddleware';
 import FilterForm from '../form/FilterForm';
 import ModalWaitBar from '../../common/WaitBar';
-import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import getStyles from '../../../../res/styles'
@@ -89,10 +86,8 @@ export default class FilterScreen extends React.Component {
   
   handleSubmit = () => this.props.handleSubmit(this.submitTask);
 
-  goBack = () => this.props.navigation.goBack();
-
   submitTask = (values) => {
-    log.trace(`FilterScreen.submitTask(${JSON.stringify(values)})`);
+    console.log(`FilterScreen.submitTask(${JSON.stringify(values)})`);
     this.props.findTasks({
       id: values.id,
       authorId: values.authorId,
@@ -101,7 +96,6 @@ export default class FilterScreen extends React.Component {
       statusCodeList: values.statusCodeList,
       responsibleId: values.responsibleId,
     });
-
     this.props.navigation.goBack();
   };
 
@@ -110,10 +104,10 @@ export default class FilterScreen extends React.Component {
 
     return (
       <Background>
-        <Container>
+        <Container style={{backgroundColor:'transparent'}}>
           <Header style={styles.header}>
             <Left>
-              <Button onPress={this.goBack} transparent>
+              <Button onPress={this.props.navigation.goBack} transparent>
                 <Icon name="arrow-back" style={styles.icon} />
               </Button>
             </Left>
@@ -130,17 +124,15 @@ export default class FilterScreen extends React.Component {
               }}
             />
           </Content>
-          {Util.platformOS() === 'android' && (
-            <View>
-              <TouchableHighlight
-                style={styles.button}
-                underlayColor="red"
-                onPress={this.handleSubmit()}
-              >
-                <Icon name="md-checkmark" style={styles.buttonIcon} />
-              </TouchableHighlight>
-            </View>
-          )}
+          <View>
+            <TouchableHighlight
+              style={styles.button}
+              underlayColor="red"
+              onPress={this.handleSubmit}
+            >
+              <Icon name="md-checkmark" style={styles.buttonIcon} />
+            </TouchableHighlight>
+          </View>
         </Container>
       </Background>
     );

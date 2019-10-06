@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import connect from 'react-redux/lib/connect/connect';
-
 import {Navigator} from '../../config/navigation';
 
 export default class ScreenManager extends React.Component {
@@ -18,13 +16,7 @@ export default class ScreenManager extends React.Component {
 
   render() {
     return (
-      <Navigator
-        // navigation={{
-        //   dispatch: this.props.dispatch,
-        //   state: this.props.navigate,
-        //   addListener: this._addListener
-        // }}
-      />
+      <Navigator/>
     );
   }
 }

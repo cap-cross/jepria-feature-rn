@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableHighlight } from 'react-native';
 import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
-import bindActionCreators from 'redux/lib/bindActionCreators';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import log from '@cap-cross/cap-core';
 
 import { reduxForm } from 'redux-form';
 
@@ -15,7 +13,6 @@ import withBackButton from '../../../components/common/hoc/withBackButton';
 import {setActiveTask} from '../../../redux/tasks/taskActions';
 import { createTask, findTasks } from '../../../redux/tasks/taskMiddleware';
 import AddForm from '../form/AddForm';
-import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../../components/common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
@@ -93,7 +90,7 @@ export default class AddScreen extends React.Component {
   handleSubmit = () => this.props.handleSubmit(this.submitTask);
 
   submitTask = (values) => {
-    log.trace(`AddScreen.submitTask(): values = ${JSON.stringify(values)}`);
+    console.log(`AddScreen.submitTask(): values = ${JSON.stringify(values)}`);
     this.props.createTask({
       name: values.name,
       nameEn: values.nameEn,
@@ -111,7 +108,7 @@ export default class AddScreen extends React.Component {
       this.props.navigation.navigate('ViewTask');
     })
     .catch((err) => {
-      log.trace(err.message);
+      console.log(err.message);
       Toast.show({
         text: err.message,
         type: 'danger',
@@ -120,7 +117,7 @@ export default class AddScreen extends React.Component {
       });
     });
 
-    log.trace('AddScreen.submitTask(): AFTER this.props.dispatch');
+    console.log('AddScreen.submitTask(): AFTER this.props.dispatch');
 
     // this.props.navigation.goBack();
   };
@@ -130,7 +127,7 @@ export default class AddScreen extends React.Component {
 
     return (
       <Background>
-        <Container>
+        <Container style={{backgroundColor:'transparent'}}>
           <Header style={styles.header}>
             <Left>
               <Button onPress={this.goBack} transparent>
@@ -145,17 +142,15 @@ export default class AddScreen extends React.Component {
           <Content contentContainerStyle={styles.content}>
             <AddForm />
           </Content>
-          {Util.platformOS() === 'android' && (
-            <View>
-              <TouchableHighlight
-                style={styles.button}
-                underlayColor="red"
-                onPress={this.handleSubmit()}
-              >
-                <Icon name="md-checkmark" style={styles.buttonIcon} />
-              </TouchableHighlight>
-            </View>
-          )}
+          <View>
+            <TouchableHighlight
+              style={styles.button}
+              underlayColor={DARK_AQUA_GREEN_COLOR}
+              onPress={this.handleSubmit}
+            >
+              <Icon name="md-checkmark" style={styles.buttonIcon} />
+            </TouchableHighlight>
+          </View>
         </Container>
         <LoadingPanel show={this.props.isLoading} text="Создание записи"/>
       </Background>

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Text, View, TouchableOpacity, Platform } from 'react-native';
 import getStyles from '../../../res/styles'
 import { Icon } from 'native-base';
-import log from '@cap-cross/cap-core';
 import {DARK_BLUE_COLOR, LIGHT_BLUE_COLOR} from '../../../res/style';
 
 export default class PinView extends React.PureComponent {

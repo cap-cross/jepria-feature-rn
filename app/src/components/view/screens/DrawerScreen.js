@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ImageBackground } from 'react-native'
 const bgimage = require('../../../../../assets/images/background.jpg');
-import { DrawerItems } from 'react-navigation';
+import { DrawerNavigatorItems } from 'react-navigation-drawer';
 
 export default function DrawerScreen (props){
   return (
@@ -22,7 +22,7 @@ export default function DrawerScreen (props){
         </View>
       </View>
       <View style={{backgroundColor: 'rgba(169,196,224,0.7)', flex: 1}}>
-        <DrawerItems {...props}/>
+        <DrawerNavigatorItems {...props}/>
       </View>
     </ImageBackground>
   );

@@ -1,16 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { FlatList, Modal, View, ActivityIndicator, Dimensions, Text} from 'react-native';
-import { Content, Toast, Icon } from 'native-base';
+import { FlatList, View, ActivityIndicator, Text} from 'react-native';
+import { Icon } from 'native-base';
 import compose from 'recompose/compose';
-import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 // import withIcons from '../common/hoc/withIcons';
-import {EmptyView} from '@cap-cross/cap-react-native';
-import ModalWaitBar from '../../../common/WaitBar';
 import TaskItem from './TaskItem';
-import log from '@cap-cross/cap-core';
 
 import { findTasks } from '../../../../redux/tasks/taskMiddleware';
 import { getUserData } from '../../../../redux/user/userMiddleware';
@@ -86,7 +81,7 @@ export default class TaskList extends React.Component {
         <Icon name={'assignment'}  type="MaterialIcons" style={{ color: '#E91E63', fontSize: 60,}} />
         <Text style={{color: 'white'}}>Задач не найдено</Text>
       </View>
-    );//<EmptyView text="Нет задач" />; // eslint-disable-line react/prop-types
+    );
 
     const items = this.props.items;
 

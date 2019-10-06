@@ -1,5 +1,3 @@
-
-import log from '@cap-cross/cap-core';
 export const FETCH_USER_BEGIN = 'FETCH_USER_BEGIN';
 export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
 export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
@@ -9,7 +7,7 @@ export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
 export const USER_LOGOUT = 'USER_LOGOUT';
 
 export function fetchUser(isLoading) {
-    log.trace("FETCH featureUser BEGIN " + isLoading);
+    console.log("FETCH featureUser BEGIN " + isLoading);
 
     return {
         type: FETCH_USER_BEGIN,
@@ -20,7 +18,7 @@ export function fetchUser(isLoading) {
 }
 
 export function fetchUserSuccess(user) {
-    log.trace("FETCH featureUser SUCCESS " + JSON.stringify(user));
+    console.log("FETCH featureUser SUCCESS " + JSON.stringify(user));
 
     return {
         type: FETCH_USER_SUCCESS,
@@ -32,7 +30,7 @@ export function fetchUserSuccess(user) {
 
 
 export function fetchUserFailure(isFailed, errorMessage) {
-    log.trace("FETCH featureUser FAILURE " + isFailed + " " + errorMessage);
+    console.log("FETCH featureUser FAILURE " + isFailed + " " + errorMessage);
 
     return {
         type: FETCH_USER_FAILURE,
@@ -44,7 +42,7 @@ export function fetchUserFailure(isFailed, errorMessage) {
 }
 
 export function loginUser(isAuthentificating) {
-    log.trace("LOGIN featureUser BEGIN " + isAuthentificating);
+    console.log("LOGIN featureUser BEGIN " + isAuthentificating);
 
     return {
         type: LOGIN_USER_BEGIN,
@@ -55,7 +53,7 @@ export function loginUser(isAuthentificating) {
 }
 
 export function loginUserSuccess() {
-    log.trace("LOGIN featureUser SUCCESS");
+    console.log("LOGIN featureUser SUCCESS");
 
     return {
         type: LOGIN_USER_SUCCESS
@@ -64,7 +62,7 @@ export function loginUserSuccess() {
 
 
 export function loginUserFailure(isFailed, errorMessage) {
-    log.trace("LOGIN featureUser FAILURE " + isFailed + " " + errorMessage);
+    console.log("LOGIN featureUser FAILURE " + isFailed + " " + errorMessage);
 
     return {
         type: LOGIN_USER_FAILURE,
@@ -76,7 +74,7 @@ export function loginUserFailure(isFailed, errorMessage) {
 }
 
 export function logout() {
-    log.trace("LOGOUT COMPLETED");
+    console.log("LOGOUT COMPLETED");
 
     return {
         type: USER_LOGOUT,

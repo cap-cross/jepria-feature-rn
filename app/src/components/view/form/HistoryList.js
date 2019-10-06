@@ -1,15 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FlatList, Text, View } from 'react-native';
-import { Toast} from 'native-base';
-import compose from 'recompose/compose';
-import { reduxForm } from 'redux-form';
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
 import getStyles from '../../../../res/styles'
 
 import { findHistory } from '../../../redux/history/historyMiddleware';
-import {EmptyView} from '@cap-cross/cap-react-native';
-import { pure } from 'recompose';
 
 class HistoryListItem extends React.PureComponent {
 
@@ -60,7 +55,16 @@ class HistoryList extends React.Component {
 
   render() {
     const {items} = this.props.history;
-    let content = <EmptyView text="Исторических записей не найдено" />; 
+
+    let content = (
+      <View style={{
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center',}}>
+        <Icon name={'assignment'}  type="MaterialIcons" style={{ color: '#E91E63', fontSize: 60,}} />
+        <Text style={{color: 'white'}}>Исторических записей не найдено</Text>
+      </View>
+    );
     
     if (items.length > 0) {
       content = (

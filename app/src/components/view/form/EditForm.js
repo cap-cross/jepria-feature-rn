@@ -11,7 +11,6 @@ import {required, expected} from '../../../data/validation';
 import { getStatuses } from '../../../redux/status/statusMiddleware';
 import { getOperators } from '../../../redux/operator/operatorMiddleware';
 import { connect } from 'react-redux';
-import log from '@cap-cross/cap-core';
 import Picker from '../../common/Picker/Picker'
 import getStyles from '../../../../res/styles'
 
@@ -33,8 +32,8 @@ class EditForm extends React.Component {
   customStyles = getStyles('Form');
 
   render() {
-    log.trace('EditForm!.render() BEGIN');
-    log.trace(`EditForm!: task = ${JSON.stringify(this.props.initialValues)}`);
+    console.log('EditForm!.render() BEGIN');
+    console.log(`EditForm!: task = ${JSON.stringify(this.props.initialValues)}`);
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     let isJrsAssignResponsibleFeatureRole = this.props.userRoles.length > 0 ? isUserHaveRoles(["JrsAssignResponsibleFeature"], this.props.userRoles) : false;
     

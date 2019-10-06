@@ -1,7 +1,6 @@
 // FeatureAPI.js
 import * as apiConfig from './apiConfig';
 import { jepFetch } from './LoginAPI';
-import log from '@cap-cross/cap-core';
 
 const buildFindUrl = (filter) => {
   // TODO Реализовать посерьёзнее
@@ -72,7 +71,7 @@ const buildFindUrl = (filter) => {
     first = false;
   }
 
-  log.trace(`FeatureAPI.buildFindUrl(): findUrl = ${findUrl}`);
+  console.log(`FeatureAPI.buildFindUrl(): findUrl = ${findUrl}`);
   return findUrl;
 };
 

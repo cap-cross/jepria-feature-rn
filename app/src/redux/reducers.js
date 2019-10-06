@@ -1,4 +1,4 @@
-import combineReducers from 'redux/lib/combineReducers';
+import {combineReducers} from 'redux/lib/redux';
 import { reducer as form } from 'redux-form';
 import tasks from './tasks/taskReducer';
 import navigate from './navigate/reducer';

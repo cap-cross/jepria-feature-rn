@@ -1,7 +1,6 @@
 import React from 'react';
 import { Modal } from 'react-native';
 import { Container, Content, Spinner } from 'native-base';
-import log from '@cap-cross/cap-core';
 
 export default class ModalWaitBar extends React.Component {
   state = {
@@ -13,26 +12,26 @@ export default class ModalWaitBar extends React.Component {
   }
 
   open() {
-    log.trace('ModalWaitBar.open()');
+    console.log('ModalWaitBar.open()');
     if (this.waitBar) {
       this.waitBarOpen();
     }
   }
 
   close() {
-    log.trace('ModalWaitBar.close()');
+    console.log('ModalWaitBar.close()');
     if (this.waitBar) {
       this.waitBarClose();
     }
   }
 
   waitBarOpen() {
-    log.trace('WaitBar.waitBarOpen()');
+    console.log('WaitBar.waitBarOpen()');
     this.setVisible(true);
   }
 
   waitBarClose() {
-    log.trace('WaitBarList.waitBarClose()');
+    console.log('WaitBarList.waitBarClose()');
     this.setVisible(false);
   }
 
@@ -44,7 +43,7 @@ export default class ModalWaitBar extends React.Component {
         visible={this.state.isVisible}
         onRequestClose={() => {
 //          alert('Modal has been closed.'); // eslint-disable-line no-alert
-          log.trace('Modal has been closed.'); // eslint-disable-line no-alert
+          console.log('Modal has been closed.'); // eslint-disable-line no-alert
         }}
         ref={(c) => {
           this.waitBar = c;

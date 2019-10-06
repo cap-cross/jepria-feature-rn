@@ -4,7 +4,7 @@
     "description": "JepRia Feature - Expo standalone",
     "slug": "feature-expo-standalone-demo",
     "privacy": "public",
-    "sdkVersion": "28.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.3",
     "orientation": "portrait",

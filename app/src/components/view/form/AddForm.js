@@ -9,7 +9,6 @@ import {
 
 import TextInput from '../../common/TextInput';
 import TextArea from '../../common/TextArea';
-import log from '@cap-cross/cap-core';
 import getStyles from '../../../../res/styles'
 
 export default class AddForm extends React.Component {
@@ -25,7 +24,7 @@ export default class AddForm extends React.Component {
   customStyles = getStyles('Form');
 
   render() {
-    log.trace('AddForm.render()');
+    console.log('AddForm.render()');
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (

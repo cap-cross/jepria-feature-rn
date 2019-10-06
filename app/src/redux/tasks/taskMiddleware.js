@@ -1,6 +1,5 @@
 import {tasks} from '../../api/FeatureAPI';
 import * as actions from './taskActions'
-import log from '@cap-cross/cap-core';
 
 export const findTasks = (filter) => {
   return (dispatch) => {

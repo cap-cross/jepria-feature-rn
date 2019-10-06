@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight, ActivityIndicator, Modal, Text } from 'react-native';
+import { View, TouchableHighlight} from 'react-native';
 import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
-import bindActionCreators from 'redux/lib/bindActionCreators';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import log from '@cap-cross/cap-core';
 
 import { reduxForm } from 'redux-form';
 
@@ -14,9 +12,8 @@ import withBackButton from '../../../components/common/hoc/withBackButton';
 import EditForm from '../form/EditForm';
 import {setActiveTask} from '../../../redux/tasks/taskActions';
 import { updateTask, findTasks } from '../../../redux/tasks/taskMiddleware';
-import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../common/Background';
-import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR, LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';
+import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
 import getStyles from '../../../../res/styles'
 
@@ -95,7 +92,7 @@ export default class EditScreen extends React.Component {
   goBack = () => this.props.navigation.goBack();
 
   submitTask = (values) => {
-    log.trace(`EditScreen.submitTask(): values = ${JSON.stringify(values)}`);
+    console.log(`EditScreen.submitTask(): values = ${JSON.stringify(values)}`);
     this.props.updateTask({
           id: this.props.initialValues.id,
           author: values.author,
@@ -126,13 +123,13 @@ export default class EditScreen extends React.Component {
   };
 
   render() {
-    log.trace(`EditScreen.render(): task = ${JSON.stringify(this.props.initialValues)}`);
+    console.log(`EditScreen.render(): task = ${JSON.stringify(this.props.initialValues)}`);
 
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
       <Background>
-        <Container>
+        <Container style={{backgroundColor:'transparent'}}>
           <Header style={styles.header}>
             <Left>
               <Button onPress={this.goBack} transparent>
@@ -148,18 +145,15 @@ export default class EditScreen extends React.Component {
             <EditForm
             />
           </Content>
-          {Util.platformOS() === 'android' && (
-            <View>
-              <TouchableHighlight
-                style={styles.button}
-                underlayColor="red"
-                onPress={this.handleSubmit()}
-              >
-                <Icon name="md-checkmark" style={styles.buttonIcon} />
-              </TouchableHighlight>
-            </View>
-          )}
-
+          <View>
+            <TouchableHighlight
+              style={styles.button}
+              underlayColor="red"
+              onPress={this.handleSubmit()}
+            >
+              <Icon name="md-checkmark" style={styles.buttonIcon} />
+            </TouchableHighlight>
+          </View>
         </Container>
         <LoadingPanel show={this.props.isLoading} text="Обновление записи"/>
       </Background>

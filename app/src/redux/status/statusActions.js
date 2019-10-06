@@ -1,11 +1,9 @@
-
-import log from '@cap-cross/cap-core';
 export const FETCH_STATUSES_BEGIN = 'FETCH_STATUSES_BEGIN';
 export const FETCH_STATUSES_SUCCESS = 'FETCH_STATUSES_SUCCESS';
 export const FETCH_STATUSES_FAILURE = 'FETCH_STATUSES_FAILURE';
 
 export function fetchStatuses(isLoading) {
-    log.trace("FETCH featureStatuses BEGIN " + isLoading);
+    console.log("FETCH featureStatuses BEGIN " + isLoading);
 
     return {
         type: FETCH_STATUSES_BEGIN,
@@ -16,7 +14,7 @@ export function fetchStatuses(isLoading) {
 }
 
 export function fetchStatusesSuccess(statuses) {
-    log.trace("FETCH featureStatuses SUCCESS " + JSON.stringify(statuses));
+    console.log("FETCH featureStatuses SUCCESS " + JSON.stringify(statuses));
 
     return {
         type: FETCH_STATUSES_SUCCESS,
@@ -28,7 +26,7 @@ export function fetchStatusesSuccess(statuses) {
 
 
 export function fetchStatusesFailure(isFailed, errorMessage) {
-    log.trace("FETCH featureStatuses FAILURE " + isFailed + " " + errorMessage);
+    console.log("FETCH featureStatuses FAILURE " + isFailed + " " + errorMessage);
 
     return {
         type: FETCH_STATUSES_FAILURE,

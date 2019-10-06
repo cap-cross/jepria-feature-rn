@@ -1,6 +1,3 @@
-
-import log from '@cap-cross/cap-core';
-
 export const SET_ACTIVE_TASK='SET_ACTIVE_TASK';
 
 export const FETCH_TASKS_BEGIN = 'FETCH_TASKS_BEGIN';
@@ -21,7 +18,7 @@ export const DELETE_TASK_FAILURE = 'DELETE_TASK_FAILURE';
 
 
 export function setActiveTask(activeItem) {
-    log.trace("SET ACTIVE TASK " + JSON.stringify(activeItem));
+    console.log("SET ACTIVE TASK " + JSON.stringify(activeItem));
     return {
       type: SET_ACTIVE_TASK,
       payload: {
@@ -31,7 +28,7 @@ export function setActiveTask(activeItem) {
   }
 
 export function fetchTasks(filter, isFetching) {
-  log.trace("FETCH featureTasks BEGIN " + isFetching);
+  console.log("FETCH featureTasks BEGIN " + isFetching);
 
   return {
       type: FETCH_TASKS_BEGIN,
@@ -43,7 +40,7 @@ export function fetchTasks(filter, isFetching) {
 }
 
 export function fetchTasksSuccess(filter, items) {
-  log.trace("FETCH featureTasks SUCCESS foundItems: " + JSON.stringify(items.length));
+  console.log("FETCH featureTasks SUCCESS foundItems: " + JSON.stringify(items.length));
 
   return {
       type: FETCH_TASKS_SUCCESS,
@@ -55,7 +52,7 @@ export function fetchTasksSuccess(filter, items) {
 }
 
 export function fetchTasksFailure(filter, isFailed, errorMessage) {
-  log.trace("FETCH featureTasks FAILURE " + isFailed + " " + errorMessage);
+  console.log("FETCH featureTasks FAILURE " + isFailed + " " + errorMessage);
 
   return {
       type: FETCH_TASKS_FAILURE,
@@ -69,7 +66,7 @@ export function fetchTasksFailure(filter, isFailed, errorMessage) {
 
 
 export function updateTask(isUpdating) {
-    log.trace("UPDATE featureTask BEGIN " + isUpdating);
+    console.log("UPDATE featureTask BEGIN " + isUpdating);
   
     return {
         type: UPDATE_TASK_BEGIN,
@@ -80,7 +77,7 @@ export function updateTask(isUpdating) {
   }
   
   export function updateTaskSuccess(task) {
-    log.trace("UPDATE featureTask SUCCESS foundItems: " + JSON.stringify(task));
+    console.log("UPDATE featureTask SUCCESS foundItems: " + JSON.stringify(task));
   
     return {
         type: UPDATE_TASK_SUCCESS,
@@ -91,7 +88,7 @@ export function updateTask(isUpdating) {
   }
   
   export function updateTaskFailure(task, isFailed, errorMessage) {
-    log.trace("UPDATE featureTask FAILURE " + isFailed + " " + errorMessage);
+    console.log("UPDATE featureTask FAILURE " + isFailed + " " + errorMessage);
   
     return {
         type: UPDATE_TASK_FAILURE,
@@ -104,7 +101,7 @@ export function updateTask(isUpdating) {
   }
 
   export function createTask(isCreating) {
-      log.trace("CREATE featureTask BEGIN " + isCreating);
+      console.log("CREATE featureTask BEGIN " + isCreating);
     
       return {
           type: CREATE_TASK_BEGIN,
@@ -115,7 +112,7 @@ export function updateTask(isUpdating) {
     }
     
     export function createTaskSuccess(task) {
-      log.trace("CREATE featureTask SUCCESS foundItems: " + JSON.stringify(task));
+      console.log("CREATE featureTask SUCCESS foundItems: " + JSON.stringify(task));
     
       return {
           type: CREATE_TASK_SUCCESS,
@@ -126,7 +123,7 @@ export function updateTask(isUpdating) {
     }
     
     export function createTaskFailure(task, isFailed, errorMessage) {
-      log.trace("CREATE featureTask FAILURE " + isFailed + " " + errorMessage);
+      console.log("CREATE featureTask FAILURE " + isFailed + " " + errorMessage);
     
       return {
           type: CREATE_TASK_FAILURE,
@@ -139,7 +136,7 @@ export function updateTask(isUpdating) {
     }
 
     export function deleteTask(isDeleting) {
-        log.trace("DELETE featureTask BEGIN " + isDeleting);
+        console.log("DELETE featureTask BEGIN " + isDeleting);
       
         return {
             type: DELETE_TASK_BEGIN,
@@ -150,7 +147,7 @@ export function updateTask(isUpdating) {
       }
       
       export function deleteTaskSuccess(task) {
-        log.trace("DELETE featureTask SUCCESS deletedItem: " + JSON.stringify(task));
+        console.log("DELETE featureTask SUCCESS deletedItem: " + JSON.stringify(task));
       
         return {
             type: DELETE_TASK_SUCCESS,
@@ -158,7 +155,7 @@ export function updateTask(isUpdating) {
       }
       
       export function deleteTaskFailure(task, isFailed, errorMessage) {
-        log.trace("DELETE featureTask FAILURE " + isFailed + " " + errorMessage + " " + JSON.stringify(task));
+        console.log("DELETE featureTask FAILURE " + isFailed + " " + errorMessage + " " + JSON.stringify(task));
       
         return {
             type: DELETE_TASK_FAILURE,

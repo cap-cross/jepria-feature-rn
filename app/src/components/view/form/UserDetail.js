@@ -45,7 +45,7 @@ export default class UserDetail extends React.Component {
     const user = this.props.user;
 
     return (
-      <Container>
+      <Container style={{backgroundColor:'transparent'}}>
         <Content>
           <View style={styles.form}>
             <View style={styles.card}>

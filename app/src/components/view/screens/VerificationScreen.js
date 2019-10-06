@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Alert, Text, Platform } from 'react-native';
 import { Toast, Icon } from 'native-base';
-import log from '@cap-cross/cap-core';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import Background from '../../common/Background';
 import PinView from '../../common/PinView';
 import { login } from '../../../redux/user/userMiddleware';
-import { SecureStore, Fingerprint } from 'expo';
+import * as LocalAuthentication from 'expo-local-authentication'
+import * as SecureStore from 'expo-secure-store';
 import { LoadingPanel } from '../../common/LoadingPanel';
 
 const mapStateToProps = (state) => {
@@ -49,22 +49,22 @@ export default class VerificationScreen extends React.Component {
   }
   
   checkDeviceForFingerprintSupport = async () => {
-    let compatible = await Fingerprint.hasHardwareAsync();
-    let fingerprints = await Fingerprint.isEnrolledAsync();
+    let compatible = await LocalAuthentication.hasHardwareAsync();
+    let fingerprints = await LocalAuthentication.isEnrolledAsync();
     this.setState({...this.state, compatible, fingerprints})
   }
 
   scanFingerprint = async () => {
-    log.trace("Waiting for PIN or FingerPrint");
-    let result = await Fingerprint.authenticateAsync();
-    log.trace("RESULT: " + JSON.stringify(result));
+    console.log("Waiting for PIN or FingerPrint");
+    let result = await LocalAuthentication.authenticateAsync();
+    console.log("RESULT: " + JSON.stringify(result));
     if (result.success) {
-      log.trace("FingerPrint accepted, redirecting to App");
+      console.log("FingerPrint accepted, redirecting to App");
       this.setState({...this.state, result: true});
       return;
     } else {
       if (result.error !== "user_cancel" && result.error !== "app_cancel" ) {
-        log.trace("RESULT ERROR: " + JSON.stringify(result.error));
+        console.log("RESULT ERROR: " + JSON.stringify(result.error));
         Toast.show({
           text: "Ошибка при проверке отпечатка, попробуйте ещё раз или введите PIN",
           type: 'danger',
@@ -91,7 +91,7 @@ export default class VerificationScreen extends React.Component {
   }
 
   componentDidUpdate = () => {
-    log.trace("STATE: " + JSON.stringify(this.state));
+    console.log("STATE: " + JSON.stringify(this.state));
     if (this.state.result == true) {
       this.onSuccessVerify();
     } else if (this.state.compatible && this.state.fingerprints && this.state.mode !== 'new') {
@@ -100,7 +100,7 @@ export default class VerificationScreen extends React.Component {
   }
 
   onSuccessNew = async (pin) => {
-    log.trace("Saving pin...");
+    console.log("Saving pin...");
     try {
       await SecureStore.setItemAsync("pin", pin);      
       Alert.alert(
@@ -114,19 +114,19 @@ export default class VerificationScreen extends React.Component {
       );
       this.setState({...this.state, mode: 'verify', compatible: false, fingerprints: false, targetPin: pin});
     } catch (error) {
-      log.error(error.message);
+      console.log(error.message);
     }
   }
 
   onSuccessVerify = () => {
-    log.trace("Verification successfull...")
+    console.log("Verification successfull...")
     this.props.login(this.props.navigation.getParam("username"), this.props.navigation.getParam("password"))
     .then((response) => {
-      log.trace("Verification completed, redirecting to App...");
+      console.log("Verification completed, redirecting to App...");
       this.props.navigation.navigate('App');
     })
     .catch((error => {
-      log.trace("Verification failed, redirecting to Auth...");
+      console.log("Verification failed, redirecting to Auth...");
       this.props.navigation.navigate('Auth');
       Toast.show({
         text: error.message,

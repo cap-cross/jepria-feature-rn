@@ -2,18 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableHighlight } from 'react-native';
 import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
-import bindActionCreators from 'redux/lib/bindActionCreators';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import { reduxForm } from 'redux-form';
-import log from '@cap-cross/cap-core';
 
 import ViewDetail from '../form/ViewDetail';
 import withBackButton from '../../../components/common/hoc/withBackButton';
 import {setActiveTask} from '../../../redux/tasks/taskActions';
 import { deleteTask, findTasks } from '../../../redux/tasks/taskMiddleware';
-import {Util} from '@cap-cross/cap-react-native';
 import Background from '../../../components/common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
@@ -108,7 +104,7 @@ export default class DetailScreen extends React.Component {
           buttonText: 'OK',
           duration: 5000
         });
-        log.trace(err);
+        console.log(err);
       });
   };
 
@@ -116,7 +112,7 @@ export default class DetailScreen extends React.Component {
 
   goToUpdateTask = () => {
     const task = this.props.task;
-    log.trace(`goToUpdateTask(${task})`);
+    console.log(`goToUpdateTask(${task})`);
     this.props.navigation.navigate('EditTask');
   };
 
@@ -126,7 +122,7 @@ export default class DetailScreen extends React.Component {
 
     return (
       <Background>
-        <Container>
+        <Container style={{backgroundColor:'transparent'}}>
           <Header style={styles.header}>
             <Left>
               <Button onPress={this.goBack} transparent>
@@ -153,17 +149,15 @@ export default class DetailScreen extends React.Component {
               task={task}
             />
           </Content>
-          {Util.platformOS() === 'android' && (
-            <View>
-              <TouchableHighlight
-                style={styles.button}
-                underlayColor={DARK_AQUA_GREEN_COLOR}
-                onPress={() => { this.goToUpdateTask(); }}
-              >
-                <Icon name="md-create" style={styles.buttonIcon} />
-              </TouchableHighlight>
-            </View>
-          )}
+          <View>
+            <TouchableHighlight
+              style={styles.button}
+              underlayColor={DARK_AQUA_GREEN_COLOR}
+              onPress={this.goToUpdateTask}
+            >
+              <Icon name="md-create" style={styles.buttonIcon} />
+            </TouchableHighlight>
+          </View>
         </Container>
         <LoadingPanel show={this.props.isLoading} text="Удаление записи"/>
       </Background>

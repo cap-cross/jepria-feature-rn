@@ -1,8 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createLogger } from 'redux-logger';
 import * as storage from 'redux-storage';
-// import createEngine from 'redux-storage-engine-reactnativeasyncstorage';
-import devTools from 'remote-redux-devtools';
 import thunk from 'redux-thunk';
 
 import reducers from '../redux/reducers';
@@ -29,7 +27,7 @@ export default function configureStore(onComplete = () => {}) {
         thunk,
         middleware,
         // storeMiddleware, // Сохранение state в AsyncStorage
-        logger,
+        //logger,
       ),
       //devTools(),
     ),

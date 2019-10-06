@@ -3,18 +3,17 @@
 
 import merge from 'lodash/merge';
 import * as security from './LoginAPI';
-import log from '@cap-cross/cap-core';
 import * as Errors from './errors';
 
 const checkStatus = ({ response, body }) => {
-  log.trace('fetchJSON.checkStatus()');
+  console.log('fetchJSON.checkStatus()');
   if (security.isSsoLoginRequest(response)) {
     // TODO Надо как-нибудь выпрямить (передать url более естественным образом)
     const error = new Error(response.url);
-    log.trace(`fetchJSON.checkStatus() error = ${error}`);
+    console.log(`fetchJSON.checkStatus() error = ${error}`);
     throw error;
   } else if (response.ok) {
-    log.trace('fetchJSON.checkStatus() success');
+    console.log('fetchJSON.checkStatus() success');
     return { response, body };
   } else {
     const error = new Error(body);
@@ -25,7 +24,7 @@ const checkStatus = ({ response, body }) => {
 };
 
 const parseJSON = (response) => {
-  log.trace('fetchJSON.parseJSON()');
+  console.log('fetchJSON.parseJSON()');
   const isJsonResponse =
     response.headers.get('content-type') &&
     response.headers
@@ -34,7 +33,7 @@ const parseJSON = (response) => {
       .indexOf('application/json') >= 0;
   if (isJsonResponse) {
     return response.json().then(data => {
-      //log.trace('fetchJSON.parseJSON(): ' + JSON.stringify(data));
+      //console.log('fetchJSON.parseJSON(): ' + JSON.stringify(data));
       return data
     });
   } else {
@@ -43,9 +42,9 @@ const parseJSON = (response) => {
 };
 
 const validateResponse = (response) => {
-  log.trace("fetchJSON: validating response...");
+  console.log("fetchJSON: validating response...");
   if (response.status === 403) {
-    log.trace("fetchJSON: access to resource denied, need authorization...");
+    console.log("fetchJSON: access to resource denied, need authorization...");
     throw new Errors.APIError("Доступ к ресурсу запрещен требуется авторизация...", Errors.ACCESS_DENIED);
   } else if (!response.ok) {
     return response.text()
@@ -67,7 +66,7 @@ const fetchJSON = (input, init) => {
     init,
   );
 
-  log.trace(`fetchJSON() initJson = ${JSON.stringify(initJson)}`);
+  console.log(`fetchJSON() initJson = ${JSON.stringify(initJson)}`);
 
   return fetch(input, initJson)
     .then(validateResponse)

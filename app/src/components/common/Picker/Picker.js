@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {TouchableHighlight, TouchableOpacity, FlatList, Text, View, Modal} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import log from '@cap-cross/cap-core';
 import getStyles from '../../../../res/styles'
 
 class PickerTouchableItem extends React.PureComponent {
@@ -38,9 +37,7 @@ class PickerTouchableItem extends React.PureComponent {
       <TouchableOpacity
         style={{...styles.item, borderBottomWidth: 1, padding: 15, backgroundColor: 'transparent',}}
         underlayColor='f00'
-        onPress={() => {
-          this.onPress();
-        }}
+        onPress={this.onPress}
         >
           <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
             <Text 

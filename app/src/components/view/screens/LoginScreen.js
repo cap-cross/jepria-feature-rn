@@ -37,7 +37,7 @@ export default class LoginScreen extends React.Component {
 
     return (
       <Background>
-        <Container>
+        <Container style={{backgroundColor:'transparent'}}>
           <Content contentContainerStyle={styles.content}>
             <AuthForm
               navigation={this.props.navigation}

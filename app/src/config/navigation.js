@@ -1,8 +1,8 @@
-import React from 'react';
-import {View, Text} from 'react-native';
-import { createStackNavigator, createDrawerNavigator, createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator } from 'react-navigation';
+import { createDrawerNavigator} from 'react-navigation-drawer';
+import { createStackNavigator} from 'react-navigation-stack';
 import {
-  reduxifyNavigator,
+  createReduxContainer,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 import { connect } from 'react-redux';
@@ -26,7 +26,6 @@ const mapStateToProps = state => ({
 });
 
 const middleware = createReactNavigationReduxMiddleware(
-  'root',
   state => state.navigate
 );
 
@@ -80,7 +79,7 @@ const RootNavigator = createSwitchNavigator(
   }
 );
 
-const AppWithNavigationState = reduxifyNavigator(RootNavigator, 'root');
+const AppWithNavigationState = createReduxContainer(RootNavigator, 'root');
 
 const Navigator = connect(mapStateToProps)(AppWithNavigationState);
 

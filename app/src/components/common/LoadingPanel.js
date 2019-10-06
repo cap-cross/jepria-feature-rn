@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ActivityIndicator, Modal, Text } from 'react-native';
-import log from '@cap-cross/cap-core';
 import {LIGHT_AQUA_GREEN_COLOR} from '../../../res/style';
 
 export const LoadingPanel = (props) => {
@@ -10,7 +9,7 @@ export const LoadingPanel = (props) => {
         animationType="fade"
         transparent={true}
         visible={props.show}
-        onRequestClose={() => log.trace("No close!")}>
+        onRequestClose={() => console.log("No close!")}>
         <View style={{
         backgroundColor: 'rgba(52,52,52,0.8)',
         flex: 1, 
