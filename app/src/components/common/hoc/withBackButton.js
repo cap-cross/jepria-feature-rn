@@ -1,22 +1,9 @@
 import React from 'react';
-import {Alert} from 'react-native';
-import PropTypes from 'prop-types';
 import { BackHandler } from 'react-native';
-import connect from 'react-redux/lib/connect/connect';
 
-export default function withBackButton() {
+export default withBackButton = () => {
   return (ReactComponent) => {
-    const mapStateToProps = state => ({
-      index: state.navigate.index,
-      nav: state.navigate,
-    });
-
-    @connect(mapStateToProps)
     class BackButtonComponent extends React.Component {
-      static propTypes = {
-        index: PropTypes.number.isRequired,
-        navigation: PropTypes.object,
-      };
 
       /* eslint-disable no-useless-constructor */
       constructor(props, context) {
@@ -33,12 +20,11 @@ export default function withBackButton() {
       }
 
       handleBackPress = () => {
-        if (this.props.index > 0) {
-          console.log(this.props.nav);
+        if (this.props.navigation.state.routeName === "Home") {
+          return false;
+        } else {
           this.props.navigation.goBack(null);
           return true;
-        } else {
-          return false;
         }
       };
 

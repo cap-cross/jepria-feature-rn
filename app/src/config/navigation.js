@@ -29,28 +29,53 @@ const middleware = createReactNavigationReduxMiddleware(
   state => state.navigate
 );
 
-const EditStack = createStackNavigator(
-{
-    ViewTask: {screen: DetailScreen},
-    EditTask: {screen: EditScreen},
-    TaskHistory: {screen: HistoryScreen},
-    Home: {screen: ListScreen},
-},
-{
-   headerMode: 'none' 
-});
+// const EditStack = createStackNavigator(
+// {
+//     ViewTask: {screen: DetailScreen},
+//     EditTask: {screen: EditScreen},
+//     TaskHistory: {screen: HistoryScreen},
+//     Home: {screen: ListScreen},
+// },
+// {
+//    headerMode: 'none' 
+// });
 
-const TaskNavigator = createStackNavigator(
-{
-    Home: {screen: ListScreen},
-    EditStack: {screen: EditStack},
-    AddTask: {screen: AddScreen},
-    FilterTasks: {screen: FilterScreen},
-},
-{
-  initialRouteName: 'Home',
-   headerMode: 'none' 
-});
+// const TaskNavigator = createStackNavigator(
+// {
+//     Home: {screen: ListScreen},
+//     EditStack: {screen: EditStack},
+//     AddTask: {screen: AddScreen},
+//     FilterTasks: {screen: FilterScreen},
+// },
+// {
+//   initialRouteName: 'Home',
+//    headerMode: 'none' 
+// });
+
+const EditStack = createStackNavigator(
+  {
+      ViewTask: {screen: DetailScreen},
+      EditTask: {screen: EditScreen},
+      TaskHistory: {screen: HistoryScreen},
+      Home: {screen: ListScreen},
+  },
+  {
+     headerMode: 'none' 
+  });
+  
+  const TaskNavigator = createStackNavigator (
+  {
+      Home: {screen: ListScreen},     
+      FilterTasks: {screen: FilterScreen},
+      AddTask: {screen: AddScreen},
+      EditTask: {screen: EditScreen},
+      ViewTask: {screen: DetailScreen},
+      TaskHistory: {screen: HistoryScreen},
+  },
+  {
+    initialRouteName: 'Home',
+     headerMode: 'none' 
+  });
 
 const DrawerNavigator = createDrawerNavigator(
 {
