@@ -90,6 +90,10 @@ export default class VerificationScreen extends React.Component {
     }
   }
 
+  componentWillUnmount = () => {
+    LocalAuthentication.cancelAuthenticate();
+  }
+
   componentDidUpdate = () => {
     console.log("STATE: " + JSON.stringify(this.state));
     if (this.state.result == true) {
