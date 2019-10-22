@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Content, Container, Icon } from 'native-base';
+import { Icon } from 'native-base';
 import {TouchableOpacity, Text, View} from 'react-native';
 import getStyles from '../../../../res/styles'
 
 export default class ViewDetail extends React.Component {
   static propTypes = {
-    task: PropTypes.object.isRequired,
+    feature: PropTypes.object.isRequired,
   };
 
   defaultStyles = {
@@ -42,8 +42,7 @@ export default class ViewDetail extends React.Component {
   render() {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
-    const task = this.props.task;
-
+    const feature = this.props.feature;
     return (
           <View style={styles.form}>
             <View style={styles.card}>
@@ -51,7 +50,7 @@ export default class ViewDetail extends React.Component {
                 <Text style={styles.fieldCaption}>Идентификатор</Text>
               </View>
               <View style={styles.valueContainer}>
-                <Text style={styles.fieldValue} selectable={true}>{task.id}</Text>
+                <Text style={styles.fieldValue} selectable={true}>{feature.featureId}</Text>
               </View>
             </View>
             <View style={styles.card}>
@@ -61,7 +60,7 @@ export default class ViewDetail extends React.Component {
                     <Text style={styles.fieldCaption}>Статус</Text>
                   </View>
                   <View style={{paddingHorizontal: 15, paddingBottom: 7, }}>
-                    <Text style={styles.fieldValue}>{task.statusName}</Text>
+                    <Text style={styles.fieldValue}>{feature.featureStatus.name}</Text>
                   </View>
                 </View>
                 <View>
@@ -74,7 +73,7 @@ export default class ViewDetail extends React.Component {
                 <Text style={styles.fieldCaption} >Название</Text>
               </View>
               <View style={styles.valueContainer}>
-                <Text style={styles.fieldValue} selectable={true}>{task.name}</Text>
+                <Text style={styles.fieldValue} selectable={true}>{feature.featureName}</Text>
               </View>
             </View>
             <View style={styles.card}>
@@ -82,7 +81,7 @@ export default class ViewDetail extends React.Component {
                 <Text style={styles.fieldCaption} >Название (англ)</Text>
               </View>
               <View style={styles.valueContainer}>
-                <Text style={styles.fieldValue} selectable={true}>{task.nameEn}</Text>
+                <Text style={styles.fieldValue} selectable={true}>{feature.featureNameEn}</Text>
               </View>
             </View>
             <View style={styles.card}>
@@ -90,7 +89,7 @@ export default class ViewDetail extends React.Component {
                 <Text style={styles.fieldCaption}>Описание</Text>
               </View>
               <View style={styles.valueContainer}>
-                <Text style={styles.fieldValue} selectable={true}>{task.description}</Text>
+                <Text style={styles.fieldValue} selectable={true}>{feature.description}</Text>
               </View>
             </View>
             <View style={styles.card}>
@@ -98,7 +97,7 @@ export default class ViewDetail extends React.Component {
                 <Text style={styles.fieldCaption}>Автор</Text>
               </View>
               <View style={styles.valueContainer}>
-                <Text style={styles.fieldValue} selectable={true}>{task.authorName}</Text>
+                <Text style={styles.fieldValue} selectable={true}>{feature.author.name}</Text>
               </View>
             </View>
             <View style={styles.card}>
@@ -106,7 +105,7 @@ export default class ViewDetail extends React.Component {
                 <Text style={styles.fieldCaption}>Ответственный</Text>
               </View>
               <View style={styles.valueContainer}>
-                <Text style={styles.fieldValue} selectable={true}>{task.responsibleName}</Text>
+                <Text style={styles.fieldValue} selectable={true}>{feature.responsible.name}</Text>
               </View>
             </View>
           </View>

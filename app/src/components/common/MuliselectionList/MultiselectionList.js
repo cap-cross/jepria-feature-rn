@@ -56,6 +56,8 @@ export default class MultiSelectionList extends React.Component {
   
   constructor(props) {
     super(props);
+    console.log(this.props.input)
+    console.log(this.props.input.value)
     this.state = {
       selected : this.props.input.value != '' ? this.props.input.value : [],
       names : [],
@@ -135,10 +137,10 @@ export default class MultiSelectionList extends React.Component {
 
   renderListItem = ({item}) => (
     <MultiSelectionListTouchableItem 
-        key={item.statusCode}
-        name={item.statusName} 
-        value={item.statusCode} 
-        checked={this.state.selected.indexOf(item.statusCode) != -1}
+        key={item.value}
+        name={item.name} 
+        value={item.value} 
+        checked={this.state.selected.indexOf(item.value) != -1}
         onChange={this.onItemPressed}/>
   );
 
@@ -148,8 +150,8 @@ export default class MultiSelectionList extends React.Component {
     if (selected.length > 0 && names.length == 0) {
       if (items.length > 0) {
         items.forEach((item) => {
-          if (selected.indexOf(item.statusCode) != -1) {
-            names.push(item.statusName);
+          if (selected.indexOf(item.value) != -1) {
+            names.push(item.name);
           }
         });
       }

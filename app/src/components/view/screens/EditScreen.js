@@ -10,24 +10,24 @@ import { reduxForm } from 'redux-form';
 
 import withBackButton from '../../../components/common/hoc/withBackButton';
 import EditForm from '../form/EditForm';
-import {setActiveTask} from '../../../redux/tasks/taskActions';
-import { updateTask, findTasks } from '../../../redux/tasks/taskMiddleware';
+import {setActiveFeature} from '../../../redux/feature/featureActions';
+import { updateFeature, findFeature } from '../../../redux/feature/featureMiddleware';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
 import getStyles from '../../../../res/styles'
 
 const mapDispatchToProps = dispatch => ({
-  updateTask: (values) => {return dispatch(updateTask(values))},
-  setActiveTask: (task) => dispatch(setActiveTask(task)),
-  findTasks: (filter) => dispatch(findTasks(filter))
+  updateFeature: (featureId, values, featureStatusCode) => {return dispatch(updateFeature(featureId, values, featureStatusCode))},
+  setActiveFeature: (feature) => dispatch(setActiveFeature(feature)),
+  findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate))
 });
 
 const mapStateToProps = (state) => {
   return {
-    initialValues: state.tasks.activeItem,
-    filter: state.tasks.filter,
-    isLoading: state.tasks.isUpdating,
+    initialValues: state.feature.activeItem,
+    searchTemplate: state.feature.searchTemplate,
+    isLoading: state.feature.isUpdating,
   }
 }
 
@@ -87,30 +87,26 @@ export default class EditScreen extends React.Component {
   };
   customStyles = getStyles('FormScreen');
 
-  handleSubmit = () => this.props.handleSubmit(this.submitTask);
+  handleSubmit = () => this.props.handleSubmit(this.submitFeature);
 
   goBack = () => this.props.navigation.goBack();
 
-  submitTask = (values) => {
-    console.log(`EditScreen.submitTask(): values = ${JSON.stringify(values)}`);
-    this.props.updateTask({
-          id: this.props.initialValues.id,
-          author: values.author,
-          name: values.name,
-          nameEn: values.nameEn,
+  submitFeature = (values) => {
+    this.props.updateFeature(this.props.initialValues.featureId, {
+          featureName: values.featureName,
+          featureNameEn: values.featureNameEn,
           description: values.description,
-          statusCode: values.statusCode,
-        })
-      .then((task) => {
-        this.props.setActiveTask(task);
-        this.props.findTasks(this.props.filter);
+        }, values.featureStatusCode)
+      .then((feature) => {
+        this.props.setActiveFeature(feature);
+        this.props.findFeature(this.props.searchTemplate);
         Toast.show({
           text: "Изменения успешно сохранены!",
           type: 'success',
           buttonText: 'OK',
           duration: 5000
         });
-        this.props.navigation.navigate('ViewTask');
+        this.props.navigation.navigate('ViewFeature');
       })
       .catch((err) => {
         Toast.show({
@@ -123,8 +119,6 @@ export default class EditScreen extends React.Component {
   };
 
   render() {
-    console.log(`EditScreen.render(): task = ${JSON.stringify(this.props.initialValues)}`);
-
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
@@ -142,8 +136,7 @@ export default class EditScreen extends React.Component {
             <Right />
           </Header>
           <Content contentContainerStyle={styles.content}>
-            <EditForm
-            />
+            <EditForm/>
           </Content>
           <View>
             <TouchableHighlight

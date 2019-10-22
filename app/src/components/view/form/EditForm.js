@@ -1,15 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Form } from 'native-base';
-import { Field, reduxForm } from 'redux-form';
-import {StyleSheet, View} from 'react-native';
+import { Field} from 'redux-form';
+import {View} from 'react-native';
 
 import TextArea from '../../common/TextArea';
 import TextInput from '../../common/TextInput';
 import isUserHaveRoles from '../../../data/clientSecurity';
 import {required, expected} from '../../../data/validation';
-import { getStatuses } from '../../../redux/status/statusMiddleware';
-import { getOperators } from '../../../redux/operator/operatorMiddleware';
+import { getFeatureStatuses } from '../../../redux/status/statusMiddleware';
+import { getFeatureOperators } from '../../../redux/operator/operatorMiddleware';
 import { connect } from 'react-redux';
 import Picker from '../../common/Picker/Picker'
 import getStyles from '../../../../res/styles'
@@ -17,8 +16,8 @@ import getStyles from '../../../../res/styles'
 class EditForm extends React.Component {
 
   componentDidMount() {
-    if(this.props.statuses.length == 0) this.props.getStatuses();
-    if(this.props.operators.length == 0) this.props.getOperators();
+    if(this.props.statuses.length == 0) this.props.getFeatureStatuses();
+    if(this.props.operators.length == 0) this.props.getFeatureOperators();
   }
 
   defaultStyles = {
@@ -32,8 +31,6 @@ class EditForm extends React.Component {
   customStyles = getStyles('Form');
 
   render() {
-    console.log('EditForm!.render() BEGIN');
-    console.log(`EditForm!: task = ${JSON.stringify(this.props.initialValues)}`);
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     let isJrsAssignResponsibleFeatureRole = this.props.userRoles.length > 0 ? isUserHaveRoles(["JrsAssignResponsibleFeature"], this.props.userRoles) : false;
     
@@ -41,13 +38,13 @@ class EditForm extends React.Component {
         <View style={styles.form}>
           <Form>
             <Field 
-              name="name"
+              name="featureName"
               component={TextInput}
               labelText="Название"
               validate = {required}
             />
             <Field
-              name="nameEn"
+              name="featureNameEn"
               component={TextInput}
               labelText="Название (англ)"
               validate = {required}
@@ -59,20 +56,20 @@ class EditForm extends React.Component {
               warn = {expected}
             />
             <Field
-              name="statusCode"
+              name="featureStatusCode"
               component={Picker}
               labelText="Статус"
-              itemNameKey='statusName'
-              itemValueKey='statusCode'
+              itemNameKey='name'
+              itemValueKey='value'
               items={this.props.statuses}
             />
             { isJrsAssignResponsibleFeatureRole && //проверка наличия роли
               <Field
-                name="responsible"
+                name="responsibleId"
                 component={Picker}
                 labelText="Ответственный"
-                itemNameKey='operatorName'
-                itemValueKey='operatorCode'
+                itemNameKey='name'
+                itemValueKey='value'
                 hasEmptyItem={true}
                 items={this.props.operators}
               />
@@ -97,9 +94,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getStatuses: () => dispatch(getStatuses()),
-    getOperators: () => dispatch(getOperators())
+    getFeatureStatuses: () => dispatch(getFeatureStatuses()),
+    getFeatureOperators: () => dispatch(getFeatureOperators())
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditForm);//(reduxForm({form: "EditForm"})(EditForm));
+export default connect(mapStateToProps, mapDispatchToProps)(EditForm);

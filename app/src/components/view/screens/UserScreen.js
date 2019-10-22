@@ -54,11 +54,9 @@ export default class UserScreen extends React.Component {
   logout = () => {
     this.props.logout()
       .then((response) => {
-        console.log('UserScreen.logout(): logout Done!' + JSON.stringify(response));
         this.props.navigation.navigate('Home');
       })
       .catch((err) => {
-        console.log(err.message);
         Toast.show({
           text: err.message,
           type: 'danger',

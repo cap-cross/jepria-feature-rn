@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux/lib/redux';
 import { reducer as form } from 'redux-form';
-import tasks from './tasks/taskReducer';
+import feature from './feature/featureReducer';
 import navigate from './navigate/reducer';
 import operators from './operator/operatorReducer';
 import statuses from './status/statusReducer';
@@ -8,7 +8,7 @@ import user from './user/userReducer';
 import history from './history/historyReducer';
 
 export default combineReducers({
-  tasks,
+  feature,
   navigate,
   form,
   operators,

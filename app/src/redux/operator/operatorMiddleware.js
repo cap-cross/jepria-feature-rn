@@ -1,11 +1,11 @@
 import * as actions from './operatorActions.js';
-import {operators} from '../../api/FeatureAPI';
+import {getOperators} from '../../api/FeatureAPI';
 
-export const getOperators = () => {
+export const getFeatureOperators = () => {
     return (dispatch) => {
         dispatch(actions.fetchOperators(true));
         try {
-            operators.getOperators()
+            getOperators()
                 .then((response) => {
                     dispatch(actions.fetchOperatorsSuccess(response));
                 });

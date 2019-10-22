@@ -1,7 +1,7 @@
-import * as TaskActions from './taskActions';
+import * as FeatureActions from './featureActions';
 
 const initialState = {
-  filter: {},
+  searchTemplate: {},
   items: [],
   activeItem: {},
   isFetching: false,
@@ -14,17 +14,17 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case TaskActions.FETCH_TASKS_BEGIN: {
-      console.log('Task reducer: FETCH_TASKS_BEGIN');
+    case FeatureActions.FETCH_FEATURES_BEGIN: {
+      console.log('Feature reducer: FETCH_FEATURES_BEGIN');
       return {
         ...state,
         items: [],
-        filter: payload.filter,
+        searchTemplate: payload.searchTemplate,
         isFetching: payload.isFetching
       };
     }
-    case TaskActions.FETCH_TASKS_FAILURE: {
-      console.log('Task reducer: FETCH_TASKS_FAILURE');
+    case FeatureActions.FETCH_FEATURES_FAILURE: {
+      console.log('Feature reducer: FETCH_FEATURES_FAILURE');
       return {
         ...state,
         items: [],
@@ -33,25 +33,25 @@ export default function reducer(state = initialState, action) {
         errorMessage: payload.errorMessage
       }
     }
-    case TaskActions.FETCH_TASKS_SUCCESS: {
-      console.log('Task reducer: FETCH_TASKS_SUCCESS');
+    case FeatureActions.FETCH_FEATURES_SUCCESS: {
+      console.log('Feature reducer: FETCH_FEATURES_SUCCESS');
       return {
         ...state,
-        filter: payload.filter,
+        searchTemplate: payload.searchTemplate,
         items: payload.items,
         isFetching: false,
         isFailed: false,
       };
     }
-    case TaskActions.UPDATE_TASK_BEGIN: {
-      console.log('Task reducer: UPDATE_TASK_BEGIN');
+    case FeatureActions.UPDATE_FEATURE_BEGIN: {
+      console.log('Feature reducer: UPDATE_FEATURE_BEGIN');
       return {
         ...state,
         isUpdating: payload.isUpdating
       };
     }
-    case TaskActions.UPDATE_TASK_FAILURE: {
-      console.log('Task reducer: UPDATE_TASK_FAILURE');
+    case FeatureActions.UPDATE_FEATURE_FAILURE: {
+      console.log('Feature reducer: UPDATE_FEATURE_FAILURE');
         return {
           ...state,
           isUpdating: false,
@@ -59,24 +59,24 @@ export default function reducer(state = initialState, action) {
           errorMessage: payload.errorMessage
         }
     }
-    case TaskActions.UPDATE_TASK_SUCCESS: {
-      console.log('Task reducer: UPDATE_TASK_SUCCESS');
+    case FeatureActions.UPDATE_FEATURE_SUCCESS: {
+      console.log('Feature reducer: UPDATE_FEATURE_SUCCESS');
       return {
         ...state,
-        activeItem: payload.task,
+        activeItem: payload.feature,
         isUpdating: false,
         isFailed: false,
       };
     }
-    case TaskActions.CREATE_TASK_BEGIN: {
-      console.log('Task reducer: CREATE_TASK_BEGIN');
+    case FeatureActions.CREATE_FEATURE_BEGIN: {
+      console.log('Feature reducer: CREATE_FEATURE_BEGIN');
       return {
         ...state,
         isCreating: payload.isCreating
       };
     }
-    case TaskActions.CREATE_TASK_FAILURE: {
-      console.log('Task reducer: CREATE_TASK_FAILURE');
+    case FeatureActions.CREATE_FEATURE_FAILURE: {
+      console.log('Feature reducer: CREATE_FEATURE_FAILURE');
       return {
         ...state,
         isCreating: false,
@@ -84,24 +84,24 @@ export default function reducer(state = initialState, action) {
         errorMessage: payload.errorMessage
       }
     }
-    case TaskActions.CREATE_TASK_SUCCESS: {
-      console.log('Task reducer: CREATE_TASK_SUCCESS');
+    case FeatureActions.CREATE_FEATURE_SUCCESS: {
+      console.log('Feature reducer: CREATE_FEATURE_SUCCESS');
       return {
         ...state,
-        activeItem: payload.task,
+        activeItem: payload.feature,
         isCreating: false,
         isFailed: false,
       };
     }
-    case TaskActions.DELETE_TASK_BEGIN: {
-      console.log('Task reducer: DELETE_TASK_BEGIN');
+    case FeatureActions.DELETE_FEATURE_BEGIN: {
+      console.log('Feature reducer: DELETE_FEATURE_BEGIN');
       return {
         ...state,
         isDeleting: payload.isDeleting
       };
     }
-    case TaskActions.DELETE_TASK_FAILURE: {
-      console.log('Task reducer: DELETE_TASK_FAILURE');
+    case FeatureActions.DELETE_FEATURE_FAILURE: {
+      console.log('Feature reducer: DELETE_FEATURE_FAILURE');
       return {
         ...state,
         isDeleting: false,
@@ -109,8 +109,8 @@ export default function reducer(state = initialState, action) {
         errorMessage: payload.errorMessage
       }
     }
-    case TaskActions.DELETE_TASK_SUCCESS: {
-      console.log('Task reducer: CREATE_TASK_SUCCESS');
+    case FeatureActions.DELETE_FEATURE_SUCCESS: {
+      console.log('Feature reducer: CREATE_FEATURE_SUCCESS');
       return {
         ...state,
         activeItem: {},
@@ -118,7 +118,7 @@ export default function reducer(state = initialState, action) {
         isFailed: false,
       };
     }
-    case TaskActions.SET_ACTIVE_TASK:
+    case FeatureActions.SET_ACTIVE_FEATURE:
       return {
         ...state,
         activeItem: payload.activeItem,

@@ -8,24 +8,24 @@ import pure from 'recompose/pure';
 
 import ViewDetail from '../form/ViewDetail';
 import withBackButton from '../../../components/common/hoc/withBackButton';
-import {setActiveTask} from '../../../redux/tasks/taskActions';
-import { deleteTask, findTasks } from '../../../redux/tasks/taskMiddleware';
+import {setActiveFeature} from '../../../redux/feature/featureActions';
+import { deleteFeature, findFeature } from '../../../redux/feature/featureMiddleware';
 import Background from '../../../components/common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
 import getStyles from '../../../../res/styles'
 
 const mapDispatchToProps = dispatch => ({
-  deleteTask: (values) => {return dispatch(deleteTask(values))},
-  setActiveTask: (task) => dispatch(setActiveTask(task)),
-  findTasks: (filter) => dispatch(findTasks(filter))
+  deleteFeature: (values) => {return dispatch(deleteFeature(values))},
+  setActiveFeature: (feature) => dispatch(setActiveFeature(feature)),
+  findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate))
 });
 
 const mapStateToProps = (state) => {
   return {
-    task: state.tasks.activeItem,
-    filter: state.tasks.filter,
-    isLoading: state.tasks.isDeleting,
+    feature: state.feature.activeItem,
+    searchTemplate: state.feature.searchTemplate,
+    isLoading: state.feature.isDeleting,
   }
 }
 
@@ -83,12 +83,12 @@ export default class DetailScreen extends React.Component {
   };
   customStyles = getStyles('FormScreen');
 
-  removeTask = () => {
-    this.props.deleteTask({
-          id: this.props.task.id,
+  removeFeature = () => {
+    this.props.deleteFeature({
+          featureId: this.props.feature.featureId,
         })
       .then(() => {
-        this.props.findTasks(this.props.filter);
+        this.props.findFeature(this.props.searchTemplate);
         Toast.show({
           text: "Запись успешно удалена",
           type: 'success',
@@ -104,20 +104,17 @@ export default class DetailScreen extends React.Component {
           buttonText: 'OK',
           duration: 5000
         });
-        console.log(err);
       });
   };
 
   goBack = () => this.props.navigation.goBack(null);
 
-  goToUpdateTask = () => {
-    const task = this.props.task;
-    console.log(`goToUpdateTask(${task})`);
-    this.props.navigation.navigate('EditTask');
+  goToUpdateFeature = () => {
+    this.props.navigation.navigate('EditFeature');
   };
 
   render() {
-    const task = this.props.task;
+    const feature = this.props.feature;
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
@@ -135,7 +132,7 @@ export default class DetailScreen extends React.Component {
             <Right>
               <Button
                 onPress={() => {
-                  this.removeTask(task);
+                  this.removeFeature(feature);
                 }}
                 transparent
               >
@@ -146,14 +143,14 @@ export default class DetailScreen extends React.Component {
           <Content contentContainerStyle={styles.content}>
             <ViewDetail
               navigation={this.props.navigation}
-              task={task}
+              feature={feature}
             />
           </Content>
           <View>
             <TouchableHighlight
               style={styles.button}
               underlayColor={DARK_AQUA_GREEN_COLOR}
-              onPress={this.goToUpdateTask}
+              onPress={this.goToUpdateFeature}
             >
               <Icon name="md-create" style={styles.buttonIcon} />
             </TouchableHighlight>

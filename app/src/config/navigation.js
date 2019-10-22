@@ -32,10 +32,10 @@ const middleware = createReactNavigationReduxMiddleware(
   const TaskNavigator = createStackNavigator (
   {
       Home: {screen: ListScreen},     
-      FilterTasks: {screen: FilterScreen},
-      AddTask: {screen: AddScreen},
-      EditTask: {screen: EditScreen},
-      ViewTask: {screen: DetailScreen},
+      FilterFeature: {screen: FilterScreen},
+      AddFeature: {screen: AddScreen},
+      EditFeature: {screen: EditScreen},
+      ViewFeature: {screen: DetailScreen},
       TaskHistory: {screen: HistoryScreen},
   },
   {

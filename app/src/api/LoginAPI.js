@@ -1,17 +1,12 @@
-import {BASE_URL, FEATURE_SERVICE_CONTEXT} from './apiConfig';
+import {BASE_URL, FEATURE_SERVICE_CONTEXT} from './ApiConfig';
 import * as SecureStore from 'expo-secure-store';
-import fetchJSON from './fetchJSON'; // from 'jep-fetch'
-import configureJepFetch from './configureJepFetch';
 import * as Errors from './errors';
 
 const LOGIN_API_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/LoginServlet?`;
 
-const shouldAuthentificate = error => {
-  return error.errorCode === Errors.AUTHENTIFICATION_ERROR || error.errorCode === Errors.ACCESS_DENIED;
-}
 
-export const processLogin = (username, password) => {
-  console.log("Processing authentification...");
+export const authenticateByCredentials = (username, password) => {
+  console.log("Processing authentication...");
   return fetch(LOGIN_API_URL + 'username=' + username + '&password=' + password,
   {
     method: 'POST',
@@ -19,16 +14,16 @@ export const processLogin = (username, password) => {
   })
   .then((response) => {
     if (response.ok) {
-      console.log("Authentification completed...");
+      console.log("Authentication completed...");
       saveCredentials(username, password);
       return response;
     } else {
-      if(response.status === 401) throw new Errors.APIError("Неверные данные", Errors.AUTHENTIFICATION_ERROR);
+      if(response.status === 401) throw new Errors.APIError("Неверные данные", Errors.AUTHENTICATION_ERROR);
       else throw new Error("Network connection problem");
     }
   })
   .catch((error) => {
-    console.log("Authentification failed: " + error.message);
+    console.log("Authentication failed: " + error.message);
     throw error;
   })
 };
@@ -61,28 +56,22 @@ const saveCredentials = async (username, password) => {
   }
 }
 
-export const authentificate = () => {
-  console.log("Authentificating...")
+export const authenticate = () => {
+  console.log("Authenticating...")
   return getCredentials()
   .then(async (credentials) => {
-    await processLogin(credentials.username, credentials.password)
+    await authenticateByCredentials(credentials.username, credentials.password)
     .then((response) => {
-      console.log("Authentification completed");
+      console.log("Authentication completed");
       return response;
     })
     .catch((error) => {
-      console.log("Authentification failed, redirect to Auth process");
+      console.log("Authentication failed, redirect to Auth process");
       throw error;
     });
   })
   .catch((error) => {
-    console.log("Authentification failed, redirect to Auth process");
+    console.log("Authentication failed, redirect to Auth process");
     throw error;
   });
 }
-
-export const jepFetch = configureJepFetch({
-  shouldAuthentificate,
-  authentificate,
-  fetch: fetchJSON,
-});

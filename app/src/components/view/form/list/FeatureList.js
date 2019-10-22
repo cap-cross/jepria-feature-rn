@@ -1,77 +1,49 @@
 import React from 'react';
 import { FlatList, View, ActivityIndicator, Text} from 'react-native';
 import { Icon } from 'native-base';
-import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-
-// import withIcons from '../common/hoc/withIcons';
-import TaskItem from './TaskItem';
-
-import { findTasks } from '../../../../redux/tasks/taskMiddleware';
-import { getUserData } from '../../../../redux/user/userMiddleware';
-import { pure } from 'recompose';
+import FeatureItem from './FeatureItem';
+import { findFeature, deleteFeature } from '../../../../redux/feature/featureMiddleware';
 import {LIGHT_AQUA_GREEN_COLOR} from '../../../../../res/style';
 
 const mapStateToProps = (state) => {
   return {
-    errorMessage: state.tasks.errorMessage,
-    isFailed: state.tasks.isFailed,
-    isLoading: state.tasks.isFetching,
-    items: state.tasks.items,
-    filter: state.tasks.filter,
-    user: state.user,
+    errorMessage: state.feature.errorMessage,
+    isFailed: state.feature.isFailed,
+    isLoading: state.feature.isFetching,
+    items: state.feature.items,
+    searchTemplate: state.feature.searchTemplate,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    findTasks: (filter) => dispatch(findTasks(filter)),
-    getUserData: () => dispatch(getUserData()),
+    findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate)),
+    deleteFeature: (featureId) => dispatch(deleteFeature(featureId))
   };
 }
 
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  pure
-);
-
-@enhance
-export default class TaskList extends React.Component {
-
-  // Для Login-диалога (Modal)
-  state = {
-    isLoginPending: false,
-  };
+class FeatureList extends React.Component {
 
   componentDidMount() {
-    if (this.props.user.operatorId === '') this.props.getUserData();
-    this.props.findTasks(this.props.filter);
+    this.props.findFeature(this.props.searchTemplate);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.filter !== prevProps.filter) {
-      this.props.findTasks(this.props.filter);
+    if (this.props.searchTemplate !== prevProps.searchTemplate) {
+      this.props.findFeature(this.props.searchTemplate);
     }
   }
 
-  // eslint-disable-next-line
-  getStyles = props => ({
-    // content: {
-    //     justifyContent: 'space-between',
-    //     padding: 8
-    // }
-  });
-
-  renderTaskItem = ({ item }) => (
-    <TaskItem
-      task={item}
-      navigation={this.props.navigation} // eslint-disable-line react/prop-types
-      remove={() => this.props.removeTask(item.id)}
+  renderFeatureItem = ({ item }) => (
+    <FeatureItem
+      item={item}
+      navigation={this.props.navigation}
+      remove={() => this.props.deleteFeature(item.featureId)}
     />
   );
 
   render() {
-    const styles = this.getStyles(this.props);
 
     let contentView = (
       <View style={{
@@ -113,15 +85,14 @@ export default class TaskList extends React.Component {
       contentView = (
         <FlatList
           refreshing={this.props.isLoading}
-          onRefresh={() => this.props.findTasks(this.props.filter)}
+          onRefresh={() => this.props.findFeature(this.props.searchTemplate)}
           data={items}
-          renderItem={this.renderTaskItem}
+          renderItem={this.renderFeatureItem}
           keyExtractor={(item, index) => index.toString()} // TODO Проверить корректность
         />
       );
     }
 
-    // TODO Постараться убрать отсюда всё, что связано с Login
     const result = (
       <View style={{flex: 1}}>
         {contentView}
@@ -131,3 +102,5 @@ export default class TaskList extends React.Component {
     return result;
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeatureList)

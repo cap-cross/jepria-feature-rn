@@ -1,40 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {View, TouchableHighlight} from 'react-native'
 import { Container, Header, Left, Right, Title, Button, Body, Icon } from 'native-base';
-import {bindActionCreators} from 'redux/lib/redux';
-import connect from 'react-redux/lib/connect/connect';
-import compose from 'recompose/compose';
-import pure from 'recompose/pure';
-
 import withBackButton from '../../common/hoc/withBackButton';
-import TaskList from '../form/TaskList/TaskList';
-import * as TaskActions from '../../../redux/tasks/taskActions';
+import FeatureList from '../form/list/FeatureList';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import getStyles from '../../../../res/styles'
 
-const mapStateToProps = state => ({
-  items: state.tasks.items,
-});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(TaskActions, dispatch),
-});
-
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withBackButton(),
-  pure,
-);
-
-@enhance
-export default class ListScreen extends React.Component {
-  static propTypes = {
-    items: PropTypes.array.isRequired,
-    navigation: PropTypes.object,
-    actions: PropTypes.objectOf(PropTypes.func).isRequired,
-  };
+class ListScreen extends React.Component {
 
   defaultStyles = {
     header: {
@@ -73,18 +46,17 @@ export default class ListScreen extends React.Component {
   };
   customStyles = getStyles('ListScreen');
 
-  addTask = () => {
-    this.props.navigation.navigate('AddTask');
+  AddFeature = () => {
+    this.props.navigation.navigate('AddFeature');
   };
 
-  filterTasks = () => {
-    console.log('ListScreen.filterTasks()');
-    this.props.navigation.navigate('FilterTasks');
+  FilterFeature = () => {
+    this.props.navigation.navigate('FilterFeature');
   };
 
   render() {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
-    const title = 'Задачи'; // eslint-disable-line react/prop-types
+    const title = 'Задачи';
 
     return (
       <Background>
@@ -99,21 +71,19 @@ export default class ListScreen extends React.Component {
               <Title style={styles.title}>{title}</Title>
             </Body>
             <Right>
-              <Button onPress={this.filterTasks} transparent>
+              <Button onPress={this.FilterFeature} transparent>
                 <Icon name="search" style={styles.icon} />
               </Button>
             </Right>
           </Header>
-          <TaskList
+          <FeatureList
             navigation={this.props.navigation}
-            items={this.props.items}
-            receiveTasks={this.props.actions.receiveTasks}
           />
           <View>
             <TouchableHighlight
               style={styles.button}
               underlayColor="red"
-              onPress={this.addTask}
+              onPress={this.AddFeature}
             >
               <Icon name="ios-add" style={styles.buttonIcon} />
             </TouchableHighlight>
@@ -123,3 +93,5 @@ export default class ListScreen extends React.Component {
     );
   }
 }
+
+export default withBackButton()(ListScreen)

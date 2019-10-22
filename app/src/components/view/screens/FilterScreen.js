@@ -8,24 +8,24 @@ import pure from 'recompose/pure';
 
 import { reduxForm } from 'redux-form';
 import withBackButton from '../../common/hoc/withBackButton';
-import { findTasks } from '../../../redux/tasks/taskMiddleware';
+import { findFeature } from '../../../redux/feature/featureMiddleware';
 import FilterForm from '../form/FilterForm';
-import ModalWaitBar from '../../common/WaitBar';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import getStyles from '../../../../res/styles'
 
 const mapStateToProps = (state) => {
   return {
-  initialValues: {
-    ...state.tasks.filter,
-    statusCodeList: state.tasks.filter.statusCodeList ? state.tasks.filter.statusCodeList.slice() : []
-  }
+    searchTemplate: state.feature.searchTemplate,
+    initialValues: {
+      ...state.feature.searchTemplate,
+      statusCodeList: state.feature.searchTemplate.statusCodeList ? state.feature.searchTemplate.statusCodeList.slice() : []
+    }
 }};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    findTasks: (filter) => dispatch(findTasks(filter)),
+    findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate)),
   };
 }
 
@@ -87,27 +87,30 @@ export default class FilterScreen extends React.Component {
   handleSubmit = () => this.props.handleSubmit(this.submitTask);
 
   submitTask = (values) => {
-    console.log(`FilterScreen.submitTask(${JSON.stringify(values)})`);
-    this.props.findTasks({
-      id: values.id,
-      authorId: values.authorId,
-      name: values.name,
-      nameEn: values.nameEn,
+    this.props.findFeature({
+      featureId: values.featureId,
+      featureNameTemplate: values.featureNameTemplate,
+      featureNameEnTemplate: values.featureNameEnTemplate,
       statusCodeList: values.statusCodeList,
-      responsibleId: values.responsibleId,
+      authorId: values.authorId,
+      responsibleId: values.responsibleId
     });
     this.props.navigation.goBack();
   };
 
+  goBack = () => {
+    this.props.navigation.goBack();
+  }
+
   render() {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
-
+    console.log(this.props.initialValues)
     return (
       <Background>
         <Container style={{backgroundColor:'transparent'}}>
           <Header style={styles.header}>
             <Left>
-              <Button onPress={this.props.navigation.goBack} transparent>
+              <Button onPress={this.goBack} transparent>
                 <Icon name="arrow-back" style={styles.icon} />
               </Button>
             </Left>
@@ -118,17 +121,12 @@ export default class FilterScreen extends React.Component {
           </Header>
           <Content contentContainerStyle={styles.content}>
             <FilterForm/>
-            <ModalWaitBar
-              ref={(c) => {
-                this.waitBar = c;
-              }}
-            />
           </Content>
           <View>
             <TouchableHighlight
               style={styles.button}
               underlayColor="red"
-              onPress={this.handleSubmit}
+              onPress={this.handleSubmit()}
             >
               <Icon name="md-checkmark" style={styles.buttonIcon} />
             </TouchableHighlight>

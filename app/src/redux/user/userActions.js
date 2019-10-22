@@ -41,13 +41,13 @@ export function fetchUserFailure(isFailed, errorMessage) {
     }
 }
 
-export function loginUser(isAuthentificating) {
-    console.log("LOGIN featureUser BEGIN " + isAuthentificating);
+export function loginUser(isAuthenticating) {
+    console.log("LOGIN featureUser BEGIN " + isAuthenticating);
 
     return {
         type: LOGIN_USER_BEGIN,
         payload : {
-            isAuthentificating,
+            isAuthenticating,
         }
     }
 }

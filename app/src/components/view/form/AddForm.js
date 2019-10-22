@@ -3,7 +3,6 @@ import { Form } from 'native-base';
 import { Field } from 'redux-form';
 import {required, expected} from '../../../data/validation';
 import {
-  StyleSheet,
   View,
 } from 'react-native';
 
@@ -24,20 +23,19 @@ export default class AddForm extends React.Component {
   customStyles = getStyles('Form');
 
   render() {
-    console.log('AddForm.render()');
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
       <View style={styles.form}>
         <Form>
           <Field
-            name="name"
+            name="featureName"
             component={TextInput}
             labelText="Название"
             validate = {required}
           />
           <Field
-            name="nameEn"
+            name="featureNameEn"
             component={TextInput}
             labelText="Название (англ)"
             validate = {required}

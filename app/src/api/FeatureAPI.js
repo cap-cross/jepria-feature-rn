@@ -1,160 +1,200 @@
-// FeatureAPI.js
-import * as apiConfig from './apiConfig';
-import { jepFetch } from './LoginAPI';
+// API.js
+import * as api from './ApiConfig';
+import * as errors from './errors'
 
-const buildFindUrl = (filter) => {
-  // TODO Реализовать посерьёзнее
-  let findUrl = apiConfig.FEATURE_API_FIND_URL;
-  if (filter.id || filter.name || filter.nameEn || filter.description || (filter.statusCodeList && filter.statusCodeList.length > 0) || filter.authorId || filter.responsibleId) {
-    findUrl += '?';
-  }
-  let first = true;
-  if (filter.id) {
-    findUrl += 'id=';
-    findUrl += filter.id;
-    first = false;
-  }
-  if (filter.name) {
-    if (!first) {
-      findUrl += '&';
-    }
-    findUrl += 'name=';
-    findUrl += filter.name;
-    first = false;
-  }
-  if (filter.nameEn) {
-    if (!first) {
-      findUrl += '&';
-    }
-    findUrl += 'nameEn=';
-    findUrl += filter.nameEn;
-    first = false;
-  }
-  if (filter.description) {
-    if (!first) {
-      findUrl += '&';
-    }
-    findUrl += 'description=';
-    findUrl += filter.description;
-  }
-  if (filter.description) {
-    if (!first) {
-      findUrl += '&';
-    }
-    findUrl += 'description=';
-    findUrl += filter.description;
-    first = false;
-  }
-  if (filter.statusCodeList && filter.statusCodeList.length > 0) {
-    if (!first) {
-      findUrl += '&';
-    }
-    findUrl += 'statusCodeList=';
-    var re = new RegExp(',', 'g');
-    findUrl += filter.statusCodeList.toString().replace(re,';');
-    first = false;
-  }
-  if (filter.authorId) {
-    if (!first) {
-      findUrl += '&';
-    }
-    findUrl += 'authorId=';
-    findUrl += filter.authorId;
-    first = false;
-  }
-  if (filter.responsibleId) {
-    if (!first) {
-      findUrl += '&';
-    }
-    findUrl += 'responsibleId=';
-    findUrl += filter.responsibleId;
-    first = false;
-  }
-
-  console.log(`FeatureAPI.buildFindUrl(): findUrl = ${findUrl}`);
-  return findUrl;
-};
-
-const features = {
-  find(filter) {
-    return jepFetch(buildFindUrl(filter));
-  },
-
-  addTask(task) {
-    return jepFetch(apiConfig.FEATURE_API_ADD_URL, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify({
-        name: task.name,
-        nameEn: task.nameEn,
-        description: task.description,
-      }),
-    })
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        throw error;
-      });
-  },
-
-  updateTask(task) {
-    const updateTaskUrl = apiConfig.FEATURE_API_UPDATE_URL;
-    return jepFetch(updateTaskUrl, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify({
-        id: task.id,
-        name: task.name,
-        nameEn: task.nameEn,
-        description: task.description,
-        statusCode: task.statusCode,
-      }),
-    })
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        throw error;
-      });
-  },
-
-  removeTask(task) {
-    const removeTaskUrl = apiConfig.FEATURE_API_DELETE_URL;
-    return jepFetch(`${removeTaskUrl}/${task.id}`, {
-      method: 'DELETE',
-    })
-      .then((response) => {
-      })
-      .catch((error) => {
-        throw error;
-      });
-  },
-};
-
-// TODO Реализовать загрузку статусов
-  const statuses = {  
-    getStatuses() {
-      return jepFetch(apiConfig.FEATURE_STATUSES_URL);
-    }
-  };
-
-  const operators = {  
-    getOperators() {
-      return jepFetch(apiConfig.FEATURE_OPERATORS_URL);
+const fetchRest = (url, parameters) => {
+  let parameters2 = {
+    credentials: 'include',
+    headers: {
+      'Cache-Control': 'no-cache',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8'
     },
-  };
-
-  const featureProcess = {
-    findTaskHistory(id) {
-      return jepFetch(apiConfig.FEATURE_API_FIND_URL + '/' + id + '/featureprocess');
-    }
+    ...parameters
   }
 
-export {features as tasks, statuses, operators, featureProcess as taskHistory};
+  console.log(`fetch(${url}) with parameters = ${JSON.stringify(parameters2)}`);
+
+  return fetch(url, parameters2)
+    .then((response) => {
+      if (response.status === 401) {
+        throw new errors.APIError("Ошибка аутентификации", errors.AUTHENTICATION_ERROR);
+      } else if (response.status === 403) {
+        throw new errors.APIError("Доступ к ресурсу", errors.ACCESS_DENIED);
+      } else {
+        return new Promise((resolve, reject) => {
+          resolve(response);
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      throw error;
+    });
+};
+
+const setSearchTemplate = searchTemplate => {
+  console.log(JSON.stringify(searchTemplate));
+  return fetchRest(api.FEATURE_API_URL + '/search',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        template: {
+          ...searchTemplate,
+          maxRowCount: 1000
+        }
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        return new Promise((resolve, reject) => { 
+          resolve(response.headers.get("Location"));
+        });
+      }
+    })
+    .catch(error => {
+        throw error;
+    })
+}
+
+const find = (url, pageSize, pageNumber) => {
+  return fetchRest(url + '/resultset?pageSize=' + pageSize + '&page=' + pageNumber)
+    .then(response => {
+      if (response.status == 200) {
+        return response.json();
+      } else {
+        return new Promise((resolve, reject) => { 
+          resolve([]);
+        });
+      }
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+const findById = featureId => {
+  return fetchRest(api.FEATURE_API_URL + '/' + featureId)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+const create = feature => {
+  return fetchRest(api.FEATURE_API_URL, {
+    method: 'POST',
+    body: JSON.stringify(feature)
+  })
+    .then(response => {
+      if (response.ok) {
+        return new Promise((resolve, reject) => {
+          resolve(response.headers.get("Location"));
+        });
+      }
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+const update = (featureId, feature) => {
+  console.log("UPDATING!!!!! " + featureId + " " + JSON.stringify(feature));
+  return fetchRest(api.FEATURE_API_URL + '/' + featureId, {
+    method: 'PUT',
+    body: JSON.stringify(feature)
+  })
+    .then(response => {
+      if (response.ok) {
+        return new Promise((resolve, reject) => {
+          resolve(response.ok);
+        });
+      }
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+const remove = featureId => {
+  return fetchRest(api.FEATURE_API_URL + '/' + featureId, {
+    method: 'DELETE'
+  })
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+const getStatuses = () => {
+  return fetchRest(api.FEATURE_STATUS_URL)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+const getOperators = () => {
+  return fetchRest(api.FEATURE_OPERATOR_URL)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+const findProcess = featureId => {
+  return fetchRest(api.FEATURE_API_URL + '/' + featureId + '/feature-process')
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+const createProcess = featureId => {
+  return fetchRest(api.FEATURE_API_URL + '/' + featureId + '/feature-process', {
+    method: 'POST'
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+const removeProcess = featureId => {
+  return fetchRest(api.FEATURE_API_URL + '/' + featureId + '/feature-process', {
+    method: 'DELETE'
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => {
+      throw error;
+    })
+}
+
+export {setSearchTemplate, find, findById, create, update, remove, 
+  getStatuses, getOperators, findProcess, createProcess, removeProcess, fetchRest as fetch };

@@ -10,8 +10,8 @@ import { reduxForm } from 'redux-form';
 
 import withBackButton from '../../../components/common/hoc/withBackButton';
 
-import {setActiveTask} from '../../../redux/tasks/taskActions';
-import { createTask, findTasks } from '../../../redux/tasks/taskMiddleware';
+import {setActiveFeature} from '../../../redux/feature/featureActions';
+import { createFeature, findFeature } from '../../../redux/feature/featureMiddleware';
 import AddForm from '../form/AddForm';
 import Background from '../../../components/common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
@@ -19,15 +19,15 @@ import { LoadingPanel } from '../../common/LoadingPanel';
 import getStyles from '../../../../res/styles'
 
 const mapDispatchToProps = dispatch => ({
-  createTask: (values) => {return dispatch(createTask(values))},
-  setActiveTask: (task) => dispatch(setActiveTask(task)),
-  findTasks: (filter) => dispatch(findTasks(filter))
+  createFeature: (values) => {return dispatch(createFeature(values))},
+  setActiveFeature: (feature) => dispatch(setActiveFeature(feature)),
+  findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate))
 });
 
 const mapStateToProps = (state) => {
   return {
-    filter: state.tasks.filter,
-    isLoading: state.tasks.isCreating,
+    searchTemplate: state.feature.searchTemplate,
+    isLoading: state.feature.isCreating,
   }
 }
 
@@ -87,28 +87,26 @@ export default class AddScreen extends React.Component {
 
   goBack = () => this.props.navigation.goBack();
 
-  handleSubmit = () => this.props.handleSubmit(this.submitTask);
+  handleSubmit = () => this.props.handleSubmit(this.submitAddForm);
 
-  submitTask = (values) => {
-    console.log(`AddScreen.submitTask(): values = ${JSON.stringify(values)}`);
-    this.props.createTask({
-      name: values.name,
-      nameEn: values.nameEn,
+  submitAddForm = (values) => {
+    this.props.createFeature({
+      featureName: values.featureName,
+      featureNameEn: values.featureNameEn,
       description: values.description,
     })
-    .then((task) => {
-      this.props.setActiveTask(task);
-      this.props.findTasks(this.props.filter);
+    .then((feature) => {
+      this.props.setActiveFeature(feature);
+      this.props.findFeature(this.props.searchTemplate);
       Toast.show({
         text: "Изменения успешно сохранены!",
         type: 'success',
         buttonText: 'OK',
         duration: 5000
       });
-      this.props.navigation.navigate('ViewTask');
+      this.props.navigation.navigate('ViewFeature');
     })
     .catch((err) => {
-      console.log(err.message);
       Toast.show({
         text: err.message,
         type: 'danger',
@@ -116,10 +114,6 @@ export default class AddScreen extends React.Component {
         duration: 5000
       });
     });
-
-    console.log('AddScreen.submitTask(): AFTER this.props.dispatch');
-
-    // this.props.navigation.goBack();
   };
 
   render() {
@@ -146,7 +140,7 @@ export default class AddScreen extends React.Component {
             <TouchableHighlight
               style={styles.button}
               underlayColor={DARK_AQUA_GREEN_COLOR}
-              onPress={this.handleSubmit}
+              onPress={this.handleSubmit()}
             >
               <Icon name="md-checkmark" style={styles.buttonIcon} />
             </TouchableHighlight>

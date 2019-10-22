@@ -1,6 +1,6 @@
 import * as actions from './userActions.js';
-import {FEATURE_CONTEXT_URL} from '../../api/apiConfig';
-import { processLogin, jepFetch } from '../../api/LoginAPI';
+import {FEATURE_CONTEXT_URL} from '../../api/ApiConfig';
+import { authenticateByCredentials } from '../../api/LoginAPI';
 
 const USER_DATA_API_URL = `${FEATURE_CONTEXT_URL}/userdata`;
 const LOGOUT_URL = `${FEATURE_CONTEXT_URL}/logout`;
@@ -10,7 +10,7 @@ export const getUserData = () => {
       console.log(`getUserData(): BEGIN`);
       dispatch(actions.fetchUser(true));
       console.log("fetching getUserData():" + USER_DATA_API_URL);
-      jepFetch(USER_DATA_API_URL)
+      fetch(USER_DATA_API_URL)
         .then((response) => {
           dispatch(actions.fetchUserSuccess(response));
         })
@@ -25,7 +25,7 @@ export const getUserData = () => {
         console.log(`login(): BEGIN`);
         dispatch(actions.loginUser(true));
         console.log("Processing login():" + USER_DATA_API_URL);
-        return processLogin(username, password)
+        return authenticateByCredentials(username, password)
           .then((response) => {
             dispatch(actions.loginUserSuccess());
             //getUserData();
