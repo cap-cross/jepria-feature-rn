@@ -65,7 +65,7 @@ class FeatureItem extends React.PureComponent {
                 <Text numberOfLines={1} ellipsizeMode='tail' style={styles.name}>{this.props.item.featureName}</Text>
               </View>
               <View>
-                <Text numberOfLines={1} ellipsizeMode='tail' style={styles.author}>{this.props.item.author.value}</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' style={styles.author}>{this.props.item.author.name}</Text>
               </View>
               <View>
                 <Text numberOfLines={1} ellipsizeMode='tail' style={styles.description}>{this.props.item.description}</Text>

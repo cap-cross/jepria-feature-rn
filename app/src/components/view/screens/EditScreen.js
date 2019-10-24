@@ -96,7 +96,7 @@ export default class EditScreen extends React.Component {
           featureName: values.featureName,
           featureNameEn: values.featureNameEn,
           description: values.description,
-        }, values.featureStatusCode)
+        }, values.featureStatus.value)
       .then((feature) => {
         this.props.setActiveFeature(feature);
         this.props.findFeature(this.props.searchTemplate);

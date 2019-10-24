@@ -8,7 +8,8 @@ const fetchRest = (url, parameters) => {
     headers: {
       'Cache-Control': 'no-cache',
       'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
+      'Content-Type': 'application/json; charset=utf-8',
+      'Authorization': 'Basic bmFnb3JueXlzOjEyMw=='
     },
     ...parameters
   }

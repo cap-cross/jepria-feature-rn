@@ -10,7 +10,7 @@ import {required, expected} from '../../../data/validation';
 import { getFeatureStatuses } from '../../../redux/status/statusMiddleware';
 import { getFeatureOperators } from '../../../redux/operator/operatorMiddleware';
 import { connect } from 'react-redux';
-import Picker from '../../common/Picker/Picker'
+import Picker from '../../common/Picker'
 import getStyles from '../../../../res/styles'
 
 class EditForm extends React.Component {
@@ -56,7 +56,7 @@ class EditForm extends React.Component {
               warn = {expected}
             />
             <Field
-              name="featureStatusCode"
+              name="featureStatus"
               component={Picker}
               labelText="Статус"
               itemNameKey='name'

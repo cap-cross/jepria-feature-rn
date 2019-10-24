@@ -4,7 +4,12 @@ import * as actions from './featureActions'
 export const findFeature = (searchTemplate) => {
   return (dispatch) => {
     dispatch(actions.fetchFeatures(searchTemplate, true));
-    return setSearchTemplate(searchTemplate)
+    return setSearchTemplate({
+        ...searchTemplate,
+        statusCodeList: searchTemplate.statusCodeList ? searchTemplate.statusCodeList.map(status => status.value) : undefined,
+        authorId: searchTemplate.authorId ? searchTemplate.authorId.value : undefined,
+        responsibleId: searchTemplate.responsibleId ? searchTemplate.responsibleId.value : undefined
+      })
       .then(searchUrl => {
         find(searchUrl, 1000, 1)
           .then((response) => {

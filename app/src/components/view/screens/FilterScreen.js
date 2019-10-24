@@ -87,14 +87,7 @@ export default class FilterScreen extends React.Component {
   handleSubmit = () => this.props.handleSubmit(this.submitTask);
 
   submitTask = (values) => {
-    this.props.findFeature({
-      featureId: values.featureId,
-      featureNameTemplate: values.featureNameTemplate,
-      featureNameEnTemplate: values.featureNameEnTemplate,
-      statusCodeList: values.statusCodeList,
-      authorId: values.authorId,
-      responsibleId: values.responsibleId
-    });
+    this.props.findFeature(values);
     this.props.navigation.goBack();
   };
 
@@ -104,7 +97,6 @@ export default class FilterScreen extends React.Component {
 
   render() {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
-    console.log(this.props.initialValues)
     return (
       <Background>
         <Container style={{backgroundColor:'transparent'}}>

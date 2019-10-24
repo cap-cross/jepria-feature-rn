@@ -8,9 +8,12 @@ import { Field } from 'redux-form';
 import TextInput from '../../common/TextInput';
 import { getFeatureStatuses } from '../../../redux/status/statusMiddleware';
 import { getFeatureOperators } from '../../../redux/operator/operatorMiddleware';
-import List from '../../common/MuliselectionList/MultiselectionList';
+//import List from '../../common/MuliselectionList/MultiselectionList';
+import MultiPicker from '../../common/MultiPicker';
+
 import { connect } from 'react-redux';
-import Picker from '../../common/Picker/Picker'
+import Picker from '../../common/Picker'
+// import Picker from '../../common/Picker/Picker'
 import getStyles from '../../../../res/styles'
 
 const mapStateToProps = (state) => {
@@ -61,7 +64,7 @@ class FilterForm extends React.Component {
           <Field
             style={styles.formfields}
             name="statusCodeList"
-            component={List}
+            component={MultiPicker}
             labelText="Статус"
             items={this.props.statuses}
           />
@@ -82,9 +85,6 @@ class FilterForm extends React.Component {
             name="authorId"
             component={Picker}
             labelText="Автор"
-            itemNameKey='name'
-            itemValueKey='value'
-            hasEmptyItem={true}
             items={this.props.operators}
           />
           <Field
@@ -92,9 +92,6 @@ class FilterForm extends React.Component {
             name="responsibleId"
             component={Picker}
             labelText="Ответственный"
-            itemNameKey='name'
-            itemValueKey='value'
-            hasEmptyItem={true}
             items={this.props.operators}
           />
         </Form>
