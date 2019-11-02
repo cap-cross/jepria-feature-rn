@@ -1,7 +1,7 @@
 // TODO Устранить дублирование с LoginForm
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Input, Item, Label, View, Icon } from 'native-base';
+import { Input, Item, View, Icon } from 'native-base';
 import { Text } from 'react-native';
 import getStyles from '../../../../res/styles'
 

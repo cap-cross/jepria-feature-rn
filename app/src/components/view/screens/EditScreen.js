@@ -12,6 +12,8 @@ import withBackButton from '../../../components/common/hoc/withBackButton';
 import EditForm from '../form/EditForm';
 import {setActiveFeature} from '../../../redux/feature/featureActions';
 import { updateFeature, findFeature } from '../../../redux/feature/featureMiddleware';
+import { getFeatureStatuses } from '../../../redux/status/statusMiddleware';
+import { getFeatureOperators } from '../../../redux/operator/operatorMiddleware';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
@@ -20,7 +22,9 @@ import getStyles from '../../../../res/styles'
 const mapDispatchToProps = dispatch => ({
   updateFeature: (featureId, values, featureStatusCode) => {return dispatch(updateFeature(featureId, values, featureStatusCode))},
   setActiveFeature: (feature) => dispatch(setActiveFeature(feature)),
-  findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate))
+  findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate)),
+  getFeatureStatuses: () => dispatch(getFeatureStatuses()),
+  getFeatureOperators: () => dispatch(getFeatureOperators())
 });
 
 const mapStateToProps = (state) => {
@@ -28,6 +32,11 @@ const mapStateToProps = (state) => {
     initialValues: state.feature.activeItem,
     searchTemplate: state.feature.searchTemplate,
     isLoading: state.feature.isUpdating,
+    userRoles: state.user.userRoles,
+    operators: state.operators,
+    statuses: state.statuses,
+    isFailed: state.isFailed,
+    errorMessage: state.errorMessage,
   }
 }
 
@@ -87,6 +96,11 @@ export default class EditScreen extends React.Component {
   };
   customStyles = getStyles('FormScreen');
 
+  componentDidMount = () => {
+    this.props.getFeatureStatuses();
+    this.props.getFeatureOperators();
+  }
+
   handleSubmit = () => this.props.handleSubmit(this.submitFeature);
 
   goBack = () => this.props.navigation.goBack();
@@ -136,7 +150,10 @@ export default class EditScreen extends React.Component {
             <Right />
           </Header>
           <Content contentContainerStyle={styles.content}>
-            <EditForm/>
+            <EditForm
+            operators={this.props.operators}
+            statuses={this.props.statuses}
+            userRoles={this.props.userRoles}/>
           </Content>
           <View>
             <TouchableHighlight

@@ -8,12 +8,10 @@ import { Field } from 'redux-form';
 import TextInput from '../../common/TextInput';
 import { getFeatureStatuses } from '../../../redux/status/statusMiddleware';
 import { getFeatureOperators } from '../../../redux/operator/operatorMiddleware';
-//import List from '../../common/MuliselectionList/MultiselectionList';
 import MultiPicker from '../../common/MultiPicker';
 
 import { connect } from 'react-redux';
 import Picker from '../../common/Picker'
-// import Picker from '../../common/Picker/Picker'
 import getStyles from '../../../../res/styles'
 
 const mapStateToProps = (state) => {

@@ -5,7 +5,7 @@ import navigate from './navigate/reducer';
 import operators from './operator/operatorReducer';
 import statuses from './status/statusReducer';
 import user from './user/userReducer';
-import history from './history/historyReducer';
+import history from './process/featureProcessReducer';
 
 export default combineReducers({
   feature,

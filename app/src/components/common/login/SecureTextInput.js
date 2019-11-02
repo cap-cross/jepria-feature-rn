@@ -1,7 +1,7 @@
 // TODO Устранить дублирование с TextInput
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Item, Input, View, Text, Icon } from 'native-base';
+import { Item, Input, View, Icon } from 'native-base';
 import getStyles from '../../../../res/styles'
 
 export default class SecureTextInput extends React.PureComponent {

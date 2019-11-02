@@ -1,4 +1,4 @@
-import {setSearchTemplate, find,  create, update, remove, fetch, findById } from '../../api/FeatureAPI';
+import {setSearchTemplate, find,  create, update, remove, fetch, findById, createProcess } from '../../api/FeatureAPI';
 import * as actions from './featureActions'
 
 export const findFeature = (searchTemplate) => {
@@ -32,10 +32,17 @@ export const updateFeature = (featureId, feature, statusCode) => {
     return update(featureId, feature)
       .then((response) => {
         if (response) {
-          return findById(featureId)
-            .then(feature => {
-              dispatch(actions.updateFeatureSuccess(feature));
-              return feature;
+          return createProcess(featureId, statusCode)
+            .then(() => {
+              return findById(featureId)
+                .then(feature => {
+                  dispatch(actions.updateFeatureSuccess(feature));
+                  return feature;
+                })
+                .catch((error) => {
+                  dispatch(actions.updateFeatureFailure(feature, true, error.message));
+                  throw error;
+                });
             })
             .catch((error) => {
               dispatch(actions.updateFeatureFailure(feature, true, error.message));

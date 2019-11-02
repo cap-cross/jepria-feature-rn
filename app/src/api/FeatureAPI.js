@@ -3,13 +3,14 @@ import * as api from './ApiConfig';
 import * as errors from './errors'
 
 const fetchRest = (url, parameters) => {
+  
   let parameters2 = {
     credentials: 'include',
     headers: {
-      'Cache-Control': 'no-cache',
       'Accept': 'application/json',
       'Content-Type': 'application/json; charset=utf-8',
-      'Authorization': 'Basic bmFnb3JueXlzOjEyMw=='
+      'Authorization': 'Basic bmFnb3JueXlzOjEyMw==',
+      'X-Cache-Control': 'no-cache'
     },
     ...parameters
   }
@@ -35,7 +36,6 @@ const fetchRest = (url, parameters) => {
 };
 
 const setSearchTemplate = searchTemplate => {
-  console.log(JSON.stringify(searchTemplate));
   return fetchRest(api.FEATURE_API_URL + '/search',
     {
       method: 'POST',
@@ -169,13 +169,18 @@ const findProcess = featureId => {
     })
 }
 
-const createProcess = featureId => {
+const createProcess = (featureId, statusCode) => {
   return fetchRest(api.FEATURE_API_URL + '/' + featureId + '/feature-process', {
-    method: 'POST'
+    method: 'POST',
+    body: JSON.stringify({
+      featureStatusCode: statusCode
+    })
   })
     .then(response => {
       if (response.ok) {
-        return response.json();
+        return new Promise((resolve, reject) => {
+          resolve(response.ok);
+        });
       }
     })
     .catch(error => {
