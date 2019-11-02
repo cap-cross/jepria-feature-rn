@@ -107,7 +107,7 @@ export default class FilterScreen extends React.Component {
         <Container style={{backgroundColor:'transparent'}}>
           <Header style={styles.header}>
             <Left>
-              <Button onPress={this.props.navigation.goBack} transparent>
+              <Button onPress={() => this.props.navigation.goBack()} transparent>
                 <Icon name="arrow-back" style={styles.icon} />
               </Button>
             </Left>
@@ -128,7 +128,7 @@ export default class FilterScreen extends React.Component {
             <TouchableHighlight
               style={styles.button}
               underlayColor="red"
-              onPress={this.handleSubmit}
+              onPress={this.handleSubmit()}
             >
               <Icon name="md-checkmark" style={styles.buttonIcon} />
             </TouchableHighlight>
