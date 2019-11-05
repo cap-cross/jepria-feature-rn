@@ -33,8 +33,7 @@ const styles = {
   ...getStyles('ViewForm')
 };
 
-export default ViewDetail = (feature) => {
-
+export default ViewDetail = ({feature}) => {
   return (
     <View style={styles.form}>
       <View style={styles.card}>

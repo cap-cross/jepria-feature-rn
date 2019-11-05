@@ -1,15 +1,14 @@
 import React from 'react';
 
-import {Expo, AppLoading} from 'expo';
-import configureStore from './app/src/config/store';
+import { AppLoading } from 'expo';
+import store from './app/src/redux/store';
 
-import ScreenManager from './app/src/components/view/ScreenManager';
+import AppNavigator from './app/src/config/navigation';
 import DataProvider from './app/src/data/DataProvider';
 import { Root } from 'native-base';
 
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
-import { Ionicons } from '@expo/vector-icons';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -56,9 +55,9 @@ export default class App extends React.Component {
       );
     }
     return (
-       <DataProvider store={configureStore()}>
+       <DataProvider store={store}>
          <Root>
-           <ScreenManager />
+           <AppNavigator />
          </Root>
        </DataProvider>
     );
