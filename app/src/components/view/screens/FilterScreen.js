@@ -9,6 +9,8 @@ import pure from 'recompose/pure';
 import { reduxForm } from 'redux-form';
 import withBackButton from '../../common/hoc/withBackButton';
 import { findFeature } from '../../../redux/feature/featureMiddleware';
+import { getFeatureStatuses } from '../../../redux/status/statusMiddleware';
+import { getFeatureOperators } from '../../../redux/operator/operatorMiddleware';
 import FilterForm from '../form/FilterForm';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
@@ -17,6 +19,11 @@ import getStyles from '../../../../res/styles'
 const mapStateToProps = (state) => {
   return {
     searchTemplate: state.feature.searchTemplate,
+    operators: state.operators,
+    statuses: state.statuses,
+    isLoading: state.isLoading,
+    isFailed: state.isFailed,
+    errorMessage: state.errorMessage,
     initialValues: {
       ...state.feature.searchTemplate,
       statusCodeList: state.feature.searchTemplate.statusCodeList ? state.feature.searchTemplate.statusCodeList.slice() : []
@@ -26,6 +33,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate)),
+    getFeatureStatuses: () => dispatch(getFeatureStatuses()),
+    getFeatureOperators: () => dispatch(getFeatureOperators())
   };
 }
 
@@ -44,6 +53,11 @@ export default class FilterScreen extends React.Component {
     navigation: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    if(this.props.statuses.length == 0) this.props.getFeatureStatuses();
+    if(this.props.operators.length == 0) this.props.getFeatureOperators();
+  }
 
   defaultStyles = {
     content: {
@@ -112,14 +126,15 @@ export default class FilterScreen extends React.Component {
             <Right />
           </Header>
           <Content contentContainerStyle={styles.content}>
-            <FilterForm/>
+            <FilterForm
+            statuses={this.props.statuses}
+            operators={this.props.operators}/>
           </Content>
           <View>
             <TouchableHighlight
               style={styles.button}
               underlayColor="red"
-              onPress={this.handleSubmit()}
-            >
+              onPress={this.handleSubmit()}>
               <Icon name="md-checkmark" style={styles.buttonIcon} />
             </TouchableHighlight>
           </View>
