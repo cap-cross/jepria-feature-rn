@@ -77,28 +77,24 @@ class DetailScreen extends React.Component {
 
   removeFeature = () => {
     this.props.deleteFeature({
-          featureId: this.props.feature.featureId,
-        }).catch(error => {
-          console.log(error)
-        })
-      // .then(() => {
-      //   //this.props.findFeature(this.props.searchTemplate);
-      //   // Toast.show({
-      //   //   text: "Запись успешно удалена",
-      //   //   type: 'success',
-      //   //   buttonText: 'OK',
-      //   //   duration: 5000
-      //   // });
-      //   //this.props.navigation.goBack(null);
-      // })
-      // .catch((err) => {
-      //   // Toast.show({
-      //   //   text: err.message,
-      //   //   type: 'danger',
-      //   //   buttonText: 'OK',
-      //   //   duration: 5000
-      //   // });
-      // });
+      featureId: this.props.feature.featureId,
+    }).then(() => {
+      this.props.findFeature(this.props.searchTemplate);
+      Toast.show({
+        text: "Запись успешно удалена",
+        type: 'success',
+        buttonText: 'OK',
+        duration: 5000
+      });
+      this.props.navigation.goBack(null);
+    }).catch((err) => {
+      Toast.show({
+        text: err.message,
+        type: 'danger',
+        buttonText: 'OK',
+        duration: 5000
+      });
+    });
   };
 
   goBack = () => this.props.navigation.goBack(null);
@@ -133,7 +129,7 @@ class DetailScreen extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  deleteFeature: (values) => {dispatch(deleteFeature(values))},
+  deleteFeature: (values) => {return dispatch(deleteFeature(values))},
   setActiveFeature: (feature) => dispatch(setActiveFeature(feature)),
   findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate))
 });

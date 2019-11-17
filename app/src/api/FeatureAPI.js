@@ -106,7 +106,6 @@ const create = feature => {
 }
 
 const update = (featureId, feature) => {
-  console.log("UPDATING!!!!! " + featureId + " " + JSON.stringify(feature));
   return fetchRest(api.FEATURE_API_URL + '/' + featureId, {
     method: 'PUT',
     body: JSON.stringify(feature)
@@ -128,7 +127,11 @@ const remove = featureId => {
     method: 'DELETE'
   })
     .then(response => {
-      return response;
+      if (response.ok) {
+        return new Promise((resolve, reject) => {
+          resolve(response.ok);
+        });
+      }
     })
     .catch(error => {
       throw error;

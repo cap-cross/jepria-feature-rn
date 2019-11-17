@@ -112,34 +112,20 @@ class EditScreen extends React.Component {
 
     return (
       <Background>
-        <Container style={{backgroundColor:'transparent'}}>
-          <Header style={styles.header}>
-            <Left>
-              <Button onPress={this.goBack} transparent>
-                <Icon name="arrow-back" style={styles.icon} />
-              </Button>
-            </Left>
-            <Body>
-              <Title style={styles.title}>Редактирование</Title>
-            </Body>
-            <Right />
-          </Header>
-          <Content contentContainerStyle={styles.content}>
-            <EditForm
-            operators={this.props.operators}
-            statuses={this.props.statuses}
-            userRoles={this.props.userRoles}/>
-          </Content>
-          <View>
-            <TouchableHighlight
-              style={styles.button}
-              underlayColor="red"
-              onPress={this.handleSubmit()}
-            >
-              <Icon name="md-checkmark" style={styles.buttonIcon} />
-            </TouchableHighlight>
-          </View>
-        </Container>
+        <Content contentContainerStyle={styles.content}>
+          <EditForm
+          operators={this.props.operators}
+          statuses={this.props.statuses}
+          userRoles={this.props.userRoles}/>
+        </Content>
+        <View>
+          <TouchableHighlight
+            style={styles.button}
+            underlayColor="red"
+            onPress={this.handleSubmit()}>
+            <Icon name="md-checkmark" style={styles.buttonIcon} />
+          </TouchableHighlight>
+        </View>
         <LoadingPanel show={this.props.isLoading} text="Обновление записи"/>
       </Background>
     );
