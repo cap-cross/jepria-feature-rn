@@ -20,9 +20,11 @@ const fetchRest = (url, parameters) => {
   return fetch(url, parameters2)
     .then((response) => {
       if (response.status === 401) {
-        throw new errors.APIError("Ошибка аутентификации", errors.AUTHENTICATION_ERROR);
+        throw new errors.APIError("Войдите в систему для доступа к ресурсу", errors.AUTHENTICATION_ERROR);
       } else if (response.status === 403) {
-        throw new errors.APIError("Доступ к ресурсу", errors.ACCESS_DENIED);
+        throw new errors.APIError("Доступ к ресурсу запрещен", errors.ACCESS_DENIED);
+      } else if (response.status === 500) {
+        throw new errors.APIError("При обращении к сервису возникла непредвиденная ошибка", errors.SERVER_ERROR);
       } else {
         return new Promise((resolve, reject) => {
           resolve(response);
@@ -194,7 +196,9 @@ const removeProcess = featureId => {
   })
     .then(response => {
       if (response.ok) {
-        return response.json();
+        return new Promise((resolve, reject) => {
+          resolve(response.ok);
+        });
       }
     })
     .catch(error => {

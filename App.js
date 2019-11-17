@@ -4,7 +4,7 @@ import { AppLoading } from 'expo';
 import store from './app/src/redux/store';
 
 import AppNavigator from './app/src/config/navigation';
-import DataProvider from './app/src/data/DataProvider';
+import { Provider } from 'react-redux';
 import { Root } from 'native-base';
 
 import * as Font from 'expo-font';
@@ -32,10 +32,8 @@ export default class App extends React.Component {
   async componentWillMount() {
     await Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
-      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-      //Ionicons: Ionicons.font
+      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
     });
-    //await this.cacheFonts([Ionicons.font, require('native-base/Fonts/Roboto.ttf'), require('native-base/Fonts/Roboto_medium.ttf')]);
     await Asset.fromModule(require('./assets/images/background.jpg')).downloadAsync();
     this.setState({ isReady: true });
   }
@@ -55,11 +53,11 @@ export default class App extends React.Component {
       );
     }
     return (
-       <DataProvider store={store}>
+       <Provider store={store}>
          <Root>
            <AppNavigator />
          </Root>
-       </DataProvider>
+       </Provider>
     );
   }
 }

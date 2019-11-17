@@ -1,34 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
+import { Content, Button, Icon, Toast } from 'native-base';
 import connect from 'react-redux/lib/connect/connect';
-import compose from 'recompose/compose';
-import pure from 'recompose/pure';
+import { compose, hoistStatics, pure} from 'recompose';
 
 import UserDetail from '../form/UserDetail';
 import { logout } from '../../../redux/user/userMiddleware';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR} from '../../../../res/style';
 
-const mapDispatchToProps = dispatch => ({
-  logout: () => {return dispatch(logout())}
-});
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  }
-}
-
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  pure,
-);
-
-@enhance
-export default class UserScreen extends React.Component {
+class UserScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
+  };
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerLeft: () => (
+        <Button onPress={() => navigation.openDrawer()} transparent>
+          <Icon name="menu" style={screenStyles.icon} />
+        </Button>
+      )
+    }
   };
 
   getStyles = () => ({
@@ -67,33 +60,35 @@ export default class UserScreen extends React.Component {
   };
 
   render() {
-     const { user } = this.props;
-    // Получить из state, а в state - по запросу с backend 
-
+    const { user } = this.props;
     const styles = this.getStyles();
 
     return (
       <Background>
-        <Container style={{backgroundColor:'transparent'}}>
-          <Header style={styles.header}>
-            <Left>
-              <Button onPress={this.props.navigation.openDrawer} transparent>
-                <Icon name="menu" style={styles.icon} />
-              </Button>
-            </Left>
-            <Body>   
-            <Title style={styles.title}>Профиль</Title>
-            </Body>
-            <Right/>     
-          </Header>
           <Content contentContainerStyle={styles.content}>
             <UserDetail
               navigation={this.props.navigation}
               user={user}
             />
           </Content>
-        </Container>
       </Background>
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  logout: () => {return dispatch(logout())}
+});
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  }
+}
+
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  pure,
+);
+
+export default hoistStatics(enhance)(UserScreen);

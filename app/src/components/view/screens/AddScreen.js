@@ -121,31 +121,17 @@ export default class AddScreen extends React.Component {
 
     return (
       <Background>
-        <Container style={{backgroundColor:'transparent'}}>
-          <Header style={styles.header}>
-            <Left>
-              <Button onPress={this.goBack} transparent>
-                <Icon name="arrow-back" style={styles.icon} />
-              </Button>
-            </Left>
-            <Body>
-              <Title style={styles.title}>Создание</Title>
-            </Body>
-            <Right />
-          </Header>
-          <Content contentContainerStyle={styles.content}>
-            <AddForm />
-          </Content>
-          <View>
-            <TouchableHighlight
-              style={styles.button}
-              underlayColor={DARK_AQUA_GREEN_COLOR}
-              onPress={this.handleSubmit()}
-            >
-              <Icon name="md-checkmark" style={styles.buttonIcon} />
-            </TouchableHighlight>
-          </View>
-        </Container>
+        <Content contentContainerStyle={styles.content}>
+          <AddForm />
+        </Content>
+        <View>
+          <TouchableHighlight
+            style={styles.button}
+            underlayColor={DARK_AQUA_GREEN_COLOR}
+            onPress={this.handleSubmit()}>
+            <Icon name="md-checkmark" style={styles.buttonIcon} />
+          </TouchableHighlight>
+        </View>
         <LoadingPanel show={this.props.isLoading} text="Создание записи"/>
       </Background>
     );

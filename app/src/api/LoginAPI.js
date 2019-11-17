@@ -66,12 +66,12 @@ export const authenticate = () => {
       return response;
     })
     .catch((error) => {
-      console.log("Authentication failed, redirect to Auth process");
+      console.log("Authentication failed");
       throw error;
     });
   })
   .catch((error) => {
-    console.log("Authentication failed, redirect to Auth process");
+    console.log("Authentication failed");
     throw error;
   });
 }

@@ -35,10 +35,6 @@
         "xxxhdpi": "./assets/images/splash-logo.png"
       }
     },
-    "androidStatusBar": {
-      "barStyle": "light-content",
-      "backgroundColor": "#175767"
-    },
     "updates": {
       "enabled": true
     }

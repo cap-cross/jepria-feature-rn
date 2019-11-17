@@ -61,38 +61,24 @@ export default class HistoryScreen extends React.Component {
   render() {
     return (
       <Background>
-        <Container style={{backgroundColor:'transparent'}}>
-          <Header style={styles.header}>
-            <Left>
-              <Button onPress={this.goBack} transparent>
-                <Icon name="arrow-back" style={styles.icon} />
-              </Button>
-            </Left>
-            <Body>
-              <Title style={styles.title}>Cтатус</Title>
-            </Body>
-            <Right />
-          </Header>
-          <ListView
-            items={this.props.history.items}
-            refreshing={this.props.history.isLoading}
-            renderItem={
-              ({item}) => {
-                return (
-                  <View style={styles.card}>
-                    <View>
-                      <Text style={{...styles.text, fontWeight: 'bold', fontSize:16}}>{item.featureStatusName}</Text>
-                    </View>
-                    <View>
-                      <Text style={{...styles.text, fontSize: 14}}>Дата изменения: {item.dateIns}</Text>
-                    </View>
+        <ListView
+          items={this.props.history.items}
+          refreshing={this.props.history.isLoading}
+          renderItem={
+            ({item}) => {
+              return (
+                <View style={styles.card}>
+                  <View>
+                    <Text style={{...styles.text, fontWeight: 'bold', fontSize:16}}>{item.featureStatusName}</Text>
                   </View>
-                );
-              }
+                  <View>
+                    <Text style={{...styles.text, fontSize: 14}}>Дата изменения: {item.dateIns}</Text>
+                  </View>
+                </View>
+              );
             }
-            onRefresh={() => this.props.findFeatureProcess(this.props.feature)}
-          />
-        </Container>
+          }
+          onRefresh={() => this.props.findFeatureProcess(this.props.feature)}/>
       </Background>
     );
   }

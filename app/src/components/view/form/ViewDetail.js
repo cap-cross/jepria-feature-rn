@@ -33,7 +33,7 @@ const styles = {
   ...getStyles('ViewForm')
 };
 
-export default ViewDetail = ({feature}) => {
+export default ViewDetail = ({feature, navigation}) => {
   return (
     <View style={styles.form}>
       <View style={styles.card}>
@@ -45,7 +45,9 @@ export default ViewDetail = ({feature}) => {
         </View>
       </View>
       <View style={styles.card}>
-        <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1, alignItems: 'center', borderBottomColor: 'white', borderBottomWidth:1}} onPress={() => this.props.navigation.navigate("TaskHistory")}>
+        <TouchableOpacity 
+          style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1, alignItems: 'center', borderBottomColor: 'white', borderBottomWidth:1}} 
+          onPress={() => navigation.navigate("TaskHistory")}>
           <View>
             <View>
               <Text style={styles.fieldCaption}>Статус</Text>

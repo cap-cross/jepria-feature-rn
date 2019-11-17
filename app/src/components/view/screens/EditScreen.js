@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { View, TouchableHighlight} from 'react-native';
 import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
 import connect from 'react-redux/lib/connect/connect';
-import compose from 'recompose/compose';
-import pure from 'recompose/pure';
+import {compose, pure, hoistStatics} from 'recompose';
 
 import { reduxForm } from 'redux-form';
 
@@ -19,38 +18,14 @@ import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
 import getStyles from '../../../../res/styles'
 
-const mapDispatchToProps = dispatch => ({
-  updateFeature: (featureId, values, featureStatusCode) => {return dispatch(updateFeature(featureId, values, featureStatusCode))},
-  setActiveFeature: (feature) => dispatch(setActiveFeature(feature)),
-  findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate)),
-  getFeatureStatuses: () => dispatch(getFeatureStatuses()),
-  getFeatureOperators: () => dispatch(getFeatureOperators())
-});
+class EditScreen extends React.Component {
+  
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam("title")
+    }
+  };
 
-const mapStateToProps = (state) => {
-  return {
-    initialValues: state.feature.activeItem,
-    searchTemplate: state.feature.searchTemplate,
-    isLoading: state.feature.isUpdating,
-    userRoles: state.user.userRoles,
-    operators: state.operators,
-    statuses: state.statuses,
-    isFailed: state.isFailed,
-    errorMessage: state.errorMessage,
-  }
-}
-
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: 'editForm',
-  }),
-  withBackButton(),
-  pure,
-);
-
-@enhance
-export default class EditScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -170,3 +145,34 @@ export default class EditScreen extends React.Component {
     );
   }
 }
+const mapDispatchToProps = dispatch => ({
+  updateFeature: (featureId, values, featureStatusCode) => {return dispatch(updateFeature(featureId, values, featureStatusCode))},
+  setActiveFeature: (feature) => dispatch(setActiveFeature(feature)),
+  findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate)),
+  getFeatureStatuses: () => dispatch(getFeatureStatuses()),
+  getFeatureOperators: () => dispatch(getFeatureOperators())
+});
+
+const mapStateToProps = (state) => {
+  return {
+    initialValues: state.feature.activeItem,
+    searchTemplate: state.feature.searchTemplate,
+    isLoading: state.feature.isUpdating,
+    userRoles: state.user.userRoles,
+    operators: state.operators,
+    statuses: state.statuses,
+    isFailed: state.isFailed,
+    errorMessage: state.errorMessage,
+  }
+}
+
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: 'editForm',
+  }),
+  withBackButton(),
+  pure,
+);
+
+export default hoistStatics(enhance)(EditScreen);

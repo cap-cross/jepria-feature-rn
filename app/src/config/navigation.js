@@ -18,21 +18,66 @@ import {DARK_BLUE_COLOR} from '../../res/style';
   
 const TaskNavigator = createStackNavigator (
   {
-      Home: {screen: ListScreen},     
-      FilterFeature: {screen: FilterScreen},
-      AddFeature: {screen: AddScreen},
-      EditFeature: {screen: EditScreen},
-      ViewFeature: {screen: DetailScreen},
-      TaskHistory: {screen: HistoryScreen},
+      Home: {screen: ListScreen,
+        navigationOptions: () => ({
+          title: "Запрос функционала"
+        })
+      },     
+      FilterFeature: {screen: FilterScreen,
+        navigationOptions: () => ({
+          title: "Фильтр"
+        })
+      },     
+      AddFeature: {screen: AddScreen,
+        navigationOptions: () => ({
+          title: "Запрос функционала"
+        })
+      },     
+      EditFeature: {screen: EditScreen},     
+      ViewFeature: {screen: DetailScreen},     
+      TaskHistory: {screen: HistoryScreen,
+        navigationOptions: () => ({
+          title: "Статус"
+        })
+      },     
   },
   {
     initialRouteName: 'Home',
-     headerMode: 'none' 
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: DARK_BLUE_COLOR,
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      }
+    }
+  });
+
+const UserNavigator = createStackNavigator (
+  {
+    User: {screen: UserScreen,
+      navigationOptions: () => ({
+        title: "Пользователь"
+      })
+    }     
+  },
+  {
+    initialRouteName: 'User',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: DARK_BLUE_COLOR,
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      }
+    }
   });
 
 const DrawerNavigator = createDrawerNavigator(
 {
-  "Профиль": {screen: UserScreen},
+  "Профиль": {screen: UserNavigator},
   "Задачи": {screen: TaskNavigator}
 },
 {

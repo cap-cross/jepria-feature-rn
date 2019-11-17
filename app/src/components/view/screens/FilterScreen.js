@@ -113,32 +113,19 @@ export default class FilterScreen extends React.Component {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
       <Background>
-        <Container style={{backgroundColor:'transparent'}}>
-          <Header style={styles.header}>
-            <Left>
-              <Button onPress={this.goBack} transparent>
-                <Icon name="arrow-back" style={styles.icon} />
-              </Button>
-            </Left>
-            <Body>
-              <Title style={styles.title}>Фильтр</Title>
-            </Body>
-            <Right />
-          </Header>
-          <Content contentContainerStyle={styles.content}>
-            <FilterForm
+        <Content>
+          <FilterForm
             statuses={this.props.statuses}
             operators={this.props.operators}/>
-          </Content>
-          <View>
-            <TouchableHighlight
-              style={styles.button}
-              underlayColor="red"
-              onPress={this.handleSubmit()}>
-              <Icon name="md-checkmark" style={styles.buttonIcon} />
-            </TouchableHighlight>
-          </View>
-        </Container>
+        </Content>
+        <View>
+          <TouchableHighlight
+            style={styles.button}
+            underlayColor="red"
+            onPress={this.handleSubmit()}>
+            <Icon name="md-checkmark" style={styles.buttonIcon} />
+          </TouchableHighlight>
+        </View>
       </Background>
     );
   }
