@@ -7,43 +7,20 @@ import { Field } from 'redux-form';
 
 import TextInput from '../../common/login/TextInput';
 import SecureTextInput from '../../common/login/SecureTextInput';
-import connect from 'react-redux/lib/connect/connect';
-import compose from 'recompose/compose';
-import pure from 'recompose/pure';
 import { reduxForm } from 'redux-form';
 
 import {DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import {required} from '../../../data/validation';
 import getStyles from '../../../../res/styles'
-import { login } from '../../../redux/user/userMiddleware';
 import { LoadingPanel } from '../../common/LoadingPanel';
+import { SecurityContext } from '../../../context/SecurityContext';
 
-
-const mapStateToProps = (state) => {
-  return {
-    isAuthentificating: state.user.isAuthentificating,
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    login: (username, password) => {return dispatch(login(username, password))},
-    getUserData: () => dispatch(getUserData())
-  };
-}
-
-
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({ form: 'authForm' }),
-  pure,
-);
-
-@enhance
-export default class AuthForm extends React.Component {
+class AuthForm extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
   };
+
+  static contextType = SecurityContext;
 
   defaultStyles = {
     button: {
@@ -75,16 +52,14 @@ export default class AuthForm extends React.Component {
   handleSubmit = () => this.props.dispatch(this.props.handleSubmit(this.submitLogin));
 
   submitLogin = (values) => {
-    this.props.login(
+    this.context.login(
       values.username,
       values.password)
-      .then((response) => {
+      .then(() => {
         this.props.navigation.navigate('Verify',
         {
           username: values.username,
-          password: values.password,
-          pin: null,
-          hasFingerPrint: false
+          password: values.password
         });
       })
       .catch((err) => {
@@ -98,6 +73,7 @@ export default class AuthForm extends React.Component {
   };
 
   render() {
+    console.log(this.context)
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
         <View style={{flex:0}}>
@@ -130,8 +106,12 @@ export default class AuthForm extends React.Component {
                 <Text style={styles.buttonText}>ВОЙТИ</Text>
               </TouchableOpacity>
             </Form>
-          <LoadingPanel show={this.props.isAuthentificating} text="Входим в приложение..."/>
+          <LoadingPanel show={this.context.isAuthenticating} text="Входим в приложение..."/>
         </View>
     );
   }
 }
+
+export default reduxForm({
+  form: 'authForm'
+})(AuthForm)

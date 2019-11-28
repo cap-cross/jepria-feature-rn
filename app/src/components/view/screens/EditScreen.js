@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableHighlight} from 'react-native';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
+import { Container, Content, Icon, Toast } from 'native-base';
 import connect from 'react-redux/lib/connect/connect';
 import {compose, pure, hoistStatics} from 'recompose';
 

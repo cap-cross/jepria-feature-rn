@@ -6,7 +6,6 @@ import { Field } from 'redux-form';
 
 import TextInput from '../../common/TextInput';
 import MultiPicker from '../../common/MultiPicker';
-
 import Picker from '../../common/Picker'
 import getStyles from '../../../../res/styles'
 
@@ -28,7 +27,7 @@ export default FilterForm = ({operators, statuses}) => {
         style={styles.formfields}
         name="featureId"
         component={TextInput}
-        labelText="Идентификатор"
+        label="Идентификатор"
       />
       <Field
         style={styles.formfields}
@@ -41,13 +40,13 @@ export default FilterForm = ({operators, statuses}) => {
         style={styles.formfields}
         name="featureNameTemplate"
         component={TextInput}
-        labelText="Название"
+        label="Название"
       />
       <Field
         style={styles.formfields}
         name="featureNameEnTemplate"
         component={TextInput}
-        labelText="Название (англ)"
+        label="Название (англ)"
       />
       <Field
         style={styles.formfields}

@@ -2,7 +2,7 @@ import {BASE_URL, FEATURE_SERVICE_CONTEXT} from './ApiConfig';
 import * as SecureStore from 'expo-secure-store';
 import * as Errors from './errors';
 
-const LOGIN_API_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/LoginServlet?`;
+const LOGIN_API_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/autoLogonServlet?`;
 
 
 export const authenticateByCredentials = (username, password) => {
@@ -46,6 +46,10 @@ export const getCredentials = () => {
   });
 }
 
+export const securedFetch = () => {
+  
+}
+
 const saveCredentials = async (username, password) => {
   try {
     console.log("Saving credentials...");
@@ -56,22 +60,3 @@ const saveCredentials = async (username, password) => {
   }
 }
 
-export const authenticate = () => {
-  console.log("Authenticating...")
-  return getCredentials()
-  .then(async (credentials) => {
-    await authenticateByCredentials(credentials.username, credentials.password)
-    .then((response) => {
-      console.log("Authentication completed");
-      return response;
-    })
-    .catch((error) => {
-      console.log("Authentication failed");
-      throw error;
-    });
-  })
-  .catch((error) => {
-    console.log("Authentication failed");
-    throw error;
-  });
-}

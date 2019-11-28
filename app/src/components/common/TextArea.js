@@ -1,53 +1,54 @@
 import React from 'react';
-import { Text,  View, TextInput } from 'react-native';
-import getStyles from '../../../res/styles'
+import { Text,  View, TextInput, StyleSheet} from 'react-native';
 
-  
-const styles = {
-  card: {
-    marginVertical: 7
-  },
-  fieldCaption: {
-    margin: 7,
-    color: 'white', 
-    fontSize: 12, 
-    opacity: 0.75
-  },
-  valueContainer: {
-    paddingHorizontal: 15, 
-    paddingBottom: 7, 
-    borderBottomColor: 'white', 
-    borderBottomWidth:1
-  },
-  valueContainerError: {
-    paddingHorizontal: 15, 
-    paddingBottom: 7, 
-    borderBottomColor: 'red', 
-    borderBottomWidth:1
-  },
-  fieldValue: {
-    color: 'white', 
-    fontSize: 14,
-    borderColor: 'transparent'
-  },
-  notificationTextWarn: {
-    color: 'white', 
-    fontSize: 12, 
-    opacity: 0.75,
-  },
-  notificationTextError: {
-    color: 'red', 
-    fontSize: 12,
-  },
-  ...getStyles('TextInput')
-};
 
-export default TextAreaField = ({input, meta: {touched, error, warning}, labelText}) => {
-  
+export default TextAreaField = ({input, meta: {touched, error, warning}, label, color, fontSize }) => {    
+
+  const defaultColor = 'white';
+  const defaultFontSize = 14;
+
+  const styles = StyleSheet.create({
+    card: {
+      marginVertical: 7
+    },
+    fieldCaption: {
+      margin: 7,
+      color: color ? color : defaultColor, 
+      fontSize: fontSize ? fontSize - 2 : defaultFontSize,  
+      opacity: 0.75
+    },
+    valueContainer: {
+      paddingHorizontal: 15, 
+      paddingBottom: 7, 
+      borderBottomColor: color ? color : defaultColor,  
+      borderBottomWidth:1
+    },
+    valueContainerError: {
+      paddingHorizontal: 15, 
+      paddingBottom: 7, 
+      borderBottomColor: 'red', 
+      borderBottomWidth:1
+    },
+    fieldValue: {
+      color: color ? color : defaultColor,  
+      fontSize:  fontSize ? fontSize : defaultFontSize,
+      borderColor: 'transparent'
+    },
+    notificationTextWarn: {
+      color: 'yellow',  
+      fontSize: fontSize ? fontSize - 2 : defaultFontSize,  
+      opacity: 0.75,
+    },
+    notificationTextError: {
+      color: 'red', 
+      fontSize: fontSize ? fontSize - 2 : defaultFontSize,  
+    }
+  });
+
   return (
     <View style={styles.card}>
       <View>
-        <Text style={styles.fieldCaption}>{labelText}</Text>
+        <Text style={styles.fieldCaption}>{label}</Text>
       </View>
       <View style={ (touched && error !== undefined) ? styles.valueContainerError : styles.valueContainer}>
         <TextInput

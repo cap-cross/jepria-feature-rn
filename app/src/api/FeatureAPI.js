@@ -1,15 +1,18 @@
 // API.js
 import * as api from './ApiConfig';
-import * as errors from './errors'
+import * as errors from './errors';
+import { getTokenAsync } from '../context/SecurityContext';
 
-const fetchRest = (url, parameters) => {
+const fetchRest = async (url, parameters) => {
   
+  const token = await getTokenAsync();
+
   let parameters2 = {
     credentials: 'include',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json; charset=utf-8',
-      'Authorization': 'Basic bmFnb3JueXlzOjEyMw==',
+      'Authorization': `Basic ${token}`,
       'X-Cache-Control': 'no-cache'
     },
     ...parameters
@@ -17,24 +20,23 @@ const fetchRest = (url, parameters) => {
 
   console.log(`fetch(${url}) with parameters = ${JSON.stringify(parameters2)}`);
 
-  return fetch(url, parameters2)
-    .then((response) => {
-      if (response.status === 401) {
-        throw new errors.APIError("Войдите в систему для доступа к ресурсу", errors.AUTHENTICATION_ERROR);
-      } else if (response.status === 403) {
-        throw new errors.APIError("Доступ к ресурсу запрещен", errors.ACCESS_DENIED);
-      } else if (response.status === 500) {
-        throw new errors.APIError("При обращении к сервису возникла непредвиденная ошибка", errors.SERVER_ERROR);
-      } else {
-        return new Promise((resolve, reject) => {
-          resolve(response);
-        });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      throw error;
-    });
+  try {
+    const response = await fetch(url, parameters2);
+    if (response.status === 401) {
+      throw new errors.APIError("Войдите в систему для доступа к ресурсу", errors.AUTHENTICATION_ERROR);
+    } else if (response.status === 403) {
+      throw new errors.APIError("Доступ к ресурсу запрещен", errors.ACCESS_DENIED);
+    } else if (response.status === 500) {
+      throw new errors.APIError("При обращении к сервису возникла непредвиденная ошибка", errors.SERVER_ERROR);
+    } else {
+      return new Promise((resolve, reject) => {
+        resolve(response);
+      });
+    }
+  } catch(error) {
+    console.log(error);
+    throw error;
+  };
 };
 
 const setSearchTemplate = searchTemplate => {

@@ -4,11 +4,14 @@ import { AppLoading } from 'expo';
 import store from './app/src/redux/store';
 
 import AppNavigator from './app/src/config/navigation';
+import SecurityProvider from './app/src/context/SecurityContext';
+import { LOGIN_API_URL } from './app/src/api/ApiConfig';
 import { Provider } from 'react-redux';
 import { Root } from 'native-base';
 
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
+import * as SecureStore from 'expo-secure-store';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -29,13 +32,20 @@ export default class App extends React.Component {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
     });
     await Asset.fromModule(require('./assets/images/background.jpg')).downloadAsync();
-    this.setState({ isReady: true });
+    const {pin, token} = await this.prepareContext();
+    this.setState({pin, token, isReady: true });
+  }
+
+  prepareContext = async () => {
+    const pin = await SecureStore.getItemAsync("userPin");
+    const token = await SecureStore.getItemAsync("userToken");
+    return {pin, token}
   }
 
   cacheFonts = async (fonts) => {
@@ -53,11 +63,13 @@ export default class App extends React.Component {
       );
     }
     return (
-       <Provider store={store}>
-         <Root>
-           <AppNavigator />
-         </Root>
-       </Provider>
+      <SecurityProvider userPin={this.state.pin} userToken={this.state.token} loginURL={LOGIN_API_URL}>
+        <Provider store={store}>
+          <Root>
+            <AppNavigator />
+          </Root>
+        </Provider>
+      </SecurityProvider>
     );
   }
 }

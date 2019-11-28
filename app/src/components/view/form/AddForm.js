@@ -28,17 +28,17 @@ export default AddForm = () => {
       <Field
         name="featureName"
         component={TextInput}
-        labelText="Название"
+        label="Название"
         validate = {required}/>
       <Field
         name="featureNameEn"
         component={TextInput}
-        labelText="Название (англ)"
+        label="Название (англ)"
         validate = {required}/>
       <Field
         name="description"
         component={TextArea}
-        labelText="Описание" 
+        label="Описание" 
         warn = {expected}/>
     </View>
   );
