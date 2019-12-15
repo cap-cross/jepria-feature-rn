@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, TouchableOpacity, TouchableHighlight} from 'react-native'
 import { connect } from 'react-redux';
 import { compose, hoistStatics, pure} from 'recompose';
-import { Button, Icon } from 'native-base';
 
 import {setActiveFeature} from '../../../redux/feature/featureActions'
 import { findFeature, deleteFeature } from '../../../redux/feature/featureMiddleware';
@@ -10,6 +9,7 @@ import withBackButton from '../../common/hoc/withBackButton';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR, LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';
 import getStyles from '../../../../res/styles'
+import { Ionicons } from '@expo/vector-icons';
 
 screenStyles = {
   header: {
@@ -84,14 +84,14 @@ class ListScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerLeft: () => (
-        <Button onPress={() => navigation.openDrawer()} transparent>
-          <Icon name="menu" style={screenStyles.icon} />
-        </Button>
+        <TouchableOpacity style={{margin: 20}} onPress={() => {navigation.openDrawer()}} transparent>
+          <Ionicons name="md-menu" style={screenStyles.icon} />
+        </TouchableOpacity>
       ),
       headerRight: () => (
-        <Button onPress={() => navigation.navigate('FilterFeature')} transparent>
-          <Icon name="search" style={screenStyles.icon} />
-        </Button>
+        <TouchableOpacity style={{margin: 20}} onPress={() => {navigation.navigate('FilterFeature')}} transparent>
+          <Ionicons name="md-search" style={screenStyles.icon} />
+        </TouchableOpacity>
       ),
     }
   };
@@ -110,8 +110,6 @@ class ListScreen extends React.Component {
   };
 
   render() {
-    const title = 'Задачи';
-
     return (
       <Background>
         <ListView
@@ -146,16 +144,15 @@ class ListScreen extends React.Component {
             }
           }
           onRefresh={() => this.props.findFeature(this.props.searchTemplate)}
+          failed={this.props.isFailed}
           errorMessage={this.props.errorMessage}
         />
-        <View>
-          <TouchableHighlight
-            style={screenStyles.button}
-            underlayColor="red"
-            onPress={this.AddFeature}>
-            <Icon name="ios-add" style={screenStyles.buttonIcon} />
-          </TouchableHighlight>
-        </View>
+        <TouchableHighlight
+          style={screenStyles.button}
+          underlayColor="red"
+          onPress={this.AddFeature}>
+          <Ionicons name="md-add" size={32} style={screenStyles.buttonIcon} />
+        </TouchableHighlight>
       </Background>
     );
   }

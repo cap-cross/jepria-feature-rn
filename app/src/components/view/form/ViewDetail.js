@@ -46,7 +46,7 @@ export default ViewDetail = ({feature, navigation}) => {
       </View>
       <View style={styles.card}>
         <TouchableOpacity 
-          style={{flexDirection: 'row', justifyContent: 'space-between', flex: 1, alignItems: 'center', borderBottomColor: 'white', borderBottomWidth:1}} 
+          style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomColor: 'white', borderBottomWidth:1}} 
           onPress={() => navigation.navigate("TaskHistory")}>
           <View>
             <View>

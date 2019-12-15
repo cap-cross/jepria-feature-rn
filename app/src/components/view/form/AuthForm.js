@@ -73,7 +73,6 @@ class AuthForm extends React.Component {
   };
 
   render() {
-    console.log(this.context)
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
         <View style={{flex:0}}>

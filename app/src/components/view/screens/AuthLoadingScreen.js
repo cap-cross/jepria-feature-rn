@@ -11,8 +11,6 @@ export default AuthLoadingScreen = ({navigation}) => {
   } else {
     navigation.navigate("Auth");
   }
-  
-  //navigation.navigate("App");
 
   return (
     <View style={{

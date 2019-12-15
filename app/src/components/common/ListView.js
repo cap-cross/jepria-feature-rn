@@ -2,9 +2,9 @@ import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default ListView = ({items, renderItem, refreshing, onRefresh, errorMessage}) => {
+export default ListView = ({items, renderItem, refreshing, onRefresh, failed, errorMessage}) => {
 
-  if (errorMessage) {
+  if (failed) {
     return (
       <View style={{
         flex: 1, 

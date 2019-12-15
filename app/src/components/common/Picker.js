@@ -109,9 +109,9 @@ export default function Picker({labelText, input, items}) {
   return (
     <View>
       <TouchableOpacity 
-          style={{...pickerStyles.card, flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}
+          style={{...pickerStyles.card, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}
           onPress={() => setVisible(true)} >
-        <View style={{flex: 1}}>
+        <View>
           <View>
             <Text style={pickerStyles.fieldCaption}>{labelText}</Text>
           </View>
@@ -119,7 +119,7 @@ export default function Picker({labelText, input, items}) {
             <Text style={{...pickerStyles.fieldValue, flexWrap:'wrap'}}>{input.value != "" ? input.value.name: ""}</Text>
           </View>
         </View>
-        <View style={{justifyContent:'center', flex: 0}}>
+        <View>
           <Icon name='expand-more' color={pickerStyles.iconColor} size={30} />
         </View>
       </TouchableOpacity>

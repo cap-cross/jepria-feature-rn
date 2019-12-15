@@ -4,7 +4,6 @@ import { View } from 'react-native';
 
 import TextArea from '../../common/TextArea';
 import TextInput from '../../common/TextInput';
-import isUserHaveRoles from '../../../data/clientSecurity';
 import { required, expected } from '../../../data/validation';
 import Picker from '../../common/Picker'
 import getStyles from '../../../../res/styles'
@@ -19,9 +18,8 @@ const styles = {
   ...getStyles('Form')
 }
 
-export default EditForm = (userRoles, statuses, operators) => {
-    let isJrsAssignResponsibleFeatureRole = isUserHaveRoles(["JrsAssignResponsibleFeature"], userRoles);
-    
+export default EditForm = ({userRoles, statuses, operators}) => {
+
     return (
       <View style={styles.form}>
         <Field 
@@ -46,7 +44,7 @@ export default EditForm = (userRoles, statuses, operators) => {
           itemNameKey='name'
           itemValueKey='value'
           items={statuses}/>
-      { isJrsAssignResponsibleFeatureRole && //проверка наличия роли
+      { userRoles["JrsAssignResponsibleFeature"] === 1 && //проверка наличия роли
         <Field
           name="responsibleId"
           component={Picker}

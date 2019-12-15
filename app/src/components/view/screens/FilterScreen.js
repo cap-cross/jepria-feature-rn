@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight } from 'react-native';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right } from 'native-base';
+import { TouchableHighlight } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
@@ -15,6 +15,7 @@ import FilterForm from '../form/FilterForm';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import getStyles from '../../../../res/styles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const mapStateToProps = (state) => {
   return {
@@ -113,19 +114,17 @@ export default class FilterScreen extends React.Component {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     return (
       <Background>
-        <Content>
+        <KeyboardAwareScrollView enableOnAndroid>
           <FilterForm
             statuses={this.props.statuses}
             operators={this.props.operators}/>
-        </Content>
-        <View>
-          <TouchableHighlight
-            style={styles.button}
-            underlayColor="red"
-            onPress={this.handleSubmit()}>
-            <Icon name="md-checkmark" style={styles.buttonIcon} />
-          </TouchableHighlight>
-        </View>
+        </KeyboardAwareScrollView>
+        <TouchableHighlight
+          style={styles.button}
+          underlayColor="red"
+          onPress={this.handleSubmit()}>
+          <Ionicons name="md-search" size={32} style={styles.buttonIcon} />
+        </TouchableHighlight>
       </Background>
     );
   }

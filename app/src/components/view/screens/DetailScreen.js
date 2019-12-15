@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, TouchableHighlight } from 'react-native';
-import { Content, Button, Icon, Toast } from 'native-base';
+import { View, TouchableHighlight, ScrollView, TouchableOpacity } from 'react-native';
+import { Toast } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 import connect from 'react-redux/lib/connect/connect';
 import {compose, pure, hoistStatics} from 'recompose';
 
 import ViewDetail from '../form/ViewDetail';
 import withBackButton from '../../../components/common/hoc/withBackButton';
-import {setActiveFeature} from '../../../redux/feature/featureActions';
 import { deleteFeature, findFeature } from '../../../redux/feature/featureMiddleware';
 import Background from '../../../components/common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
@@ -15,10 +15,6 @@ import getStyles from '../../../../res/styles'
 
 
 const styles = {
-  content: {
-    justifyContent: 'space-between',
-    padding: 8,
-  },
   inputGroup: {
     flex: 0.9,
   },
@@ -62,9 +58,9 @@ class DetailScreen extends React.Component {
     return {
       title: navigation.getParam("title"),
       headerRight: () => (
-        <Button  onPress={() => {handleDelete()}} transparent>
-          <Icon name="trash" style={styles.icon} />
-        </Button>
+        <TouchableOpacity style={{margin: 20}} onPress={() => {handleDelete()}} transparent>
+          <Ionicons name="md-trash" style={styles.icon} />
+        </TouchableOpacity>
       ),
     }
   };
@@ -109,17 +105,17 @@ class DetailScreen extends React.Component {
     const feature = this.props.feature;
     return (
       <Background>
-        <Content contentContainerStyle={styles.content}>
+        <ScrollView>
           <ViewDetail
             navigation={this.props.navigation}
             feature={feature}/>
-        </Content>
+        </ScrollView>
         <View>
           <TouchableHighlight
             style={styles.button}
             underlayColor={DARK_AQUA_GREEN_COLOR}
             onPress={this.goToUpdateFeature}>
-            <Icon name="md-create" style={styles.buttonIcon} />
+            <Ionicons name="md-create" size={32} style={styles.buttonIcon} />
           </TouchableHighlight>
         </View>
         <LoadingPanel show={this.props.isLoading} text="Удаление записи"/>
@@ -130,7 +126,6 @@ class DetailScreen extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   deleteFeature: (values) => {return dispatch(deleteFeature(values))},
-  setActiveFeature: (feature) => dispatch(setActiveFeature(feature)),
   findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate))
 });
 

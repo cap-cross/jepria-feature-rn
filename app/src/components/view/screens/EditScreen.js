@@ -17,6 +17,8 @@ import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
 import getStyles from '../../../../res/styles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SecurityContext } from '../../../context/SecurityContext';
 
 class EditScreen extends React.Component {
   
@@ -30,6 +32,8 @@ class EditScreen extends React.Component {
     navigation: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
   };
+
+  static contextType = SecurityContext;
 
   defaultStyles = {
     content: {
@@ -112,20 +116,18 @@ class EditScreen extends React.Component {
 
     return (
       <Background>
-        <Content contentContainerStyle={styles.content}>
+        <KeyboardAwareScrollView enableOnAndroid>
           <EditForm
           operators={this.props.operators}
           statuses={this.props.statuses}
-          userRoles={this.props.userRoles}/>
-        </Content>
-        <View>
-          <TouchableHighlight
-            style={styles.button}
-            underlayColor="red"
-            onPress={this.handleSubmit()}>
-            <Icon name="md-checkmark" style={styles.buttonIcon} />
-          </TouchableHighlight>
-        </View>
+          userRoles={this.context.user.roles}/>
+        </KeyboardAwareScrollView>
+        <TouchableHighlight
+          style={styles.button}
+          underlayColor="red"
+          onPress={this.handleSubmit()}>
+          <Icon name="md-checkmark" style={styles.buttonIcon} />
+        </TouchableHighlight>
         <LoadingPanel show={this.props.isLoading} text="Обновление записи"/>
       </Background>
     );
@@ -144,7 +146,6 @@ const mapStateToProps = (state) => {
     initialValues: state.feature.activeItem,
     searchTemplate: state.feature.searchTemplate,
     isLoading: state.feature.isUpdating,
-    userRoles: state.user.userRoles,
     operators: state.operators,
     statuses: state.statuses,
     isFailed: state.isFailed,

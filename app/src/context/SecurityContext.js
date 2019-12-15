@@ -5,22 +5,22 @@ import { Buffer } from "buffer";
 
 export const SecurityContext = createContext();
 
-
 export const getTokenAsync = async () => {
   const token = await SecureStore.getItemAsync('userToken');
   return token;
 }
 
-export default SecurityProvider = ({ userPin, userToken, loginURL, children }) => {
+export default SecurityProvider = ({ userPin, userToken, loginURL, children, metaInfoUrl, roles }) => {
 
   const [authenticating, setAuthenticating] = useState(false);
   const [token, setToken] = useState(userToken);
-  const [user, setUser] = useState({});
-  const [error, setError] = useState({});
+  const [user, setUser] = useState();
+  const [error, setError] = useState();
   const [pin, setPin] = useState(userPin);
 
-  // useEffect(() => {
-  // }, []);
+  useEffect(() => {
+    getUser()
+  }, [token]);
 
   const saveToken = async (token) => {
     try {
@@ -73,6 +73,62 @@ export default SecurityProvider = ({ userPin, userToken, loginURL, children }) =
     }
   }
 
+  const getUser = async () => {
+    if (token) {
+      fetch(metaInfoUrl + "/current-user", 
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Authorization': `Basic ${token}`
+        }
+      }).then(response => {
+        if (response.ok && response.status == 200) {
+          response.json().then(currentUser => {
+            if (roles.length > 0) {
+              fetch(metaInfoUrl + "/current-user/test-roles?roles=" + roles.toString(), 
+              {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                  'Authorization': `Basic ${token}`
+                }
+              }).then(response => {
+                if (response.ok && response.status == 200) {
+                  response.json().then(hasRoles => {
+                    setUser({
+                      ...currentUser,
+                      roles: hasRoles
+                    });
+                  })
+                } else {
+                  if (response.status === 401) {
+                    throw new Errors.APIError("Неверные данные", Errors.AUTHENTICATION_ERROR)
+                  } else {
+                    throw new Error("Network connection problem")
+                  }
+                }
+              })
+            } else {
+              setUser(currentUser);
+            }
+          })
+        } else {
+          if (response.status === 401) {
+            throw new Errors.APIError("Неверные данные", Errors.AUTHENTICATION_ERROR)
+          } else {
+            throw new Error("Network connection problem")
+          }
+        }
+      }).catch(error => {
+        setError(error)
+      })
+    } else {
+      setUser();
+    }
+  }
+
+
   const login = (username, password) => {
     console.log("Processing authentication...");
     setAuthenticating(true);
@@ -84,7 +140,7 @@ export default SecurityProvider = ({ userPin, userToken, loginURL, children }) =
     .then((response) => {
       if (response.status === 200 || response.status === 302) {
         console.log("Authentication completed...");
-        return new Promise(function(resolve, reject) {
+        return new Promise(function(resolve) {
           saveToken(new Buffer(username + ":" + password).toString("base64"));
           resolve();
         }).then(() => {

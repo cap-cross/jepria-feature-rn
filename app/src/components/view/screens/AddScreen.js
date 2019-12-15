@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableHighlight } from 'react-native';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
+import { Icon, Toast } from 'native-base';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
@@ -17,6 +17,8 @@ import Background from '../../../components/common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
 import getStyles from '../../../../res/styles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Ionicons } from '@expo/vector-icons';
 
 const mapDispatchToProps = dispatch => ({
   createFeature: (values) => {return dispatch(createFeature(values))},
@@ -121,15 +123,15 @@ export default class AddScreen extends React.Component {
 
     return (
       <Background>
-        <Content contentContainerStyle={styles.content}>
-          <AddForm />
-        </Content>
+        <KeyboardAwareScrollView enableOnAndroid>
+          <AddForm/>
+        </KeyboardAwareScrollView>
         <View>
           <TouchableHighlight
             style={styles.button}
             underlayColor={DARK_AQUA_GREEN_COLOR}
             onPress={this.handleSubmit()}>
-            <Icon name="md-checkmark" style={styles.buttonIcon} />
+            <Ionicons name="md-checkmark" size={32} style={styles.buttonIcon} />
           </TouchableHighlight>
         </View>
         <LoadingPanel show={this.props.isLoading} text="Создание записи"/>

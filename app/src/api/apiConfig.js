@@ -7,3 +7,5 @@ export const FEATURE_CONTEXT_URL = `${FEATURE_SERVICE_HOST}/${FEATURE_SERVICE_CO
 export const FEATURE_API_URL = `${FEATURE_CONTEXT_URL}/feature`;
 export const FEATURE_STATUS_URL = `${FEATURE_API_URL}/option/feature-status`;
 export const FEATURE_OPERATOR_URL = `${FEATURE_API_URL}/option/feature-operator`;
+export const META_INFO_URL = `${FEATURE_CONTEXT_URL}/meta`;
+

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Alert, Text, Platform } from 'react-native';
-import { Toast, Icon } from 'native-base';
+import { Toast } from 'native-base';
 import Background from '../../common/Background';
 import PinView from '../../common/PinView';
 import * as LocalAuthentication from 'expo-local-authentication'
-import * as SecureStore from 'expo-secure-store';
+import { Ionicons } from '@expo/vector-icons';
 import { LoadingPanel } from '../../common/LoadingPanel';
 import { SecurityContext } from '../../../context/SecurityContext';
 
@@ -121,11 +121,12 @@ export default class VerificationScreen extends React.Component {
   }
 
   render() {
+    console.log(this.context);
     let onSuccess = this.state.mode === 'new' ? this.onSuccessNew : this.onSuccessVerify;
     let pin = this.state.targetPin;
     let headerText = Platform.OS !== 'ios' && this.state.compatible && this.state.fingerprints && this.state.mode !== 'new' ? (
       <View style={{height: 80, width: '100%', backgroundColor: 'rgba(17,49,85,0.8)', flexDirection: 'row', padding: 15, alignItems: 'flex-end'}}>
-        <Icon type='Ionicons' name='md-finger-print' style={{color: 'white', fontSize: 18, marginHorizontal: 5}}/>
+        <Ionicons  name='md-finger-print' size={18} style={{color: 'white', marginHorizontal: 5}}/>
         <Text style={{color: 'white', fontSize: 16}}>
           Приложите палец к сканеру отпечатков
         </Text>
