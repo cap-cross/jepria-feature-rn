@@ -3,7 +3,7 @@ export const FETCH_STATUSES_SUCCESS = 'FETCH_STATUSES_SUCCESS';
 export const FETCH_STATUSES_FAILURE = 'FETCH_STATUSES_FAILURE';
 
 export function fetchStatuses(isLoading) {
-    console.log("FETCH featureStatuses BEGIN " + isLoading);
+    console.log("FETCH featureStatuses BEGIN");
 
     return {
         type: FETCH_STATUSES_BEGIN,
@@ -14,7 +14,7 @@ export function fetchStatuses(isLoading) {
 }
 
 export function fetchStatusesSuccess(statuses) {
-    console.log("FETCH featureStatuses SUCCESS " + JSON.stringify(statuses));
+    console.log("FETCH featureStatuses SUCCESS");
 
     return {
         type: FETCH_STATUSES_SUCCESS,
@@ -26,7 +26,7 @@ export function fetchStatusesSuccess(statuses) {
 
 
 export function fetchStatusesFailure(isFailed, errorMessage) {
-    console.log("FETCH featureStatuses FAILURE " + isFailed + " " + errorMessage);
+    console.log("FETCH featureStatuses FAILURE" + errorMessage);
 
     return {
         type: FETCH_STATUSES_FAILURE,

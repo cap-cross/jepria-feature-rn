@@ -3,7 +3,7 @@ export const FETCH_PROCESS_SUCCESS = 'FETCH_PROCESS_SUCCESS';
 export const FETCH_PROCESS_FAILURE = 'FETCH_PROCESS_FAILURE';
 
 export function fetchFeatureProcess(isLoading) {
-    console.log("FETCH FeatureProcess BEGIN " + isLoading);
+    console.log("FETCH FeatureProcess BEGIN");
 
     return {
         type: FETCH_PROCESS_BEGIN,
@@ -14,7 +14,7 @@ export function fetchFeatureProcess(isLoading) {
 }
 
 export function fetchFeatureProcessSuccess(history) {
-    console.log("FETCH FeatureProcess SUCCESS " + JSON.stringify(history));
+    console.log("FETCH FeatureProcess SUCCESS");
 
     return {
         type: FETCH_PROCESS_SUCCESS,
@@ -26,7 +26,7 @@ export function fetchFeatureProcessSuccess(history) {
 
 
 export function fetchFeatureProcessFailure(isFailed, errorMessage) {
-    console.log("FETCH FeatureProcess FAILURE " + isFailed + " " + errorMessage);
+    console.log("FETCH FeatureProcess FAILURE " + errorMessage);
 
     return {
         type: FETCH_PROCESS_FAILURE,

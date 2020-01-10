@@ -132,7 +132,7 @@ export default SecurityProvider = ({ userPin, userToken, loginURL, children, met
   const login = (username, password) => {
     console.log("Processing authentication...");
     setAuthenticating(true);
-    return fetch(loginURL + '?' + 'username=' + username + '&password=' + password + '&url=https://infod.rusfinance.ru/JepRiaShowcase',
+    return fetch(loginURL + '?' + 'username=' + username + '&password=' + password,
     {
       method: 'POST',
       credentials: 'include'
@@ -157,6 +157,7 @@ export default SecurityProvider = ({ userPin, userToken, loginURL, children, met
     .catch((error) => {
       setAuthenticating(false);
       setError(error)
+      logout();
       throw error;
     })
   };

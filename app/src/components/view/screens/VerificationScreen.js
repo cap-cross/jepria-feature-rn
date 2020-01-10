@@ -79,7 +79,6 @@ export default class VerificationScreen extends React.Component {
   }
 
   componentDidUpdate = () => {
-    console.log("STATE: " + JSON.stringify(this.state));
     if (this.state.result == true) {
       this.onSuccessVerify();
     } else if (this.state.compatible && this.state.fingerprints && this.state.mode !== 'new') {
@@ -121,7 +120,6 @@ export default class VerificationScreen extends React.Component {
   }
 
   render() {
-    console.log(this.context);
     let onSuccess = this.state.mode === 'new' ? this.onSuccessNew : this.onSuccessVerify;
     let pin = this.state.targetPin;
     let headerText = Platform.OS !== 'ios' && this.state.compatible && this.state.fingerprints && this.state.mode !== 'new' ? (

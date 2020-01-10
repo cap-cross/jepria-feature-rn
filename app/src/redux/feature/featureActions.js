@@ -18,7 +18,7 @@ export const DELETE_FEATURE_FAILURE = 'DELETE_FEATURE_FAILURE';
 
 
 export function setActiveFeature(activeItem) {
-    console.log("SET ACTIVE FEATURE " + JSON.stringify(activeItem));
+    console.log("SET ACTIVE FEATURE");
     return {
       type: SET_ACTIVE_FEATURE,
       payload: {
@@ -28,7 +28,7 @@ export function setActiveFeature(activeItem) {
   }
 
 export function fetchFeatures(searchTemplate, isFetching) {
-  console.log("FETCH Features BEGIN " + isFetching);
+  console.log("FETCH Features BEGIN");
 
   return {
       type: FETCH_FEATURES_BEGIN,
@@ -52,7 +52,7 @@ export function fetchFeaturesSuccess(searchTemplate, items) {
 }
 
 export function fetchFeaturesFailure(searchTemplate, isFailed, errorMessage) {
-  console.log("FETCH Features FAILURE " + isFailed + " " + errorMessage);
+  console.log("FETCH Features FAILURE " + errorMessage);
 
   return {
       type: FETCH_FEATURES_FAILURE,
@@ -66,7 +66,7 @@ export function fetchFeaturesFailure(searchTemplate, isFailed, errorMessage) {
 
 
 export function updateFeature(isUpdating) {
-    console.log("UPDATE Feature BEGIN " + isUpdating);
+    console.log("UPDATE Feature BEGIN");
   
     return {
         type: UPDATE_FEATURE_BEGIN,
@@ -77,7 +77,7 @@ export function updateFeature(isUpdating) {
   }
   
   export function updateFeatureSuccess(feature) {
-    console.log("UPDATE Feature SUCCESS foundItems: " + JSON.stringify(feature));
+    console.log("UPDATE Feature SUCCESS");
   
     return {
         type: UPDATE_FEATURE_SUCCESS,
@@ -88,7 +88,7 @@ export function updateFeature(isUpdating) {
   }
   
   export function updateFeatureFailure(feature, isFailed, errorMessage) {
-    console.log("UPDATE Feature FAILURE " + isFailed + " " + errorMessage);
+    console.log("UPDATE Feature FAILURE " + errorMessage);
   
     return {
         type: UPDATE_FEATURE_FAILURE,
@@ -101,7 +101,7 @@ export function updateFeature(isUpdating) {
   }
 
   export function createFeature(isCreating) {
-      console.log("CREATE Feature BEGIN " + isCreating);
+      console.log("CREATE Feature BEGIN");
     
       return {
           type: CREATE_FEATURE_BEGIN,
@@ -112,7 +112,7 @@ export function updateFeature(isUpdating) {
     }
     
     export function createFeatureSuccess(feature) {
-      console.log("CREATE Feature SUCCESS foundItems: " + JSON.stringify(feature));
+      console.log("CREATE Feature SUCCESS");
     
       return {
           type: CREATE_FEATURE_SUCCESS,
@@ -123,7 +123,7 @@ export function updateFeature(isUpdating) {
     }
     
     export function createFeatureFailure(feature, isFailed, errorMessage) {
-      console.log("CREATE Feature FAILURE " + isFailed + " " + errorMessage);
+      console.log("CREATE Feature FAILURE " + errorMessage);
     
       return {
           type: CREATE_FEATURE_FAILURE,
@@ -136,7 +136,7 @@ export function updateFeature(isUpdating) {
     }
 
     export function deleteFeature(isDeleting) {
-        console.log("DELETE Feature BEGIN " + isDeleting);
+        console.log("DELETE Feature BEGIN");
       
         return {
             type: DELETE_FEATURE_BEGIN,
@@ -147,15 +147,15 @@ export function updateFeature(isUpdating) {
       }
       
       export function deleteFeatureSuccess(feature) {
-        console.log("DELETE Feature SUCCESS deletedItem: " + JSON.stringify(feature));
-      
+        console.log("DELETE Feature SUCCESS");
+
         return {
             type: DELETE_FEATURE_SUCCESS,
         }
       }
       
       export function deleteFeatureFailure(feature, isFailed, errorMessage) {
-        console.log("DELETE Feature FAILURE " + isFailed + " " + errorMessage + " " + JSON.stringify(feature));
+        console.log("DELETE Feature FAILURE " + errorMessage);
       
         return {
             type: DELETE_FEATURE_FAILURE,

@@ -18,7 +18,7 @@ const fetchRest = async (url, parameters) => {
     ...parameters
   }
 
-  console.log(`fetch(${url}) with parameters = ${JSON.stringify(parameters2)}`);
+  //console.log(`fetch(${url}) with parameters = ${JSON.stringify(parameters2)}`);
 
   try {
     const response = await fetch(url, parameters2);

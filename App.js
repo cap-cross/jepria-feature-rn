@@ -65,9 +65,9 @@ export default class App extends React.Component {
     return (
       <SecurityProvider userPin={this.state.pin} userToken={this.state.token} loginURL={LOGIN_API_URL} metaInfoUrl={META_INFO_URL} roles={["JrsAssignResponsibleFeature"]}>
         <Provider store={store}>
-          {/* <Root> */}
+          <Root>
             <AppNavigator />
-          {/* </Root> */}
+          </Root>
         </Provider>
       </SecurityProvider>
     );
