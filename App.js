@@ -7,7 +7,6 @@ import AppNavigator from './app/src/config/navigation';
 import SecurityProvider from './app/src/context/SecurityContext';
 import { LOGIN_API_URL, META_INFO_URL } from './app/src/api/ApiConfig';
 import { Provider } from 'react-redux';
-import { Root } from 'native-base';
 
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
@@ -65,9 +64,7 @@ export default class App extends React.Component {
     return (
       <SecurityProvider userPin={this.state.pin} userToken={this.state.token} loginURL={LOGIN_API_URL} metaInfoUrl={META_INFO_URL} roles={["JrsAssignResponsibleFeature"]}>
         <Provider store={store}>
-          <Root>
-            <AppNavigator />
-          </Root>
+          <AppNavigator />
         </Provider>
       </SecurityProvider>
     );

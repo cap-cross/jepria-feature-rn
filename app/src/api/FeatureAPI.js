@@ -27,6 +27,7 @@ const fetchRest = async (url, parameters) => {
     } else if (response.status === 403) {
       throw new errors.APIError("Доступ к ресурсу запрещен", errors.ACCESS_DENIED);
     } else if (response.status === 500) {
+      response.json().then(console.log);
       throw new errors.APIError("При обращении к сервису возникла непредвиденная ошибка", errors.SERVER_ERROR);
     } else {
       return new Promise((resolve, reject) => {
@@ -81,7 +82,7 @@ const find = (url, pageSize, pageNumber) => {
 const findById = featureId => {
   return fetchRest(api.FEATURE_API_URL + '/' + featureId)
     .then(response => {
-      if (response.ok) {
+      if (response.status === 200) {
         return response.json();
       }
     })
@@ -96,7 +97,7 @@ const create = feature => {
     body: JSON.stringify(feature)
   })
     .then(response => {
-      if (response.ok) {
+      if (response.status === 201) {
         return new Promise((resolve, reject) => {
           resolve(response.headers.get("Location"));
         });
@@ -113,7 +114,7 @@ const update = (featureId, feature) => {
     body: JSON.stringify(feature)
   })
     .then(response => {
-      if (response.ok) {
+      if (response.status === 200) {
         return new Promise((resolve, reject) => {
           resolve(response.ok);
         });
@@ -129,7 +130,7 @@ const remove = featureId => {
     method: 'DELETE'
   })
     .then(response => {
-      if (response.ok) {
+      if (response.status === 200) {
         return new Promise((resolve, reject) => {
           resolve(response.ok);
         });
@@ -143,7 +144,7 @@ const remove = featureId => {
 const getStatuses = () => {
   return fetchRest(api.FEATURE_STATUS_URL)
     .then(response => {
-      if (response.ok) {
+      if (response.status === 200) {
         return response.json();
       }
     })
@@ -155,7 +156,7 @@ const getStatuses = () => {
 const getOperators = () => {
   return fetchRest(api.FEATURE_OPERATOR_URL)
     .then(response => {
-      if (response.ok) {
+      if (response.status === 200) {
         return response.json();
       }
     })
@@ -167,7 +168,7 @@ const getOperators = () => {
 const findProcess = featureId => {
   return fetchRest(api.FEATURE_API_URL + '/' + featureId + '/feature-process')
     .then(response => {
-      if (response.ok) {
+      if (response.status === 200) {
         return response.json();
       }
     })
@@ -184,7 +185,7 @@ const createProcess = (featureId, statusCode) => {
     })
   })
     .then(response => {
-      if (response.ok) {
+      if (response.status === 201) {
         return new Promise((resolve, reject) => {
           resolve(response.ok);
         });
@@ -200,7 +201,7 @@ const removeProcess = featureId => {
     method: 'DELETE'
   })
     .then(response => {
-      if (response.ok) {
+      if (response.status === 200) {
         return new Promise((resolve, reject) => {
           resolve(response.ok);
         });

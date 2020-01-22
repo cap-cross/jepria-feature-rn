@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableHighlight, ScrollView, TouchableOpacity } from 'react-native';
-import { Toast } from 'native-base';
+import Toast from '../../common/Toast'
 import { Ionicons } from '@expo/vector-icons';
 import connect from 'react-redux/lib/connect/connect';
 import {compose, pure, hoistStatics} from 'recompose';
@@ -72,29 +72,14 @@ class DetailScreen extends React.Component {
   }
 
   removeFeature = () => {
-    this.props.deleteFeature({
-      featureId: this.props.feature.featureId,
-    }).then(() => {
+    this.props.deleteFeature(this.props.feature.featureId).then(() => {
       this.props.findFeature(this.props.searchTemplate);
-      Toast.show({
-        text: "Запись успешно удалена",
-        type: 'success',
-        buttonText: 'OK',
-        duration: 5000
-      });
-      this.props.navigation.goBack(null);
+      this.props.navigation.goBack();
     }).catch((err) => {
-      Toast.show({
-        text: err.message,
-        type: 'danger',
-        buttonText: 'OK',
-        duration: 5000
-      });
+      Toast.show("", err.message, true);
     });
   };
-
-  goBack = () => this.props.navigation.goBack(null);
-
+  
   goToUpdateFeature = () => {
     this.props.navigation.navigate('EditFeature', {
       title: this.props.feature.featureName

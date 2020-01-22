@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Alert, Text, Platform } from 'react-native';
-import { Toast } from 'native-base';
+import Toast from '../../common/Toast'
 import Background from '../../common/Background';
 import PinView from '../../common/PinView';
 import * as LocalAuthentication from 'expo-local-authentication'
@@ -49,12 +49,7 @@ export default class VerificationScreen extends React.Component {
     } else {
       if (result.error !== "user_cancel" && result.error !== "app_cancel" ) {
         console.log("RESULT ERROR: " + JSON.stringify(result.error));
-        Toast.show({
-          text: "Ошибка при проверке отпечатка, попробуйте ещё раз или введите PIN",
-          type: 'danger',
-          buttonText: 'OK',
-          duration: 5000
-        });
+        Toast.show("", "Ошибка при проверке отпечатка, попробуйте ещё раз или введите PIN", true);
         this.setState({...this.state, result: false});
       }
     }
@@ -111,12 +106,7 @@ export default class VerificationScreen extends React.Component {
   }
 
   onFailureVerify = () => {
-    Toast.show({
-      text: "Вы ввели неверный PIN, попробуйте ещё раз",
-      type: 'danger',
-      buttonText: 'OK',
-      duration: 5000
-    });
+    Toast.show("", "Вы ввели неверный PIN, попробуйте ещё раз", true);
   }
 
   render() {

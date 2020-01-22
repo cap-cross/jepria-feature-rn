@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight} from 'react-native';
-import { Container, Content, Icon, Toast } from 'native-base';
+import { TouchableHighlight} from 'react-native';
+import Toast from '../../common/Toast'
+import { Ionicons } from '@expo/vector-icons';
 import connect from 'react-redux/lib/connect/connect';
 import {compose, pure, hoistStatics} from 'recompose';
 
@@ -88,26 +89,14 @@ class EditScreen extends React.Component {
     this.props.updateFeature(this.props.initialValues.featureId, {
           featureName: values.featureName,
           featureNameEn: values.featureNameEn,
-          description: values.description,
-        }, values.featureStatus.value)
+          description: values.description}, values.featureStatus.value)
       .then((feature) => {
         this.props.setActiveFeature(feature);
         this.props.findFeature(this.props.searchTemplate);
-        Toast.show({
-          text: "Изменения успешно сохранены!",
-          type: 'success',
-          buttonText: 'OK',
-          duration: 5000
-        });
         this.props.navigation.navigate('ViewFeature');
       })
       .catch((err) => {
-        Toast.show({
-          text: err.message,
-          type: 'danger',
-          buttonText: 'OK',
-          duration: 5000
-        });
+        Toast.show("", err.message, true);
       });
   };
 
@@ -126,7 +115,7 @@ class EditScreen extends React.Component {
           style={styles.button}
           underlayColor="red"
           onPress={this.handleSubmit()}>
-          <Icon name="md-checkmark" style={styles.buttonIcon} />
+          <Ionicons name="md-checkmark" style={styles.buttonIcon} />
         </TouchableHighlight>
         <LoadingPanel show={this.props.isLoading} text="Обновление записи"/>
       </Background>
