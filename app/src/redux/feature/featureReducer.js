@@ -20,7 +20,8 @@ export default function reducer(state = initialState, action) {
         ...state,
         items: [],
         searchTemplate: payload.searchTemplate,
-        isFetching: payload.isFetching
+        isFetching: payload.isFetching,
+        isFailed: false
       };
     }
     case FeatureActions.FETCH_FEATURES_FAILURE: {
@@ -47,16 +48,14 @@ export default function reducer(state = initialState, action) {
       console.log('Feature reducer: UPDATE_FEATURE_BEGIN');
       return {
         ...state,
-        isUpdating: payload.isUpdating
+        isUpdating: payload.isUpdating,
       };
     }
     case FeatureActions.UPDATE_FEATURE_FAILURE: {
       console.log('Feature reducer: UPDATE_FEATURE_FAILURE');
         return {
           ...state,
-          isUpdating: false,
-          isFailed: payload.isFailed,
-          errorMessage: payload.errorMessage
+          isUpdating: false
         }
     }
     case FeatureActions.UPDATE_FEATURE_SUCCESS: {
@@ -64,15 +63,14 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         activeItem: payload.feature,
-        isUpdating: false,
-        isFailed: false,
+        isUpdating: false
       };
     }
     case FeatureActions.CREATE_FEATURE_BEGIN: {
       console.log('Feature reducer: CREATE_FEATURE_BEGIN');
       return {
         ...state,
-        isCreating: payload.isCreating
+        isCreating: payload.isCreating,
       };
     }
     case FeatureActions.CREATE_FEATURE_FAILURE: {
@@ -80,8 +78,6 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         isCreating: false,
-        isFailed: payload.isFailed,
-        errorMessage: payload.errorMessage
       }
     }
     case FeatureActions.CREATE_FEATURE_SUCCESS: {
@@ -90,14 +86,13 @@ export default function reducer(state = initialState, action) {
         ...state,
         activeItem: payload.feature,
         isCreating: false,
-        isFailed: false,
       };
     }
     case FeatureActions.DELETE_FEATURE_BEGIN: {
       console.log('Feature reducer: DELETE_FEATURE_BEGIN');
       return {
         ...state,
-        isDeleting: payload.isDeleting
+        isDeleting: payload.isDeleting,
       };
     }
     case FeatureActions.DELETE_FEATURE_FAILURE: {
@@ -105,8 +100,6 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         isDeleting: false,
-        isFailed: payload.isFailed,
-        errorMessage: payload.errorMessage
       }
     }
     case FeatureActions.DELETE_FEATURE_SUCCESS: {
@@ -115,7 +108,6 @@ export default function reducer(state = initialState, action) {
         ...state,
         activeItem: {},
         isDeleting: false,
-        isFailed: false,
       };
     }
     case FeatureActions.SET_ACTIVE_FEATURE:

@@ -86,16 +86,16 @@ export const createFeature = (feature) => {
   };
 };
 
-export const deleteFeature = (feature) => {
+export const deleteFeature = (featureId) => {
   return (dispatch) => {
     dispatch(actions.deleteFeature(true));
-    return remove(feature)
+    return remove(featureId)
       .then((response) => {
         dispatch(actions.deleteFeatureSuccess(response));
         return response;
       })
       .catch((error) => {
-        dispatch(actions.deleteFeatureFailure(feature, true, error.message));
+        dispatch(actions.deleteFeatureFailure(featureId, true, error.message));
         throw error;
       });
   };

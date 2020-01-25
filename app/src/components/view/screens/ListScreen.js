@@ -2,9 +2,11 @@ import React from 'react';
 import {View, Text, TouchableOpacity, TouchableHighlight} from 'react-native'
 import { connect } from 'react-redux';
 import { compose, hoistStatics, pure} from 'recompose';
+import ListView from '../../common/ListView'
 
 import {setActiveFeature} from '../../../redux/feature/featureActions'
 import { findFeature, deleteFeature } from '../../../redux/feature/featureMiddleware';
+import withSecretToLife from '../../common/hoc//testhoc';
 import withBackButton from '../../common/hoc/withBackButton';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR, LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';

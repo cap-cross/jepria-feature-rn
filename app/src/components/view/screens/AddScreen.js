@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableHighlight } from 'react-native';
-import { Icon, Toast } from 'native-base';
+import Toast from '../../common/Toast'
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Ionicons } from '@expo/vector-icons';
 
 import { reduxForm } from 'redux-form';
 
@@ -17,8 +19,6 @@ import Background from '../../../components/common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
 import getStyles from '../../../../res/styles'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Ionicons } from '@expo/vector-icons';
 
 const mapDispatchToProps = dispatch => ({
   createFeature: (values) => {return dispatch(createFeature(values))},
@@ -87,8 +87,6 @@ export default class AddScreen extends React.Component {
   };
   customStyles = getStyles('FormScreen');
 
-  goBack = () => this.props.navigation.goBack();
-
   handleSubmit = () => this.props.handleSubmit(this.submitAddForm);
 
   submitAddForm = (values) => {
@@ -100,21 +98,10 @@ export default class AddScreen extends React.Component {
     .then((feature) => {
       this.props.setActiveFeature(feature);
       this.props.findFeature(this.props.searchTemplate);
-      Toast.show({
-        text: "Изменения успешно сохранены!",
-        type: 'success',
-        buttonText: 'OK',
-        duration: 5000
-      });
       this.props.navigation.navigate('ViewFeature');
     })
     .catch((err) => {
-      Toast.show({
-        text: err.message,
-        type: 'danger',
-        buttonText: 'OK',
-        duration: 5000
-      });
+      Toast.show("", err.message, true);
     });
   };
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Header, Body, Title, Button, Left, Icon, Right } from 'native-base';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';

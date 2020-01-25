@@ -1,8 +1,7 @@
 import React from 'react';
 import {  PropTypes } from 'prop-types';
-import { TouchableOpacity, Text } from 'react-native';
-
-import {  Form, View, Toast } from 'native-base';
+import { TouchableOpacity, Text, View } from 'react-native';
+import Toast from '../../common/Toast'
 import { Field } from 'redux-form';
 
 import TextInput from '../../common/login/TextInput';
@@ -63,12 +62,7 @@ class AuthForm extends React.Component {
         });
       })
       .catch((err) => {
-        Toast.show({
-          text: err.message,
-          type: 'danger',
-          buttonText: 'OK',
-          duration: 5000
-        });
+        Toast.show("", err.message, true);
       });
   };
 
@@ -85,7 +79,7 @@ class AuthForm extends React.Component {
                 <Text style={{textAlign: 'center', color: 'white', fontSize:60}}>FEATURE</Text>
               </View>
             </View>
-            <Form>
+            <View>
               <Field
                 name="username"
                 component={TextInput}
@@ -104,7 +98,7 @@ class AuthForm extends React.Component {
               >
                 <Text style={styles.buttonText}>ВОЙТИ</Text>
               </TouchableOpacity>
-            </Form>
+            </View>
           <LoadingPanel show={this.context.isAuthenticating} text="Входим в приложение..."/>
         </View>
     );
