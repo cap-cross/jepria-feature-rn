@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight} from 'react-native';
-import { Container, Content, Icon, Toast } from 'native-base';
+import { TouchableHighlight} from 'react-native';
+import { Icon, Toast } from 'native-base';
 import connect from 'react-redux/lib/connect/connect';
 import {compose, pure, hoistStatics} from 'recompose';
 
@@ -99,7 +99,7 @@ class EditScreen extends React.Component {
           buttonText: 'OK',
           duration: 5000
         });
-        this.props.navigation.navigate('ViewFeature');
+        this.props.navigation.navigate('ViewFeature', {title: feature.featureName});
       })
       .catch((err) => {
         Toast.show({
