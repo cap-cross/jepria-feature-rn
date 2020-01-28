@@ -1,27 +1,30 @@
-import * as actions from './historyActions.js';
+import * as actions from './featureProcessActions.js';
 
 const initialState = {
+  isLoading: false,
   items: []
 }
 
 export default function history(state = initialState, action) {
     const { type, payload } = action;
     switch (type) {        
-        case actions.FETCH_HISTORY_BEGIN: {
+        case actions.FETCH_PROCESS_BEGIN: {
           return {
-            isLoading: payload.isLoading,
+            isLoading: true,
             items: []
           }
         }
-        case actions.FETCH_HISTORY_FAILURE: {
+        case actions.FETCH_PROCESS_FAILURE: {
             return {
+                isLoading: false,
                 isFailed: payload.isFailed,
                 errorMessage: payload.errorMessage,
                 items: []
             }
         }
-        case actions.FETCH_HISTORY_SUCCESS: {
+        case actions.FETCH_PROCESS_SUCCESS: {
           return {
+            isLoading: false,
             items: payload.history
           }
         }

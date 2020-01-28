@@ -1,15 +1,16 @@
 import React from 'react';
 
-import {Expo, AppLoading} from 'expo';
-import configureStore from './app/src/config/store';
+import { AppLoading } from 'expo';
+import store from './app/src/redux/store';
 
-import ScreenManager from './app/src/components/view/ScreenManager';
-import DataProvider from './app/src/data/DataProvider';
-import { Root } from 'native-base';
+import AppNavigator from './app/src/config/navigation';
+import SecurityProvider from './app/src/context/SecurityContext';
+import { LOGIN_API_URL, META_INFO_URL } from './app/src/api/apiConfig';
+import { Provider } from 'react-redux';
 
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
-import { Ionicons } from '@expo/vector-icons';
+import * as SecureStore from 'expo-secure-store';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -30,15 +31,20 @@ export default class App extends React.Component {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
-      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-      //Ionicons: Ionicons.font
+      Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf')
     });
-    //await this.cacheFonts([Ionicons.font, require('native-base/Fonts/Roboto.ttf'), require('native-base/Fonts/Roboto_medium.ttf')]);
     await Asset.fromModule(require('./assets/images/background.jpg')).downloadAsync();
-    this.setState({ isReady: true });
+    const {pin, token} = await this.prepareContext();
+    this.setState({pin, token, isReady: true });
+  }
+
+  prepareContext = async () => {
+    const pin = await SecureStore.getItemAsync("userPin");
+    const token = await SecureStore.getItemAsync("userToken");
+    return {pin, token}
   }
 
   cacheFonts = async (fonts) => {
@@ -56,11 +62,11 @@ export default class App extends React.Component {
       );
     }
     return (
-       <DataProvider store={configureStore()}>
-         <Root>
-           <ScreenManager />
-         </Root>
-       </DataProvider>
+      <SecurityProvider userPin={this.state.pin} userToken={this.state.token} loginURL={LOGIN_API_URL} metaInfoUrl={META_INFO_URL} roles={["JrsAssignResponsibleFeature"]}>
+        <Provider store={store}>
+          <AppNavigator />
+        </Provider>
+      </SecurityProvider>
     );
   }
 }

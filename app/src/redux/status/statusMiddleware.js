@@ -1,11 +1,11 @@
 import * as actions from './statusActions.js';
-import {statuses} from '../../api/FeatureAPI';
+import {getStatuses} from '../../api/FeatureAPI';
 
-export const getStatuses = () => {
+export const getFeatureStatuses = () => {
     return (dispatch) => {
         dispatch(actions.fetchStatuses(true));
         try {
-            statuses.getStatuses()
+            getStatuses()
                 .then((response) => {
                     dispatch(actions.fetchStatusesSuccess(response));
                 });

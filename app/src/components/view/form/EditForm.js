@@ -1,105 +1,59 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Form } from 'native-base';
-import { Field, reduxForm } from 'redux-form';
-import {StyleSheet, View} from 'react-native';
+import { Field } from 'redux-form';
+import { View } from 'react-native';
 
 import TextArea from '../../common/TextArea';
 import TextInput from '../../common/TextInput';
-import isUserHaveRoles from '../../../data/clientSecurity';
-import {required, expected} from '../../../data/validation';
-import { getStatuses } from '../../../redux/status/statusMiddleware';
-import { getOperators } from '../../../redux/operator/operatorMiddleware';
-import { connect } from 'react-redux';
-import Picker from '../../common/Picker/Picker'
+import { required, expected } from '../../../data/validation';
+import Picker from '../../common/Picker'
 import getStyles from '../../../../res/styles'
 
-class EditForm extends React.Component {
+const styles = {
+  form: {
+    margin: 15, 
+    padding: 15, 
+    backgroundColor: 'rgba(17,49,85,0.55)', 
+    borderRadius:30
+  },
+  ...getStyles('Form')
+}
 
-  componentDidMount() {
-    if(this.props.statuses.length == 0) this.props.getStatuses();
-    if(this.props.operators.length == 0) this.props.getOperators();
-  }
+export default EditForm = ({userRoles, statuses, operators}) => {
 
-  defaultStyles = {
-    form: {
-      margin: 15, 
-      padding: 15, 
-      backgroundColor: 'rgba(17,49,85,0.55)', 
-      borderRadius:30
-    },
-  }
-  customStyles = getStyles('Form');
-
-  render() {
-    console.log('EditForm!.render() BEGIN');
-    console.log(`EditForm!: task = ${JSON.stringify(this.props.initialValues)}`);
-    let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
-    let isJrsAssignResponsibleFeatureRole = this.props.userRoles.length > 0 ? isUserHaveRoles(["JrsAssignResponsibleFeature"], this.props.userRoles) : false;
-    
     return (
-        <View style={styles.form}>
-          <Form>
-            <Field 
-              name="name"
-              component={TextInput}
-              labelText="Название"
-              validate = {required}
-            />
-            <Field
-              name="nameEn"
-              component={TextInput}
-              labelText="Название (англ)"
-              validate = {required}
-            />
-            <Field
-              name="description"
-              component={TextArea}
-              labelText="Описание" 
-              warn = {expected}
-            />
-            <Field
-              name="statusCode"
-              component={Picker}
-              labelText="Статус"
-              itemNameKey='statusName'
-              itemValueKey='statusCode'
-              items={this.props.statuses}
-            />
-            { isJrsAssignResponsibleFeatureRole && //проверка наличия роли
-              <Field
-                name="responsible"
-                component={Picker}
-                labelText="Ответственный"
-                itemNameKey='operatorName'
-                itemValueKey='operatorCode'
-                hasEmptyItem={true}
-                items={this.props.operators}
-              />
-            }
-          </Form>
-        </View>
-
-    );
-  }
+      <View style={styles.form}>
+        <Field 
+          name="featureName"
+          component={TextInput}
+          label="Название"
+          validate = {required}/>
+        <Field
+          name="featureNameEn"
+          component={TextInput}
+          label="Название (англ)"
+          validate = {required}/>
+        <Field
+          name="description"
+          component={TextArea}
+          label="Описание" 
+          warn = {expected}/>
+        <Field
+          name="featureStatus"
+          component={Picker}
+          labelText="Статус"
+          itemNameKey='name'
+          itemValueKey='value'
+          items={statuses}/>
+      { userRoles["JrsAssignResponsibleFeature"] === 1 && //проверка наличия роли
+        <Field
+          name="responsibleId"
+          component={Picker}
+          labelText="Ответственный"
+          itemNameKey='name'
+          itemValueKey='value'
+          hasEmptyItem={true}
+          items={operators}/>
+      }
+    </View>
+  );
 }
-
-const mapStateToProps = (state) => {
-  return {
-    userRoles: state.user.userRoles,
-    operators: state.operators,
-    statuses: state.statuses,
-    isLoading: state.isLoading,
-    isFailed: state.isFailed,
-    errorMessage: state.errorMessage,
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getStatuses: () => dispatch(getStatuses()),
-    getOperators: () => dispatch(getOperators())
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditForm);//(reduxForm({form: "EditForm"})(EditForm));

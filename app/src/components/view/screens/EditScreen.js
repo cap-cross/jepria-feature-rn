@@ -1,51 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight} from 'react-native';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
+import { TouchableHighlight} from 'react-native';
+import Toast from '../../common/Toast'
+import { Ionicons } from '@expo/vector-icons';
 import connect from 'react-redux/lib/connect/connect';
-import compose from 'recompose/compose';
-import pure from 'recompose/pure';
+import {compose, pure, hoistStatics} from 'recompose';
 
 import { reduxForm } from 'redux-form';
 
 import withBackButton from '../../../components/common/hoc/withBackButton';
 import EditForm from '../form/EditForm';
-import {setActiveTask} from '../../../redux/tasks/taskActions';
-import { updateTask, findTasks } from '../../../redux/tasks/taskMiddleware';
+import {setActiveFeature} from '../../../redux/feature/featureActions';
+import { updateFeature, findFeature } from '../../../redux/feature/featureMiddleware';
+import { getFeatureStatuses } from '../../../redux/status/statusMiddleware';
+import { getFeatureOperators } from '../../../redux/operator/operatorMiddleware';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import { LoadingPanel } from '../../common/LoadingPanel';
 import getStyles from '../../../../res/styles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { SecurityContext } from '../../../context/SecurityContext';
 
-const mapDispatchToProps = dispatch => ({
-  updateTask: (values) => {return dispatch(updateTask(values))},
-  setActiveTask: (task) => dispatch(setActiveTask(task)),
-  findTasks: (filter) => dispatch(findTasks(filter))
-});
+class EditScreen extends React.Component {
+  
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam("title")
+    }
+  };
 
-const mapStateToProps = (state) => {
-  return {
-    initialValues: state.tasks.activeItem,
-    filter: state.tasks.filter,
-    isLoading: state.tasks.isUpdating,
-  }
-}
-
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({
-    form: 'editForm',
-  }),
-  withBackButton(),
-  pure,
-);
-
-@enhance
-export default class EditScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
   };
+
+  static contextType = SecurityContext;
 
   defaultStyles = {
     content: {
@@ -87,76 +76,79 @@ export default class EditScreen extends React.Component {
   };
   customStyles = getStyles('FormScreen');
 
-  handleSubmit = () => this.props.handleSubmit(this.submitTask);
+  componentDidMount = () => {
+    this.props.getFeatureStatuses();
+    this.props.getFeatureOperators();
+  }
+
+  handleSubmit = () => this.props.handleSubmit(this.submitFeature);
 
   goBack = () => this.props.navigation.goBack();
 
-  submitTask = (values) => {
-    console.log(`EditScreen.submitTask(): values = ${JSON.stringify(values)}`);
-    this.props.updateTask({
-          id: this.props.initialValues.id,
-          author: values.author,
-          name: values.name,
-          nameEn: values.nameEn,
-          description: values.description,
-          statusCode: values.statusCode,
-        })
-      .then((task) => {
-        this.props.setActiveTask(task);
-        this.props.findTasks(this.props.filter);
-        Toast.show({
-          text: "Изменения успешно сохранены!",
-          type: 'success',
-          buttonText: 'OK',
-          duration: 5000
-        });
-        this.props.navigation.navigate('ViewTask');
+  submitFeature = (values) => {
+    this.props.updateFeature(this.props.initialValues.featureId, {
+          featureName: values.featureName,
+          featureNameEn: values.featureNameEn,
+          description: values.description}, values.featureStatus.value)
+      .then((feature) => {
+        this.props.setActiveFeature(feature);
+        this.props.findFeature(this.props.searchTemplate);
+        this.props.navigation.navigate('ViewFeature', {title: feature.featureName});
       })
       .catch((err) => {
-        Toast.show({
-          text: err.message,
-          type: 'danger',
-          buttonText: 'OK',
-          duration: 5000
-        });
+        Toast.show("", err.message, true);
       });
   };
 
   render() {
-    console.log(`EditScreen.render(): task = ${JSON.stringify(this.props.initialValues)}`);
-
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
 
     return (
       <Background>
-        <Container style={{backgroundColor:'transparent'}}>
-          <Header style={styles.header}>
-            <Left>
-              <Button onPress={this.goBack} transparent>
-                <Icon name="arrow-back" style={styles.icon} />
-              </Button>
-            </Left>
-            <Body>
-              <Title style={styles.title}>Редактирование</Title>
-            </Body>
-            <Right />
-          </Header>
-          <Content contentContainerStyle={styles.content}>
-            <EditForm
-            />
-          </Content>
-          <View>
-            <TouchableHighlight
-              style={styles.button}
-              underlayColor="red"
-              onPress={this.handleSubmit()}
-            >
-              <Icon name="md-checkmark" style={styles.buttonIcon} />
-            </TouchableHighlight>
-          </View>
-        </Container>
-        <LoadingPanel show={this.props.isLoading} text="Обновление записи"/>
+        <KeyboardAwareScrollView enableOnAndroid>
+          <EditForm
+          operators={this.props.operators}
+          statuses={this.props.statuses}
+          userRoles={this.context.user.roles}/>
+        </KeyboardAwareScrollView>
+        <TouchableHighlight
+          style={styles.button}
+          underlayColor="red"
+          onPress={this.handleSubmit()}>
+          <Ionicons name="md-checkmark" size={32} style={styles.buttonIcon} />
+        </TouchableHighlight>
+        <LoadingPanel show={this.props.isLoading}text="Обновление записи"/>
       </Background>
     );
   }
 }
+const mapDispatchToProps = dispatch => ({
+  updateFeature: (featureId, values, featureStatusCode) => {return dispatch(updateFeature(featureId, values, featureStatusCode))},
+  setActiveFeature: (feature) => dispatch(setActiveFeature(feature)),
+  findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate)),
+  getFeatureStatuses: () => dispatch(getFeatureStatuses()),
+  getFeatureOperators: () => dispatch(getFeatureOperators())
+});
+
+const mapStateToProps = (state) => {
+  return {
+    initialValues: state.feature.activeItem,
+    searchTemplate: state.feature.searchTemplate,
+    isLoading: state.feature.isUpdating,
+    operators: state.operators,
+    statuses: state.statuses,
+    isFailed: state.isFailed,
+    errorMessage: state.errorMessage,
+  }
+}
+
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: 'editForm',
+  }),
+  withBackButton(),
+  pure,
+);
+
+export default hoistStatics(enhance)(EditScreen);

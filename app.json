@@ -4,7 +4,7 @@
     "description": "JepRia Feature - Expo standalone",
     "slug": "feature-expo-standalone-demo",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android"
@@ -34,10 +34,6 @@
         "resizeMode": "contain",
         "xxxhdpi": "./assets/images/splash-logo.png"
       }
-    },
-    "androidStatusBar": {
-      "barStyle": "light-content",
-      "backgroundColor": "#175767"
     },
     "updates": {
       "enabled": true

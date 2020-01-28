@@ -1,12 +1,7 @@
 import { createSwitchNavigator } from 'react-navigation';
 import { createDrawerNavigator} from 'react-navigation-drawer';
 import { createStackNavigator} from 'react-navigation-stack';
-import {
-  createReduxContainer,
-  createReactNavigationReduxMiddleware,
-} from 'react-navigation-redux-helpers';
-import { connect } from 'react-redux';
-
+import { createAppContainer } from 'react-navigation';
 
 import ListScreen from '../components/view/screens/ListScreen';
 import AddScreen from '../components/view/screens/AddScreen';
@@ -20,32 +15,69 @@ import LoginScreen from '../components/view/screens/LoginScreen';
 import AuthLoadingScreen from '../components/view/screens/AuthLoadingScreen';
 import VerificationScreen from '../components/view/screens/VerificationScreen';
 import {DARK_BLUE_COLOR} from '../../res/style';
-
-const mapStateToProps = state => ({
-  state: state.navigate,
-});
-
-const middleware = createReactNavigationReduxMiddleware(
-  state => state.navigate
-);
   
-  const TaskNavigator = createStackNavigator (
+const TaskNavigator = createStackNavigator (
   {
-      Home: {screen: ListScreen},     
-      FilterTasks: {screen: FilterScreen},
-      AddTask: {screen: AddScreen},
-      EditTask: {screen: EditScreen},
-      ViewTask: {screen: DetailScreen},
-      TaskHistory: {screen: HistoryScreen},
+      Home: {screen: ListScreen,
+        navigationOptions: () => ({
+          title: "Запрос функционала"
+        })
+      },     
+      FilterFeature: {screen: FilterScreen,
+        navigationOptions: () => ({
+          title: "Фильтр"
+        })
+      },     
+      AddFeature: {screen: AddScreen,
+        navigationOptions: () => ({
+          title: "Запрос функционала"
+        })
+      },     
+      EditFeature: {screen: EditScreen},     
+      ViewFeature: {screen: DetailScreen},     
+      TaskHistory: {screen: HistoryScreen,
+        navigationOptions: () => ({
+          title: "Статус"
+        })
+      },     
   },
   {
     initialRouteName: 'Home',
-     headerMode: 'none' 
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: DARK_BLUE_COLOR,
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      }
+    }
+  });
+
+const UserNavigator = createStackNavigator (
+  {
+    User: {screen: UserScreen,
+      navigationOptions: () => ({
+        title: "Пользователь"
+      })
+    }     
+  },
+  {
+    initialRouteName: 'User',
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: DARK_BLUE_COLOR,
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      }
+    }
   });
 
 const DrawerNavigator = createDrawerNavigator(
 {
-  "Профиль": {screen: UserScreen},
+  "Профиль": {screen: UserNavigator},
   "Задачи": {screen: TaskNavigator}
 },
 {
@@ -70,8 +102,4 @@ const RootNavigator = createSwitchNavigator(
   }
 );
 
-const AppWithNavigationState = createReduxContainer(RootNavigator, 'root');
-
-const Navigator = connect(mapStateToProps)(AppWithNavigationState);
-
-export { RootNavigator, Navigator, middleware };
+export default createAppContainer(RootNavigator);

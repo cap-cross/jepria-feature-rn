@@ -1,35 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right, Toast } from 'native-base';
-import connect from 'react-redux/lib/connect/connect';
-import compose from 'recompose/compose';
-import pure from 'recompose/pure';
+import {TouchableOpacity} from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
 
 import UserDetail from '../form/UserDetail';
-import { logout } from '../../../redux/user/userMiddleware';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR} from '../../../../res/style';
+import { SecurityContext } from '../../../context/SecurityContext';
 
-const mapDispatchToProps = dispatch => ({
-  logout: () => {return dispatch(logout())}
-});
-
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  }
-}
-
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  pure,
-);
-
-@enhance
-export default class UserScreen extends React.Component {
+class UserScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   };
+
+  static navigationOptions = ({ navigation }) => {
+    const handleLogout  = navigation.getParam("handleLogout");
+    return {
+      headerLeft: () => (
+        <TouchableOpacity style={{margin: 20}} onPress={() => {navigation.openDrawer()}} transparent>
+          <Ionicons name="md-menu" style={screenStyles.icon} />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity style={{margin: 20}} onPress={() => {handleLogout()}} transparent>
+          <Ionicons name="md-exit" style={screenStyles.icon} />
+        </TouchableOpacity>
+      ),
+    }
+  };
+
+  static contextType = SecurityContext;
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      handleLogout: this.handleLogout
+    });
+  }
+
+  handleLogout = () => {
+    this.context.logout();
+    this.props.navigation.navigate("Auth");
+  }
 
   getStyles = () => ({
     content: {
@@ -51,51 +62,17 @@ export default class UserScreen extends React.Component {
     },
   });
 
-  logout = () => {
-    this.props.logout()
-      .then((response) => {
-        console.log('UserScreen.logout(): logout Done!' + JSON.stringify(response));
-        this.props.navigation.navigate('Home');
-      })
-      .catch((err) => {
-        console.log(err.message);
-        Toast.show({
-          text: err.message,
-          type: 'danger',
-          buttonText: 'OK',
-          duration: 5000
-        });
-      });
-  };
-
   render() {
-     const { user } = this.props;
-    // Получить из state, а в state - по запросу с backend 
-
-    const styles = this.getStyles();
 
     return (
       <Background>
-        <Container style={{backgroundColor:'transparent'}}>
-          <Header style={styles.header}>
-            <Left>
-              <Button onPress={this.props.navigation.openDrawer} transparent>
-                <Icon name="menu" style={styles.icon} />
-              </Button>
-            </Left>
-            <Body>   
-            <Title style={styles.title}>Профиль</Title>
-            </Body>
-            <Right/>     
-          </Header>
-          <Content contentContainerStyle={styles.content}>
-            <UserDetail
-              navigation={this.props.navigation}
-              user={user}
-            />
-          </Content>
-        </Container>
+         <UserDetail
+            navigation={this.props.navigation}
+            user={this.context.user}
+         />
       </Background>
     );
   }
 }
+
+export default UserScreen;

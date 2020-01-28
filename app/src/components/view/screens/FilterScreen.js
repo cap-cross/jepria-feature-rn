@@ -1,31 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableHighlight } from 'react-native';
-import { Container, Content, Header, Body, Title, Button, Left, Icon, Right } from 'native-base';
+import { TouchableHighlight } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import connect from 'react-redux/lib/connect/connect';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 
 import { reduxForm } from 'redux-form';
 import withBackButton from '../../common/hoc/withBackButton';
-import { findTasks } from '../../../redux/tasks/taskMiddleware';
+import { findFeature } from '../../../redux/feature/featureMiddleware';
+import { getFeatureStatuses } from '../../../redux/status/statusMiddleware';
+import { getFeatureOperators } from '../../../redux/operator/operatorMiddleware';
 import FilterForm from '../form/FilterForm';
-import ModalWaitBar from '../../common/WaitBar';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import getStyles from '../../../../res/styles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const mapStateToProps = (state) => {
   return {
-  initialValues: {
-    ...state.tasks.filter,
-    statusCodeList: state.tasks.filter.statusCodeList ? state.tasks.filter.statusCodeList.slice() : []
-  }
+    searchTemplate: state.feature.searchTemplate,
+    operators: state.operators,
+    statuses: state.statuses,
+    isLoading: state.isLoading,
+    isFailed: state.isFailed,
+    errorMessage: state.errorMessage,
+    initialValues: {
+      ...state.feature.searchTemplate,
+      statusCodeList: state.feature.searchTemplate.statusCodeList ? state.feature.searchTemplate.statusCodeList.slice() : []
+    }
 }};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    findTasks: (filter) => dispatch(findTasks(filter)),
+    findFeature: (searchTemplate) => dispatch(findFeature(searchTemplate)),
+    getFeatureStatuses: () => dispatch(getFeatureStatuses()),
+    getFeatureOperators: () => dispatch(getFeatureOperators())
   };
 }
 
@@ -44,6 +54,11 @@ export default class FilterScreen extends React.Component {
     navigation: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    if(this.props.statuses.length == 0) this.props.getFeatureStatuses();
+    if(this.props.operators.length == 0) this.props.getFeatureOperators();
+  }
 
   defaultStyles = {
     content: {
@@ -87,53 +102,29 @@ export default class FilterScreen extends React.Component {
   handleSubmit = () => this.props.handleSubmit(this.submitTask);
 
   submitTask = (values) => {
-    console.log(`FilterScreen.submitTask(${JSON.stringify(values)})`);
-    this.props.findTasks({
-      id: values.id,
-      authorId: values.authorId,
-      name: values.name,
-      nameEn: values.nameEn,
-      statusCodeList: values.statusCodeList,
-      responsibleId: values.responsibleId,
-    });
+    this.props.findFeature(values);
     this.props.navigation.goBack();
   };
 
+  goBack = () => {
+    this.props.navigation.goBack();
+  }
+
   render() {
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
-
     return (
       <Background>
-        <Container style={{backgroundColor:'transparent'}}>
-          <Header style={styles.header}>
-            <Left>
-              <Button onPress={() => this.props.navigation.goBack()} transparent>
-                <Icon name="arrow-back" style={styles.icon} />
-              </Button>
-            </Left>
-            <Body>
-              <Title style={styles.title}>Фильтр</Title>
-            </Body>
-            <Right />
-          </Header>
-          <Content contentContainerStyle={styles.content}>
-            <FilterForm/>
-            <ModalWaitBar
-              ref={(c) => {
-                this.waitBar = c;
-              }}
-            />
-          </Content>
-          <View>
-            <TouchableHighlight
-              style={styles.button}
-              underlayColor="red"
-              onPress={this.handleSubmit()}
-            >
-              <Icon name="md-checkmark" style={styles.buttonIcon} />
-            </TouchableHighlight>
-          </View>
-        </Container>
+        <KeyboardAwareScrollView enableOnAndroid>
+          <FilterForm
+            statuses={this.props.statuses}
+            operators={this.props.operators}/>
+        </KeyboardAwareScrollView>
+        <TouchableHighlight
+          style={styles.button}
+          underlayColor="red"
+          onPress={this.handleSubmit()}>
+          <Ionicons name="md-search" size={32} style={styles.buttonIcon} />
+        </TouchableHighlight>
       </Background>
     );
   }

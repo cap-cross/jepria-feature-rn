@@ -1,49 +1,25 @@
 import React from 'react';
 import {  PropTypes } from 'prop-types';
-import { TouchableOpacity, Text } from 'react-native';
-
-import {  Form, View, Toast } from 'native-base';
+import { TouchableOpacity, Text, View } from 'react-native';
+import Toast from '../../common/Toast'
 import { Field } from 'redux-form';
 
 import TextInput from '../../common/login/TextInput';
 import SecureTextInput from '../../common/login/SecureTextInput';
-import connect from 'react-redux/lib/connect/connect';
-import compose from 'recompose/compose';
-import pure from 'recompose/pure';
 import { reduxForm } from 'redux-form';
 
 import {DARK_AQUA_GREEN_COLOR} from '../../../../res/style';
 import {required} from '../../../data/validation';
 import getStyles from '../../../../res/styles'
-import { login } from '../../../redux/user/userMiddleware';
 import { LoadingPanel } from '../../common/LoadingPanel';
+import { SecurityContext } from '../../../context/SecurityContext';
 
-
-const mapStateToProps = (state) => {
-  return {
-    isAuthentificating: state.user.isAuthentificating,
-  };
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    login: (username, password) => {return dispatch(login(username, password))},
-    getUserData: () => dispatch(getUserData())
-  };
-}
-
-
-const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({ form: 'authForm' }),
-  pure,
-);
-
-@enhance
-export default class AuthForm extends React.Component {
+class AuthForm extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
   };
+
+  static contextType = SecurityContext;
 
   defaultStyles = {
     button: {
@@ -75,25 +51,18 @@ export default class AuthForm extends React.Component {
   handleSubmit = () => this.props.dispatch(this.props.handleSubmit(this.submitLogin));
 
   submitLogin = (values) => {
-    this.props.login(
+    this.context.login(
       values.username,
       values.password)
-      .then((response) => {
+      .then(() => {
         this.props.navigation.navigate('Verify',
         {
           username: values.username,
-          password: values.password,
-          pin: null,
-          hasFingerPrint: false
+          password: values.password
         });
       })
       .catch((err) => {
-        Toast.show({
-          text: err.message,
-          type: 'danger',
-          buttonText: 'OK',
-          duration: 5000
-        });
+        Toast.show("", err.message, true);
       });
   };
 
@@ -110,7 +79,7 @@ export default class AuthForm extends React.Component {
                 <Text style={{textAlign: 'center', color: 'white', fontSize:60}}>FEATURE</Text>
               </View>
             </View>
-            <Form>
+            <View>
               <Field
                 name="username"
                 component={TextInput}
@@ -129,9 +98,13 @@ export default class AuthForm extends React.Component {
               >
                 <Text style={styles.buttonText}>ВОЙТИ</Text>
               </TouchableOpacity>
-            </Form>
-          <LoadingPanel show={this.props.isAuthentificating} text="Входим в приложение..."/>
+            </View>
+          <LoadingPanel show={this.context.isAuthenticating} text="Входим в приложение..."/>
         </View>
     );
   }
 }
+
+export default reduxForm({
+  form: 'authForm'
+})(AuthForm)

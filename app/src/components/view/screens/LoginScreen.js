@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Content, Footer } from 'native-base';
-import { Text, } from 'react-native';
+import { Text, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR} from '../../../../res/style';
@@ -37,16 +37,14 @@ export default class LoginScreen extends React.Component {
 
     return (
       <Background>
-        <Container style={{backgroundColor:'transparent'}}>
-          <Content contentContainerStyle={styles.content}>
+        <KeyboardAwareScrollView enableOnAndroid>
             <AuthForm
               navigation={this.props.navigation}
             />
-          </Content>
-          <Footer style={{backgroundColor: 'rgba(17,49,85,0.85)', justifyContent: 'center', height: 30}}>
-              <Text style={{color: 'white', textAlign: 'center', fontSize: 12}}>Inspired by JepRia.org</Text>
-          </Footer>
-        </Container>
+        </KeyboardAwareScrollView>
+        <View style={{backgroundColor: 'rgba(17,49,85,0.85)', justifyContent: 'center', height: 30}}>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 12}}>Inspired by JepRia.org</Text>
+        </View>
       </Background>
     );
   }

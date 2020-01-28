@@ -1,21 +1,12 @@
- const FEATURE_SERVICE_HOST = 'jepria.org';
- const FEATURE_SERVICE_PORT = '80';
-// const FEATURE_SERVICE_HOST = 'test.jepria.org';
-// const FEATURE_SERVICE_PORT = '80';
-//const FEATURE_SERVICE_HOST = '10.0.3.2'; // localhost
-//const FEATURE_SERVICE_PORT = '8080';
+ const FEATURE_SERVICE_HOST = 'https://jepria.org';
+ //const FEATURE_SERVICE_HOST = 'http://vsmlapprfid1';
+ //const FEATURE_SERVICE_HOST = 'http://10.50.132.72:8080';
 
-export const FEATURE_SERVICE_CONTEXT = 'feature-json-jepria-backend';
-const API_VERSION = 'v1';
-export const FEATURE_API = 'features';
+export const FEATURE_SERVICE_CONTEXT = 'JepRiaShowcase/api';
+export const LOGIN_API_URL = `${FEATURE_SERVICE_HOST}/JepRiaShowcase/autoLogonServlet`;
+export const FEATURE_CONTEXT_URL = `${FEATURE_SERVICE_HOST}/${FEATURE_SERVICE_CONTEXT}`;
+export const FEATURE_API_URL = `${FEATURE_CONTEXT_URL}/feature`;
+export const FEATURE_STATUS_URL = `${FEATURE_API_URL}/option/feature-status`;
+export const FEATURE_OPERATOR_URL = `${FEATURE_API_URL}/option/feature-operator`;
+export const META_INFO_URL = `${FEATURE_CONTEXT_URL}/meta`;
 
-export const BASE_URL = `http://${FEATURE_SERVICE_HOST}:${FEATURE_SERVICE_PORT}`;
-export const FEATURE_CONTEXT_URL = `${BASE_URL}/${FEATURE_SERVICE_CONTEXT}/${API_VERSION}`;
-export const FEATURE_API_URL = `${FEATURE_CONTEXT_URL}/${FEATURE_API}`;
-
-export const FEATURE_API_FIND_URL = FEATURE_API_URL;
-export const FEATURE_API_ADD_URL = FEATURE_API_URL;
-export const FEATURE_API_UPDATE_URL = FEATURE_API_URL;
-export const FEATURE_API_DELETE_URL = FEATURE_API_URL;
-export const FEATURE_STATUSES_URL = `${FEATURE_CONTEXT_URL}/featurestatuses`;
-export const FEATURE_OPERATORS_URL = `${FEATURE_CONTEXT_URL}/featureoperators`;

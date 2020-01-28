@@ -61,7 +61,7 @@ export default class UserDetail extends React.Component {
                 <Text style={styles.fieldCaption}>Имя пользователя</Text>
               </View>
               <View style={styles.valueContainer}>
-                <Text style={styles.fieldValue}>{user.userName}</Text>
+                <Text style={styles.fieldValue}>{user.username}</Text>
               </View>
             </View>
           </View>
