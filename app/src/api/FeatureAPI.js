@@ -1,5 +1,5 @@
 // API.js
-import * as api from './ApiConfig';
+import * as api from './apiConfig';
 import * as errors from './errors';
 import { getTokenAsync } from '../context/SecurityContext';
 

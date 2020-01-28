@@ -115,9 +115,9 @@ class EditScreen extends React.Component {
           style={styles.button}
           underlayColor="red"
           onPress={this.handleSubmit()}>
-          <Ionicons name="md-checkmark" style={styles.buttonIcon} />
+          <Ionicons name="md-checkmark" size={32} style={styles.buttonIcon} />
         </TouchableHighlight>
-        <LoadingPanel show={this.props.isLoading} text="Обновление записи"/>
+        <LoadingPanel show={this.props.isLoading}text="Обновление записи"/>
       </Background>
     );
   }

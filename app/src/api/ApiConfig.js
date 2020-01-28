@@ -1,6 +1,6 @@
- //const FEATURE_SERVICE_HOST = 'https://jepria.org';
+ const FEATURE_SERVICE_HOST = 'https://jepria.org';
  //const FEATURE_SERVICE_HOST = 'http://vsmlapprfid1';
- const FEATURE_SERVICE_HOST = 'http://10.50.132.72:8080';
+ //const FEATURE_SERVICE_HOST = 'http://10.50.132.72:8080';
 
 export const FEATURE_SERVICE_CONTEXT = 'JepRiaShowcase/api';
 export const LOGIN_API_URL = `${FEATURE_SERVICE_HOST}/JepRiaShowcase/autoLogonServlet`;

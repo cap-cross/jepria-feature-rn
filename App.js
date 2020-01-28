@@ -5,7 +5,7 @@ import store from './app/src/redux/store';
 
 import AppNavigator from './app/src/config/navigation';
 import SecurityProvider from './app/src/context/SecurityContext';
-import { LOGIN_API_URL, META_INFO_URL } from './app/src/api/ApiConfig';
+import { LOGIN_API_URL, META_INFO_URL } from './app/src/api/apiConfig';
 import { Provider } from 'react-redux';
 
 import * as Font from 'expo-font';

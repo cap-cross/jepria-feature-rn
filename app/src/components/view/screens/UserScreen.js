@@ -63,8 +63,6 @@ class UserScreen extends React.Component {
   });
 
   render() {
-    const { user } = this.props;
-    const styles = this.getStyles();
 
     return (
       <Background>

@@ -6,7 +6,6 @@ import ListView from '../../common/ListView'
 
 import {setActiveFeature} from '../../../redux/feature/featureActions'
 import { findFeature, deleteFeature } from '../../../redux/feature/featureMiddleware';
-import withSecretToLife from '../../common/hoc//testhoc';
 import withBackButton from '../../common/hoc/withBackButton';
 import Background from '../../common/Background';
 import {DARK_BLUE_COLOR, DARK_AQUA_GREEN_COLOR, LIGHT_AQUA_GREEN_COLOR} from '../../../../res/style';
