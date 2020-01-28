@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon } from 'native-base';
 import {TouchableOpacity, Text, View} from 'react-native';
 import getStyles from '../../../../res/styles'
+import { FontAwesome } from '@expo/vector-icons';
 
 const styles = {
   form: {
@@ -57,7 +57,7 @@ export default ViewDetail = ({feature, navigation}) => {
             </View>
           </View>
           <View>
-            <Icon type='FontAwesome' name='chevron-right' style={{color: 'white', fontSize: 20}}/>
+            <FontAwesome name='chevron-right' style={{color: 'white', fontSize: 20}}/>
           </View>
         </TouchableOpacity>
       </View>

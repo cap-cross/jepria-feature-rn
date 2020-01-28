@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, TouchableOpacity, Platform } from 'react-native';
 import getStyles from '../../../res/styles'
-import { Icon } from 'native-base';
 import {DARK_BLUE_COLOR, LIGHT_BLUE_COLOR} from '../../../res/style';
+import { Ionicons } from '@expo/vector-icons';
 
 export default class PinView extends React.PureComponent {
   static propTypes = {
@@ -141,14 +141,14 @@ export default class PinView extends React.PureComponent {
           </View>
           <View style={{flex: 0, flexDirection: 'row'}}>
             <TouchableOpacity style={{...styles.button, justifyContent: 'center'}} onPress={() => this.onDelete()}>
-              <Icon type='Ionicons' name='md-backspace' style={{...styles.buttonContent,  textAlign: 'center'}}/>
+              <Ionicons name='md-backspace' style={{...styles.buttonContent,  textAlign: 'center'}}/>
             </TouchableOpacity>
             <TouchableOpacity style={{...styles.button, justifyContent: 'center'}} onPress={() => this.onButtonClick('0')}>
               <Text style={{...styles.buttonContent, textAlign: 'center'}}>0</Text>
             </TouchableOpacity>
             {Platform.OS === 'ios' &&
             <TouchableOpacity style={{...styles.button, justifyContent: 'center'}} onPress={() => this.onFingerPrint()}>
-              <Icon type='Ionicons' name='md-finger-print' style={{...styles.buttonContent,  textAlign: 'center'}}/>
+              <Ionicons name='md-finger-print' style={{...styles.buttonContent,  textAlign: 'center'}}/>
             </TouchableOpacity>
             }
           </View>

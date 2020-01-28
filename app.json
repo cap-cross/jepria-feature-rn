@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "ios": {
@@ -21,14 +21,14 @@
         "image": "./assets/images/splash-logo.png",
         "tabletImage": "./assets/images/splash-logo.png"
       },
-      "buildNumber": "1.0.3"
+      "buildNumber": "1.0.4"
     },
     "android": {
       "package": "org.jepria.feature.demo",
       "permissions": [
         "USE_FINGERPRINT"
       ],
-      "versionCode": 7,
+      "versionCode": 8,
       "splash": {
         "backgroundColor": "#175767",
         "resizeMode": "contain",

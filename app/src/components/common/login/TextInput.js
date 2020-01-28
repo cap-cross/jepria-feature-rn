@@ -1,8 +1,8 @@
 // TODO Устранить дублирование с LoginForm
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Item, View, Icon } from 'native-base';
-import { Text } from 'react-native';
+import {  View, TextInput as Input } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import getStyles from '../../../../res/styles'
 
 export default class TextInput extends React.PureComponent {
@@ -38,23 +38,26 @@ export default class TextInput extends React.PureComponent {
   customStyles = getStyles('LoginTextInput');
 
   render() {
-    const { input, meta: { touched, error}, labelText, ...inputProps } = this.props;
+    const { input, meta: { touched, error}, placeholder } = this.props;
     let styles = this.customStyles !== undefined ? this.customStyles : this.defaultStyles;
     
     return (
       <View style={touched && error ? {...styles.container, ...styles.error} : styles.container}>
-        <Item error={touched && error !== undefined} style={{borderColor: 'transparent'}}>
-            <Input
-              onChangeText={input.onChange}
-              onBlur={input.onBlur}
-              onFocus={input.onFocus}s
-              value={input.value}
-              {...inputProps}
-              style={styles.inputTextColor}
-              placeholderTextColor={styles.placeholderTextColor}
+        <View 
+        style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '100%'}}>
+          <Input
+            style={styles.fieldValue}
+            onChangeText={input.onChange}
+            onBlur={input.onBlur}
+            onFocus={input.onFocus}
+            value={input.value}
+            style={styles.inputTextColor}
+            placeholderTextColor={styles.placeholderTextColor}
+            underlineColorAndroid='transparent'
+            placeholder={placeholder}
             />
-            {touched && error && <Icon name="error" type="MaterialIcons" style={styles.icon}/>}
-        </Item>
+            {touched && error && <MaterialIcons name="error" style={styles.icon}/>}
+        </View>
       </View>
     );
   }

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Content, Container } from 'native-base';
 import {View,Text} from 'react-native';
 import getStyles from '../../../../res/styles'
 
@@ -45,28 +44,24 @@ export default class UserDetail extends React.Component {
     const user = this.props.user;
 
     return (
-      <Container style={{backgroundColor:'transparent'}}>
-        <Content>
-          <View style={styles.form}>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.fieldCaption}>Идентификатор</Text>
-              </View>
-              <View style={styles.valueContainer}>
-                <Text style={styles.fieldValue}>{user.operatorId}</Text>
-              </View>
-            </View>
-            <View style={styles.card}>
-              <View>
-                <Text style={styles.fieldCaption}>Имя пользователя</Text>
-              </View>
-              <View style={styles.valueContainer}>
-                <Text style={styles.fieldValue}>{user.username}</Text>
-              </View>
-            </View>
+      <View style={styles.form}>
+        <View style={styles.card}>
+          <View>
+            <Text style={styles.fieldCaption}>Идентификатор</Text>
           </View>
-        </Content>
-      </Container>
+          <View style={styles.valueContainer}>
+            <Text style={styles.fieldValue}>{user.operatorId}</Text>
+          </View>
+        </View>
+        <View style={styles.card}>
+          <View>
+            <Text style={styles.fieldCaption}>Имя пользователя</Text>
+          </View>
+          <View style={styles.valueContainer}>
+            <Text style={styles.fieldValue}>{user.username}</Text>
+          </View>
+        </View>
+      </View>
     );
   }
 }
